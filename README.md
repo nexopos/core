@@ -19,7 +19,7 @@ Once it's installed, you'll have to run some of the following command to ensure 
 The package include a command to write filesystem configuration to the filesystem.php. For that you need to run the command:
 
 ```
-php artisan ns:install
+php artisan ns:install --filesystem
 ```
 
 ### Publishing Configuration / Assets
@@ -42,8 +42,8 @@ Note that the package is already a dependency.
 php artisan install:api
 ```
 
-### Installing NexoPOS Core
-Similarily to Laravel Sanctum, NexoPOS Core needs some files to be published. Note that here, some of the existing file will be edted by the package as
+### Core Routing Configuration
+Similarily to Laravel Sanctum, NexoPOS Core needs some files to be published. Note that here, some of the existing file will be edit by the package as
 it needs it to work properly. 
 
 The impacted files are:
@@ -52,7 +52,7 @@ The impacted files are:
 - routes/api.php
 
 ```
-php artisan ns:install --filesystem --routes
+php artisan ns:install --routes
 ```
 This commands will perform two things:
 
@@ -70,8 +70,38 @@ AUTH_MODEL = Ns\Models\User;
 
 ## Modules
 
+### PSR-4 Autoloading
+
 As we've exported core feauture of NexoPOS, modules are supported. However, in order for the modules files to be automatically loaded, you need to edit the composer.json file of the Laravel project. On The "autoload" entry, make sure to add on the "psr-4" entry the following:
 
 ```
 "Modules\\": "modules/"
 ```
+
+### Routing Registration
+Modules comes with routes. But by default, Laravel will not load their route. Therefore, we need to instruct Laravel to load the module route while it's loading the application route. For that, on the app.php file located on the bootstrap folder, we'll add a "using" callback to the method "withRouting".
+
+```php
+use Ns\Classes\ModuleRouting;
+use Illuminate\Support\Facades\Route;
+
+// ...
+->withRouting( 
+    // ...
+    using: function() {
+        Route::middleware( 'api' )
+                ->prefix( 'api' )
+                ->group( base_path( 'routes/api.php' ) );
+
+        Route::middleware( 'web' )
+            ->group( base_path( 'routes/web.php' ) );
+
+        ModuleRouting::register();
+    }
+)
+// ...
+```
+
+Note that if you use "using", then any load of web.php file or api.php file set as parameter of withRouting, will be ignored. That's the reason why we've imported the api.php and web.php file within the anonymous function.
+
+

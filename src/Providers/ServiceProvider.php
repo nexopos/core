@@ -6,9 +6,12 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Ns\Classes\NsViteDirective;
+use Ns\Console\Commands\CrudGeneratorCommand;
 use Ns\Console\Commands\ExtractTranslation;
 use Ns\Console\Commands\GenerateModuleCommand;
 use Ns\Console\Commands\InstallCommand;
+use Ns\Console\Commands\ModuleMigrations;
+use Ns\Console\Commands\ModuleSymlinkCommand;
 use Ns\View\Components\SessionMessage;
 use Ns\Services\Helper;
 use Ns\Events\LoadApiRouteEvent;
@@ -82,10 +85,22 @@ class ServiceProvider extends CoreServiceProvider
                 InstallCommand::class,
                 ExtractTranslation::class,
                 GenerateModuleCommand::class,
+                CrudGeneratorCommand::class,
+                ModuleMigrations::class,
+                ModuleSymlinkCommand::class,
             ]);
         }
 
         Blade::directive( 'nsvite', new NsViteDirective );
+
+        Blade::directive( 'moduleViteAssets', function ( $expression ) {
+            $params = explode( ',', $expression );
+            $fileName = trim( $params[0], "'" );
+            $module = trim( $params[1], " '" );
+
+            return "<?php echo ns()->moduleViteAssets( \"{$fileName}\", \"{$module}\" ); ?>";
+        } );
+
         Blade::component( 'session-message', SessionMessage::class );
 
         /**

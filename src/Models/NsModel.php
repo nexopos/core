@@ -5,6 +5,7 @@ namespace Ns\Models;
 use Ns\Classes\Hook;
 use Ns\Traits\NsDependable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 abstract class NsModel extends NsRootModel
 {
@@ -32,6 +33,10 @@ abstract class NsModel extends NsRootModel
         static::creating( function ( $model ) {
             if ( $model->hasDispatchableFields() ) {
                 $model->oldAttributes = $model->getOriginal();
+            }
+
+            if (! $model->incrementing && empty($model->{$model->getKeyName()})) {
+                $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         } );
 

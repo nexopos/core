@@ -5,20 +5,16 @@ $model          =   explode( '\\', $model_name );
 $lastClassName  =   $model[ count( $model ) - 1 ];
 ?>
 <{{ '?php' }}
-@if( isset( $module ) )
 namespace Modules\{{ $module[ 'namespace' ] }}\Crud;
-@else
-namespace App\Crud;
-@endif
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use App\Services\CrudService;
-use App\Services\CrudEntry;
-use App\Classes\CrudTable;
-use App\Classes\CrudInput;
-use App\Classes\CrudForm;
-use App\Exceptions\NotAllowedException;
+use Ns\Services\CrudService;
+use Ns\Services\CrudEntry;
+use Ns\Classes\CrudTable;
+use Ns\Classes\CrudInput;
+use Ns\Classes\CrudForm;
+use Ns\Exceptions\NotAllowedException;
 use TorMorten\Eventy\Facades\Events as Hook;
 use {{ trim( $model_name ) }};
 
@@ -40,19 +36,13 @@ class {{ ucwords( $Str::camel( $resource_name ) ) }}Crud extends CrudService
      * default slug
      * @param string
      */
-    protected $slug = '{{ strtolower( trim( $route_name ) ) }}';
-
-    /**
-     * Define namespace
-     * @param string
-     */
-    protected $namespace = '{{ strtolower( trim( $namespace ) ) }}';
+    protected $slug = '{{ strtolower( trim( $identifier ) ) }}';
 
     /**
      * To be able to autoload the class, we need to define
      * the identifier on a constant.
      */
-    const IDENTIFIER = '{{ strtolower( trim( $namespace ) ) }}';
+    const IDENTIFIER = '{{ strtolower( trim( $identifier ) ) }}';
 
     /**
      * Model Used
@@ -289,7 +279,7 @@ class {{ ucwords( $Str::camel( $resource_name ) ) }}Crud extends CrudService
      */
     public function beforeDelete( $namespace, $id, $model ): void
     {
-        if ( $namespace == '{{ strtolower( trim( $namespace ) ) }}' ) {
+        if ( $namespace == self::IDENTIFIER ) {
             /**
              *  Perform an action before deleting an entry
              *  In case something wrong, this response can be returned
@@ -333,14 +323,14 @@ class {{ ucwords( $Str::camel( $resource_name ) ) }}Crud extends CrudService
         $entry->action( 
             identifier: 'edit',
             label: {{ isset( $module ) ? '__m' : '__' }}( 'Edit'{!! isset( $module ) ? ', \'' . $module[ 'namespace' ] . '\'' : "" !!} ),
-            url: ns()->url( '/dashboard/' . $this->slug . '/edit/' . $entry->id )
+            url: nsUrl( '/dashboard/' . $this->slug . '/edit/' . $entry->id )
         );
         
         $entry->action( 
             identifier: 'delete',
             label: {{ isset( $module ) ? '__m' : '__' }}( 'Delete'{!! isset( $module ) ? ', \'' . $module[ 'namespace' ] . '\'' : "" !!} ),
             type: 'DELETE',
-            url: ns()->url( '/api/crud/{{ strtolower( trim( $namespace ) ) }}/' . $entry->id ),
+            url: nsUrl( '/api/crud/' . strtolower( trim( self::IDENTIFIER ) ) . $entry->id ),
             confirm: [
                 'message'  =>  {{ isset( $module ) ? '__m' : '__' }}( 'Would you like to delete this ?'{!! isset( $module ) ? ', \'' . $module[ 'namespace' ] . '\'' : "" !!} ),
             ]
@@ -401,8 +391,8 @@ class {{ ucwords( $Str::camel( $resource_name ) ) }}Crud extends CrudService
             list:  ns()->url( 'dashboard/' . '{{ strtolower( trim( $route_name ) ) }}' ),
             create:  ns()->url( 'dashboard/' . '{{ strtolower( trim( $route_name ) ) }}/create' ),
             edit:  ns()->url( 'dashboard/' . '{{ strtolower( trim( $route_name ) ) }}/edit/' ),
-            post:  ns()->url( 'api/crud/' . '{{ strtolower( trim( $namespace ) ) }}' ),
-            put:  ns()->url( 'api/crud/' . '{{ strtolower( trim( $namespace ) ) }}/{id}' . '' ),
+            post:  ns()->url( 'api/crud/' . self::IDENTIFIER ),
+            put:  ns()->url( 'api/crud/' . self::IDENTIFIER . '/{id}' . '' ),
         );
     }
 
