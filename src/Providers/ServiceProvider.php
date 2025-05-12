@@ -70,7 +70,7 @@ class ServiceProvider extends CoreServiceProvider
             ]);
     
             $this->publishes([
-                __DIR__ . '/../../public' => public_path( 'vendor/ns' ),
+                __DIR__ . '/../../dist' => public_path( 'vendor/ns' ),
             ], 'nexopos-assets' );
     
             $this->publishes([
