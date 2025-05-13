@@ -443,7 +443,7 @@ class CoreService
             if ( in_array( $pathinfo[ 'extension' ], [ 'js', 'ts', 'tsx', 'jsx' ] ) ) {
                 $assets->prepend( '<script type="module" src="' . $url . '/' . $fileName . '"></script>' );
             } else if ( in_array( $pathinfo[ 'extension'], [ 'css', 'scss' ] ) ) {
-                $assets->append( '<link rel="stylesheet" href="' . $url . '/' . $fileName . '"/>' );
+                $assets->push( '<link rel="stylesheet" href="' . $url . '/' . $fileName . '"/>' );
             } else {
                 throw new NotFoundException(
                     sprintf(

@@ -85,6 +85,11 @@ class FormsProvider extends ServiceProvider
                 continue;
             }
 
+            // the file must be a .php file.
+            if ( ! str_contains( $field, '.php' ) ) {
+                continue;
+            }
+
             $field = str_replace( '.php', '', $field );
             $field = $classRoot . $field;
 
