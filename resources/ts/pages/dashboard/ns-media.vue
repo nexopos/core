@@ -296,6 +296,7 @@ export default {
          * @param FileList files
          */
         processFiles( files ) {
+            console.log({ files })
             const arrayFiles    =   Array.from( files );
             const valid         =   arrayFiles.filter( file => {
                 console.log( this );

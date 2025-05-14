@@ -35,6 +35,21 @@ Note that the package is already a dependency.
 php artisan install:api
 ```
 
+This will publish all the necessary for Sanctum to work. As NexoPOS Core performs API calls, we need to configure the Sanctum middleware that will ensure all frontend requests are Stateful. This will be performed on the app.php located on the "bootstrap" directory.
+
+```php
+use Laravel\Sanctum\Http\Middleware\EnsureFrontendREquestAreStateful;
+
+// ...
+->middleware( function( Middleware $middleware ) {
+    $middleware->statefulApi();
+    $middleware->group( 'api', [
+        ENsureFrontendRequestsAreStateful::class
+    ])
+})
+// ...
+```
+
 ### Core Routing Configuration
 Similarily to Laravel Sanctum, NexoPOS Core needs some files to be published. Note that here, some of the existing file will be edit by the package as
 it needs it to work properly. 

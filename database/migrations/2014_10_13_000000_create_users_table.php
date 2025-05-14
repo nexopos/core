@@ -78,7 +78,7 @@ return new class extends Migration
         if (!Schema::hasTable('users_addresses')) {
             Schema::create('users_addresses', function (Blueprint $table) {
                 $table->bigIncrements('id');
-                $table->integer('customer_id');
+                $table->integer('user_id');
                 $table->string('type'); // either "billing" | "shipping"
                 $table->string('email')->nullable();
                 $table->string('first_name')->nullable();

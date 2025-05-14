@@ -19,8 +19,9 @@ export default ({ mode }) => {
     return defineConfig({
         base: './',
         server: {
-            port: 3331,
+            port: 3333,
             host: '127.0.0.1',
+            cors: true,
             hmr: {
                 protocol: 'wss',
                 host: 'localhost',
