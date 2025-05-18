@@ -29,7 +29,7 @@ class SettingsPageProvider extends ServiceProvider
     {
         Hook::addFilter( 'ns.settings', function ( $class, $identifier ) {
             $classes = Cache::get( 'crud-classes', function () use ( $identifier ) {
-                $files = collect( Storage::disk( 'ns' )->files( 'app/Settings' ) );
+                $files = collect( glob( NS_ROOT . '/src/Settings/*.php' ) );
 
                 return $files->map( fn( $file ) => 'Ns\Settings\\' . pathinfo( $file )[ 'filename' ] )
                     ->filter( fn( $class ) => ( defined( $class . '::AUTOLOAD' ) && defined( $class . '::IDENTIFIER' ) && $class::IDENTIFIER === $identifier && $class::AUTOLOAD === true ) );

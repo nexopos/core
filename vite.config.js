@@ -4,7 +4,8 @@ import { fileURLToPath } from 'node:url';
 import laravel from 'laravel-vite-plugin';
 import path, { resolve } from 'node:path';
 import vuePlugin from '@vitejs/plugin-vue';
-import tailwindcss from '@tailwindcss/vite';
+import tailwindcss from '@tailwindcss/vite'
+import mkcert from 'vite-plugin-mkcert';
 
 const Vue = fileURLToPath(
 	new URL(
@@ -31,6 +32,7 @@ export default ({ mode }) => {
         plugins: [
             tailwindcss(),
             vuePlugin(),
+            mkcert(),
             laravel({
                 input: [
                     'resources/ts/bootstrap.ts',

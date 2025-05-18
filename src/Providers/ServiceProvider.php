@@ -75,8 +75,9 @@ class ServiceProvider extends CoreServiceProvider
     
             $this->publishes([
                 __DIR__ . '/../../config/nexopos.php' => config_path( 'nexopos.php' ),
+                __DIR__ . '/../../config/medias.php' => config_path( 'medias.php' ),
             ], 'nexopos-config' );
-    
+            
             $this->publishes([
                 __DIR__ . '/../../database/permissions' => database_path( 'permissions' ),
             ], 'nexopos-permissions' );

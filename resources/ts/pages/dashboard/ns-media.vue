@@ -461,7 +461,7 @@ export default {
                         </div>
                     </div>
                     <div class="flex flex-auto overflow-hidden">
-                        <div class="p-2 flex-auto overflow-y-auto ns-scrollbar">
+                        <div v-if="response.data.length > 0" class="p-2 flex-auto overflow-y-auto ns-scrollbar">
                             <div class="grid grid-cols-2 md:grid-cols-3 gap-1 lg:grid-cols-4 xl:grid-cols-5">
                                 <div v-for="(resource, index) of response.data" :key="index" class="">
                                     <div>

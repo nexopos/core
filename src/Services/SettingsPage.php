@@ -108,7 +108,7 @@ class SettingsPage
          * if the form is an instance of a view
          * that view is rendered in place of the default form.
          */
-        return View::make( 'pages.dashboard.settings.form', [
+        return View::make( 'ns::pages.dashboard.settings.form', [
             'title' => $form[ 'title' ] ?? __( 'Untitled Settings Page' ),
 
             /**
