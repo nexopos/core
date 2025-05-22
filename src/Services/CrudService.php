@@ -1088,7 +1088,8 @@ class CrudService
      */
     public function getFillable(): array
     {
-        return $this->fillable;
+        $model  = $this->getModel();
+        return $this->fillable ?: ( new $model )->getFillable();
     }
 
     /**

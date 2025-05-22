@@ -181,8 +181,16 @@ export default {
             return `${url}?${params}`;
         },
         parseForm( form ) {
-            form.main.value     =   form.main.value === undefined ? '' : form.main.value;
-            form.main           =   this.formValidation.createFields([ form.main ])[0];
+
+            /** 
+             * The form might omit the main field.
+             * Therefore we should ignore it.
+             */
+            if ( form.main && Object.keys( form.main ).length > 0 ) {
+                form.main.value     =   form.main.value === undefined ? '' : form.main.value;
+                form.main           =   this.formValidation.createFields([ form.main ])[0];
+            }
+
             let index           =   0;
 
             for( let key in form.tabs ) {
@@ -259,8 +267,8 @@ export default {
             </div>
         </div>
         <div v-if="Object.values( form ).length > 0" :class="popup ? 'p-2 overflow-y-auto' : ''">
-            <div class="flex flex-col">
-                <div class="flex justify-between items-center" v-if="form.main">
+            <div class="flex flex-col" v-if="form.main">
+                <div class="flex justify-between items-center">
                     <label for="title" class="font-bold my-2">
                         <span v-if="form.main.name">{{ form.main.label }}</span>
                     </label>
@@ -314,9 +322,12 @@ export default {
                                 </div>
                             </div>
                         </div>
-                        <div class="flex justify-end" v-if="! form.main.name">
-                            <div class="ns-button" :class="form.main.disabled ? 'default' : ( form.main.errors.length > 0 ? 'error' : 'info' )">
-                                <button :disabled="form.main.disabled" @click="submit()" class="outline-hidden px-4 h-10 border-l">{{ __( 'Save' ) }}</button>
+                        <div class="flex justify-end -mx-2" v-if="! form.main">
+                            <div class="ns-button default px-2">
+                                <a v-if="links.list && ! popup" :href="links.list" class="block flex items-center justify-center outline-hidden px-4 h-10 border-l">{{ __( 'Return' ) }}</a>
+                            </div>
+                            <div class="ns-button px-2" :class="form.main?.disabled ? 'default' : ( form.main?.errors.length > 0 ? 'error' : 'info' )">
+                                <button :disabled="form.main?.disabled" @click="submit()" class="outline-hidden px-4 h-10 border-l">{{ __( 'Save' ) }}</button>
                             </div>
                         </div>
                     </div>

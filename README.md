@@ -96,6 +96,10 @@ use Illuminate\Support\Facades\Route;
 // ...
 ->withRouting( 
     // ...
+    // web: __DIR__.'/../routes/web.php',
+    // api: __DIR__.'/../routes/api.php',
+    commands: __DIR__.'/../routes/console.php',
+    health: '/up',
     using: function() {
         Route::middleware( 'api' )
                 ->prefix( 'api' )
@@ -104,7 +108,7 @@ use Illuminate\Support\Facades\Route;
         Route::middleware( 'web' )
             ->group( base_path( 'routes/web.php' ) );
 
-        ModuleRouting::register();
+        ModuleRouting::register([ 'web', 'api' ]);
     }
 )
 // ...

@@ -2,7 +2,7 @@
 
 namespace Ns\Classes;
 
-class SettingForm extends CrudForm
+class SettingForm extends Form
 {
     public static function form( $title, $description = '', $tabs = [] )
     {

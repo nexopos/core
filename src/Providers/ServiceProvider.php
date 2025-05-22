@@ -5,6 +5,7 @@ use Illuminate\Support\ServiceProvider as CoreServiceProvider;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
+use Ns\Classes\ModuleRouting;
 use Ns\Classes\NsViteDirective;
 use Ns\Console\Commands\CrudGeneratorCommand;
 use Ns\Console\Commands\ExtractTranslation;
@@ -103,6 +104,12 @@ class ServiceProvider extends CoreServiceProvider
         } );
 
         Blade::component( 'session-message', SessionMessage::class );
+
+        /**
+         * As this section loads before Laravel routes, it might be a great place
+         * to load domains' specific routes from modules.
+         */
+        ModuleRouting::register([ 'domain' ]);
 
         /**
          * As the API routes depends on Laravel Sanctum, which might not be loaded at this point,

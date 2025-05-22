@@ -20,7 +20,7 @@ class NotEnoughPermissionException extends Exception
     public function render( $request )
     {
         if ( ! $request->expectsJson() ) {
-            return response()->view( 'pages.errors.not-enough-permissions', [
+            return response()->view( 'ns::pages.errors.not-enough-permissions', [
                 'title' => __( 'Not Enough Permissions' ),
                 'message' => $this->getMessage(),
                 'back' => Helper::getValidPreviousUrl( $request ),

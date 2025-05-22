@@ -65,11 +65,50 @@ class FormsProvider extends ServiceProvider
 
         $moduleService->getEnabledAndAutoloadedModules()->each( function ( $module ) use ( $moduleService ) {
             $module = ( object ) $module;
+            
             $this->autoloadFields(
                 path: Str::finish( $module->path,  DIRECTORY_SEPARATOR ) . 'Fields',
                 classRoot: 'Modules\\' . $module->namespace . '\\Fields\\'
             );
+
+            $this->autoloadForms(
+                path: Str::finish( $module->path,  DIRECTORY_SEPARATOR ) . 'Forms',
+                classRoot: 'Modules\\' . $module->namespace . '\\Forms\\'
+            );
         } );
+    }
+
+    private function autoloadForms( $path, $classRoot )
+    {
+        if ( ! is_dir( $path ) ) {
+            return;
+        }
+        
+        $forms = scandir( $path );
+
+        foreach( $forms as $form ) {
+            if ( in_array( $form, [ '.', '..' ] ) ) {
+                continue;
+            }
+
+            // the file must be a .php file.
+            if ( ! str_contains( $form, '.php' ) ) {
+                continue;
+            }
+
+            $form = str_replace( '.php', '', $form );
+            $form = $classRoot . $form;
+
+            if ( class_exists( $form ) && method_exists( $form, 'getForm' ) ) {
+                Hook::addFilter( 'ns.forms', function ( $class, $identifier ) use ( $form ) {
+                    if ( $identifier === $form::IDENTIFIER ) {
+                        return new $form;
+                    }
+
+                    return $identifier;
+                }, 10, 2 );
+            }
+        }
     }
 
     private function autoloadFields( $path, $classRoot )

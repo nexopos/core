@@ -22,7 +22,7 @@ $domain = pathinfo( env( 'APP_URL' ) );
  * this will be performmed here.
  */
 BeforeStartWebRouteEvent::dispatch();
-
+ 
 /**
  * By default, wildcard is disabled
  * on the system. In order to enable it, the user
