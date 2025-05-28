@@ -61,6 +61,9 @@ export default {
         isDateRangePicker() {
             return ['daterangepicker'].includes(this.field.type);
         },
+        isEditor() {
+            return ['editor'].includes(this.field.type);
+        },
         isCustom() {
             return ['custom'].includes(this.field.type);
         },
@@ -175,6 +178,10 @@ export default {
             <template v-slot>{{ field.label }}</template>
             <template v-slot:description><span v-html="field.description || ''"></span></template>
         </ns-ckeditor>
+        <ns-editor :field="field" v-if="isEditor">
+            <template v-slot>{{ field.label }}</template>
+            <template v-slot:description><span v-html="field.description || ''"></span></template>
+        </ns-editor>
         <ns-switch :field="field" @change="changeTouchedState(field, $event)" v-if="isSwitch">
             <template v-slot>{{ field.label }}</template>
             <template v-slot:description><span v-html="field.description || ''"></span></template>

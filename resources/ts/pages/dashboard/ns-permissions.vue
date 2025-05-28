@@ -36,7 +36,7 @@
                 <div class="h-[50px] pl-[10px] border-b border-gray-700 text-fontcolor flex justify-between items-center">
                     <span>{{ __( 'Permissions' ) }}</span>
                 </div>
-                <div :key="permission.id" v-for="permission of filteredPermissions" class="w-54 h-[40px] flex items-center pl-[10px] border-b border-table-th-edge text-fontcolor">
+                <div :key="permission.id" v-for="permission of filteredPermissions" class="w-54 h-[40px] flex items-center pl-[10px] border-b border-table-th-edge text-white">
                     <a @click="copyPermisson( permission.namespace )" href="javascript:void(0)" :title="permission.namespace">
                         <span class="text-xs">{{ permission.name }}</span>
                     </a>

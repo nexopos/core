@@ -13,6 +13,7 @@ use Ns\Console\Commands\GenerateModuleCommand;
 use Ns\Console\Commands\InstallCommand;
 use Ns\Console\Commands\ModuleMigrations;
 use Ns\Console\Commands\ModuleSymlinkCommand;
+use Ns\Console\Commands\RefreshAssetsCommand;
 use Ns\View\Components\SessionMessage;
 use Ns\Services\Helper;
 use Ns\Events\LoadApiRouteEvent;
@@ -90,6 +91,7 @@ class ServiceProvider extends CoreServiceProvider
                 CrudGeneratorCommand::class,
                 ModuleMigrations::class,
                 ModuleSymlinkCommand::class,
+                RefreshAssetsCommand::class,
             ]);
         }
 

@@ -491,15 +491,28 @@ class CoreService
                 /**
                  * checks if a css file is declared as well
                  */
-                $jsUrl = asset( 'modules/' . strtolower( $moduleId ) . '/' . $buildFolderName . '/' . $manifestArray[ $fileName ][ 'file' ] ) ?? null;
+                $assetURL = asset( 'modules/' . strtolower( $moduleId ) . '/' . $buildFolderName . '/' . $manifestArray[ $fileName ][ 'file' ] ) ?? null;
     
                 if ( ! empty( $manifestArray[ $fileName ][ 'css' ] ) ) {
                     $assets = collect( $manifestArray[ $fileName ][ 'css' ] )->map( function ( $url ) use ( $moduleId, $buildFolderName ) {
                         return '<link rel="stylesheet" href="' . asset( 'modules/' . strtolower( $moduleId ) . '/' . $buildFolderName . '/' . $url ) . '"/>';
                     } );
                 }
-    
-                $assets->prepend( '<script type="module" src="' . $jsUrl . '"></script>' );
+
+                $pathinfo   =   pathinfo( $assetURL );
+
+                if ( in_array( $pathinfo[ 'extension' ], [ 'js', 'ts', 'tsx', 'jsx' ] ) ) {
+                    $assets->prepend( '<script type="module" src="' . $assetURL . '"></script>' );
+                } else if ( in_array( $pathinfo[ 'extension'], [ 'css', 'scss' ] ) ) {
+                    $assets->push( '<link rel="stylesheet" href="' . $assetURL . '"/>' );
+                } else {
+                    throw new NotFoundException(
+                        sprintf(
+                            __( 'The requested file %s is not a valid asset.' ),
+                            $fileName
+                        )
+                    );
+                }
             }
 
             if ( count( $errors ) === count( $possiblePaths ) ) {

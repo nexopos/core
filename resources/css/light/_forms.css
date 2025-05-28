@@ -13,6 +13,60 @@
     }
 } 
 
+.ns-editor {
+	h1.ce-header {
+		@apply text-3xl font-bold mb-6;
+	}
+	h2.ce-header {
+		@apply text-2xl font-bold mb-4;
+	}
+	h3.ce-header {
+		@apply text-xl font-bold mb-2;
+	}
+
+	blockquote.cdx-block {
+		@apply pl-4 text-gray-600 italic;
+	}
+
+    .ns-editor-media-image {
+        @apply p-2 border-box-edge border flex;
+
+        &.align-left {
+            @apply justify-start;
+        }
+        &.align-right {
+            @apply justify-end;
+        }
+        &.align-center {
+            @apply justify-center;
+        }
+        
+        &.hide {
+            @apply hidden;
+        }
+        img {
+            @apply border border-box-edge rounded;
+        }
+    }
+
+	.ns-editor-media {
+		@apply my-2;
+	}
+
+	.ns-editor-media-buttons {
+		@apply flex justify-between items-center bg-box-edge border border-box-edge gap-[1px];
+        &.hide {
+            @apply hidden;
+        }
+		button {
+			@apply w-full text-center cursor-pointer py-2 bg-white hover:bg-primary hover:text-white text-gray-600;
+			&:disabled {
+				@apply cursor-not-allowed opacity-50;
+			}
+		}
+	}
+}
+
 .input-group {
     @apply border-input-edge;
     input, select {

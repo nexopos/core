@@ -43,6 +43,7 @@ import nsTableRow           from  './ns-table-row.vue';
 import nsTabs               from  './ns-tabs.vue';
 import nsTabsItem           from  './ns-tabs-item.vue';
 import nsTextarea           from  './ns-textarea.vue';
+import nsEditor             from  './ns-editor.vue';
 
 export { 
     nsMenu, 
@@ -77,7 +78,6 @@ export {
     nsNumpadPlus,
     nsSelectAudio, 
     nsAvatar, 
-    nsDateRangePicker, 
     nsDaterangePicker,
     nsNotice, 
     nsPaginate, 
@@ -91,4 +91,5 @@ export {
     nsDefaultAccounting,
     nsAvatarImage,
     nsNumpadPopup,
+    nsEditor,
 };

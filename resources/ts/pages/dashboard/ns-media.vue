@@ -451,7 +451,7 @@ export default {
                 </div>
             </div>
             <div class="flex flex-auto overflow-hidden">
-                <div class="shadow ns-grid flex flex-auto flex-col">
+                <div class="shadow flex flex-col">
                     <div class="p-2 border-b border-input-edge">
                         <div class="ns-input border border-input-edge overflow-hidden rounded flex">
                             <input id="search" type="text" v-model="searchField" :placeholder="__( 'Search Medias' )" class="px-4 block w-full sm:text-sm sm:leading-5 h-10">

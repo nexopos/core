@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string         $uuid
  * @property \Carbon\Carbon $updated_at
  */
-class UserShippingAddress extends CustomerAddress
+class UserShippingAddress extends UserAddress
 {
     use HasFactory;
 

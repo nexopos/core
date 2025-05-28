@@ -121,8 +121,8 @@ class UserCrud extends CrudService
     ];
 
     protected $tabsRelations = [
-        'shipping' => [ UserShippingAddress::class, 'customer_id', 'id' ],
-        'billing' => [ UserBillingAddress::class, 'customer_id', 'id' ],
+        'shipping' => [ UserShippingAddress::class, 'user_id', 'id' ],
+        'billing' => [ UserBillingAddress::class, 'user_id', 'id' ],
     ];
 
     protected $casts = [
@@ -448,6 +448,8 @@ class UserCrud extends CrudService
         if ( ! empty( $inputs[ 'password' ] ) ) {
             $inputs[ 'password' ] = Hash::make( $inputs[ 'password' ] );
         }
+
+        return $inputs;
     }
 
     /**
@@ -469,6 +471,8 @@ class UserCrud extends CrudService
         if ( ! empty( $inputs[ 'password' ] ) ) {
             $inputs[ 'password' ] = Hash::make( $inputs[ 'password' ] );
         }
+
+        return $inputs;
     }
 
     /**
