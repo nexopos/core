@@ -17,9 +17,9 @@ export default {
             form: {},
             globallyChecked: false,
             formValidation: new FormValidation,
-            links: {},
+            // links: {},
             rows: [],
-            optionAttributes: {},
+            // optionAttributes: {},
             extraComponents: () => nsExtraComponents,
             nsComponents: () => nsComponents
         }
@@ -28,7 +28,7 @@ export default {
     mounted() {
         this.loadForm();
     },
-    props: [ 'src', 'createUrl', 'fieldClass', 'submitUrl', 'submitMethod', 'disableTabs', 'queryParams', 'popup' ],
+    props: [ 'src', 'createUrl', 'fieldClass', 'submitUrl', 'submitMethod', 'disableTabs', 'queryParams', 'popup', 'links', 'optionsAttributes' ],
     computed: {
         activeTabFields() {
             for( let identifier in this.form.tabs ) {
@@ -139,11 +139,11 @@ export default {
             return new Promise( ( resolve, reject ) => {
                 const request   =   nsHttpClient.get( `${this.appendQueryParamas( this.src ) }` );
                     request.subscribe({
-                        next: (f) => {
-                            resolve( f );
-                            this.form    =   this.parseForm( f.form );
-                            this.links = f.links;
-                            this.optionAttributes = f.optionAttributes;
+                        next: (form) => {
+                            resolve( form );
+                            this.form    =   this.parseForm( form );
+                            // this.links = f.links;
+                            // this.optionAttributes = f.optionAttributes;
                             nsHooks.doAction( 'ns-crud-form-loaded', this );
 
                             /**

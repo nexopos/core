@@ -284,6 +284,23 @@ class CrudController extends DashboardController
         ], 403 );
     }
 
+    public function getFormStructure( string $identifier, $id = null )
+    {
+        $crudClass = Hook::filter( 'ns-crud-resource', $identifier );
+        $resource = new $crudClass( compact( 'identifier', 'id' ) );
+
+        if ( $resource instanceof CrudService ) {
+            return $resource->getFormStructure(
+                entry: $resource->getModel()::find( $id )
+            );
+        }
+
+        return response()->json( [
+            'status' => 'error',
+            'message' => __( 'Unable to proceed. No matching CRUD resource has been found.' ),
+        ], 403 );
+    }
+
     /**
      * Export the entries as a CSV file
      *

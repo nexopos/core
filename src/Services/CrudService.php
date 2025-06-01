@@ -1115,6 +1115,11 @@ class CrudService
         return [];
     }
 
+    public function getFormStructure( $entry = null )
+    {
+        return $this->getForm( $entry );
+    }
+
     /**
      * Will extract form with the entry
      * as a reference for the values.
@@ -1293,11 +1298,6 @@ class CrudService
 
         return array_merge( [
             /**
-             * We'll provide the form configuration
-             */
-            'form' => Hook::filter( get_class( $instance ) . '@getForm', $instance->getForm( $entry ) ),
-
-            /**
              * We'll now provide the labels
              */
             'labels' => Hook::filter( get_class( $instance ) . '@getLabels', $instance->getLabels() ),
@@ -1346,7 +1346,7 @@ class CrudService
              * this automatically build a source URL based on the identifier
              * provided. But can be overwritten with the config.
              */
-            'src' => $config['src'] ?? ( nsUrl( '/api/crud/' . $instance->getIdentifier() . '/' . ( ! empty( $entry ) ? 'form-config/' . $entry->id : 'form-config' ) ) ),
+            'src' => $config['src'] ?? ( nsUrl( '/api/crud/' . $instance->getIdentifier() . '/' . ( ! empty( $entry ) ? 'form/' . $entry->id : 'form' ) ) ),
 
             /**
              * this use the built in links to create a return URL.
