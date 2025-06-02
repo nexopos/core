@@ -5,6 +5,6 @@ namespace Ns\Classes;
 class CrudScope
 {
     public function __construct(
-        public string $class,
+        public string | array $class,
     ) {}
 }

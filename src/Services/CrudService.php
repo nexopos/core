@@ -431,7 +431,6 @@ class CrudService
             'status' => 'success',
             'data' => [
                 'entry' => $entry,
-                'editUrl' => str_contains( $resource->getLinks()['edit'], '{id}' ) ? Str::replace( '{id}', $entry->id, $resource->getLinks()['edit'] ) : false,
             ],
             'message' => $id === null ? __( 'A new entry has been successfully created.' ) : __( 'The entry has been successfully updated.' ),
         ];
@@ -576,6 +575,18 @@ class CrudService
     public function getPrependOptions(): bool
     {
         return $this->prependOptions;
+    }
+
+    private function triggerScope( $scope, $query )
+    {
+        if ( method_exists( $scope, 'apply' ) ) {
+            $scope->apply( $query, new ($this->getModel()) );
+        } else {
+            throw new Exception( sprintf(
+                'The class "%s" must have a method "apply" to be used as a scope.',
+                $scope::class
+            ) );
+        }
     }
 
     /**
@@ -827,16 +838,18 @@ class CrudService
 
         foreach( $attributes as $attribute ) {
             $instance   =   $attribute->newInstance();
-            $scopeInstance  =   new $instance->class;
 
-            if ( method_exists( $scopeInstance, 'apply' ) ) {
-                $scopeInstance->apply( $query, new ($this->getModel()) );
-            } else {
-                throw new Exception( sprintf(
-                    'The class "%s" must have a method "apply" to be used as a scope.',
-                    $instance->class
-                ) );
+            if ( is_string( $instance->class ) ) {
+                $this->triggerScope( new $instance->class, $query );
             }
+
+            if ( is_array( $instance->class ) ) {
+                foreach ( $instance->class as $class ) {
+                    if ( is_string( $class ) ) {
+                        $this->triggerScope( new $class, $query );
+                    } 
+                }
+            }            
         }
 
         /**
