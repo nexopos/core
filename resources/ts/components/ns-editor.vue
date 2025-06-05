@@ -6,7 +6,7 @@ import Warning from '@editorjs/warning';
 import Paragraph from '@editorjs/paragraph';
 import Delimiter from '@editorjs/delimiter';
 import EditorjsList from '@editorjs/list';
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 import { __ } from '~/libraries/lang';
 import { default as nsMedia } from '~/pages/dashboard/ns-media.vue';
 import NsPosLoadingPopup from '~/popups/ns-pos-loading-popup.vue';
@@ -149,12 +149,17 @@ const props = defineProps<{
     }
 }>();
 
+const editorElement = ref<HTMLElement | null>(null);
+let editor: EditorJS; // Make editor accessible in onChange
+
 const emit = defineEmits(['change']);
 
+console.log( 'value => ' + props.field.value );
+
 onMounted(() => {
-    const editor = new EditorJS({
-        holder: 'editor',
-        data: props.field.value || {},
+    editor = new EditorJS({
+        holder: editorElement.value as HTMLElement,
+        data: props.field.value ? JSON.parse( props.field.value ) : {},
         tools: {
             media: Media,
             list: {
@@ -202,15 +207,16 @@ onMounted(() => {
                 }
             }
         },
-        onChange: (api, event) => {
-            emit('change', event);
-            props.field.value = event;
+        onChange: async (api, event) => {
+            const data = await editor.save();
+            emit('change', data);
+            props.field.value = data;
         }
     });
 })
 </script>
 <template>
     <div class="ns-editor w-full">
-        <div id="editor"></div>
+        <div ref="editorElement" class="editor"></div>
     </div>
 </template>

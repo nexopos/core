@@ -178,7 +178,7 @@ export default {
             <template v-slot>{{ field.label }}</template>
             <template v-slot:description><span v-html="field.description || ''"></span></template>
         </ns-ckeditor>
-        <ns-editor :field="field" v-if="isEditor">
+        <ns-editor @change="$emit( 'change', $event )" :field="field" v-if="isEditor">
             <template v-slot>{{ field.label }}</template>
             <template v-slot:description><span v-html="field.description || ''"></span></template>
         </ns-editor>

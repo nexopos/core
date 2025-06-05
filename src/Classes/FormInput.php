@@ -549,4 +549,30 @@ class FormInput extends CrudInput
             'show' => $show,
         ];
     }
+
+    /**
+     * Creates an editor input field by reusing the text method with type set to 'editor'.
+     *
+     * @param string $label The label for the editor field.
+     * @param string $name The name attribute for the editor field.
+     * @param string $value The default value of the editor field.
+     * @param string $validation Validation rules for the editor field.
+     * @param string $description A description or help text for the editor field.
+     * @param bool $disabled Whether the editor field is disabled.
+     * @param callable|null $show A callable that determines whether the editor field should be displayed.
+     * @return array An associative array representing the editor field configuration.
+     */
+    public static function editor( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $show = null )
+    {
+        return self::text(
+            label: $label,
+            name: $name,
+            validation: $validation,
+            description: $description,
+            disabled: $disabled,
+            type: 'editor',
+            value: $value,
+            show: $show
+        );
+    }
 }
