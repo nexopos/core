@@ -11,6 +11,7 @@ use Ns\Events\RenderCrudFormFooterEvent;
         @include( 'ns::common.dashboard.title' )
         <ns-crud-form 
             submit-method="{{ $submitMethod ?? 'POST' }}"
+            :links='@json( $links ?? [] )'
             :option-attributes='@json( $optionAttributes ?? [] )'
             :query-params='@json( $queryParams ?? [] )'
             submit-url="{{ $submitUrl }}"

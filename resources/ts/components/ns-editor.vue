@@ -154,12 +154,12 @@ let editor: EditorJS; // Make editor accessible in onChange
 
 const emit = defineEmits(['change']);
 
-console.log( 'value => ' + props.field.value );
-
 onMounted(() => {
     editor = new EditorJS({
         holder: editorElement.value as HTMLElement,
-        data: props.field.value ? JSON.parse( props.field.value ) : {},
+        data: props.field.value ? (
+            typeof props.field.value === 'string' ? JSON.parse(props.field.value) : props.field.value
+        ) : {},
         tools: {
             media: Media,
             list: {

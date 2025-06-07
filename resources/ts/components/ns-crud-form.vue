@@ -17,9 +17,7 @@ export default {
             form: {},
             globallyChecked: false,
             formValidation: new FormValidation,
-            // links: {},
             rows: [],
-            // optionAttributes: {},
             extraComponents: () => nsExtraComponents,
             nsComponents: () => nsComponents
         }
@@ -27,6 +25,7 @@ export default {
     emits: [ 'updated', 'saved' ],
     mounted() {
         this.loadForm();
+        console.log( this.links );
     },
     props: [ 'src', 'createUrl', 'fieldClass', 'submitUrl', 'submitMethod', 'disableTabs', 'queryParams', 'popup', 'links', 'optionsAttributes' ],
     computed: {
