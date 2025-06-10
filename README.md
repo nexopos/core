@@ -73,7 +73,7 @@ This commands will perform two things:
 NexoPOS Core uses it's own implementation of authentication. While it's created on top of laravel, it provides more features. Therefore, it's recommended to change the model provider on the config/auth.php. If you're using Laravel 12, you only need to set it using "AUTH_MODEL" on the environment file.
 
 ```
-AUTH_MODEL = Ns\Models\User;
+AUTH_MODEL = Ns\Models\User
 ```
 
 - Sanctum (publish vendors)
