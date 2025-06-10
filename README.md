@@ -44,7 +44,7 @@ use Laravel\Sanctum\Http\Middleware\EnsureFrontendREquestAreStateful;
 ->middleware( function( Middleware $middleware ) {
     $middleware->statefulApi();
     $middleware->group( 'api', [
-        ENsureFrontendRequestsAreStateful::class
+        EnsureFrontendRequestsAreStateful::class
     ])
 })
 // ...
