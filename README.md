@@ -39,12 +39,14 @@ This will publish all the necessary for Sanctum to work. As NexoPOS Core perform
 
 ```php
 use Laravel\Sanctum\Http\Middleware\EnsureFrontendREquestAreStateful;
+use Ns\Http\Middleware\ApiMiddleware;
 
 // ...
 ->middleware( function( Middleware $middleware ) {
     $middleware->statefulApi();
     $middleware->group( 'api', [
-        EnsureFrontendRequestsAreStateful::class
+        EnsureFrontendRequestsAreStateful::class,
+        ApiMiddleware::class,
     ])
 })
 // ...
