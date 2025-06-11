@@ -64,10 +64,14 @@ export default {
          * from a popup
          */
         this.popupCloser();
-        
-        const gallery   =   this.pages.filter( p => p.name === 'gallery' )[0];
-
-        this.select( gallery );
+        const gallery = this.pages.filter(p => p.name === 'gallery')[0];
+        this.select(gallery);
+        // Add paste event listener for clipboard image upload
+        window.addEventListener('paste', this.handlePasteUpload);
+    },
+    beforeDestroy() {
+        // Remove paste event listener
+        window.removeEventListener('paste', this.handlePasteUpload);
     },
     watch: {
         searchField() {
@@ -75,16 +79,6 @@ export default {
             this.searchFieldDebounce    =   setTimeout( () => {
                 this.loadGallery(1);
             }, 500 );
-        },
-        files: {
-            handler() {
-                /**
-                 * as long as there are file that aren't 
-                 * yet uploaded. We'll trigger the "active" status.
-                 */
-                this.uploadFiles();
-            },
-            deep: true
         }
     },
     computed: {
@@ -311,6 +305,10 @@ export default {
                     progress: 0
                 });
             });
+            // Call uploadFiles only once after adding new files
+            if (valid.length > 0) {
+                this.uploadFiles();
+            }
         },
 
         /**
@@ -405,12 +403,34 @@ export default {
         isImage( media ) {
             const imageExtensions   =   Object.keys( ns.medias.imageMimes );
             return imageExtensions.includes( media.extension );
-        }
+        },
+
+        handlePasteUpload(e: ClipboardEvent) {
+            // Only handle if upload tab is active
+            if (this.currentPage.name !== 'upload') return;
+            if (!e.clipboardData) return;
+            const items = e.clipboardData.items;
+            for (let i = 0; i < items.length; i++) {
+                const item = items[i];
+                if (item.kind === 'file' && item.type.startsWith('image/')) {
+                    const file = item.getAsFile();
+                    if (file) {
+                        this.files.unshift({
+                            file,
+                            uploaded: false,
+                            failed: false,
+                            progress: 0
+                        });
+                        this.uploadFiles();
+                    }
+                }
+            }
+        },
     }
 }
 </script>
 <template>
-    <div class="flex md:flex-row flex-col ns-box shadow-xl overflow-hidden" id="ns-media" :class="isPopup ? 'w-6/7-screen h-[95vh]' : 'm-4 w-auto h-full rounded-lg'">
+    <div class="flex md:flex-row flex-col ns-box overflow-hidden" id="ns-media" :class="isPopup ? 'w-6/7-screen h-[95vh] shadow-xl' : 'm-4 w-auto h-full rounded-lg'">
         <div class="sidebar w-48 md:h-full flex-shrink-0">
             <h3 class="text-xl font-bold my-4 text-center">{{ __( 'Medias Manager' ) }}</h3>
             <ul class="sidebar-menus flex md:block mt-8">
@@ -451,7 +471,7 @@ export default {
                 </div>
             </div>
             <div class="flex flex-auto overflow-hidden">
-                <div class="shadow flex flex-col">
+                <div class="shadow flex-auto flex flex-col">
                     <div class="p-2 border-b border-input-edge">
                         <div class="ns-input border border-input-edge overflow-hidden rounded flex">
                             <input id="search" type="text" v-model="searchField" :placeholder="__( 'Search Medias' )" class="px-4 block w-full sm:text-sm sm:leading-5 h-10">
@@ -462,8 +482,8 @@ export default {
                     </div>
                     <div class="flex flex-auto overflow-hidden">
                         <div v-if="response.data.length > 0" class="p-2 flex-auto overflow-y-auto ns-scrollbar">
-                            <div class="grid grid-cols-2 md:grid-cols-3 gap-1 lg:grid-cols-4 xl:grid-cols-5">
-                                <div v-for="(resource, index) of response.data" :key="index" class="">
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-1 lg:grid-cols-4 xl:grid-cols-6">
+                                <div v-for="(resource, index) of response.data" :key="index">
                                     <div>
                                         <div @click="selectResource( resource )" :class="resource.selected ? 'ns-media-image-selected border-secondary ' : 'border-transparent'" class="border-4 aspect-square bg-secondary/50 overflow-hidden flex items-center justify-center">
                                             <img v-if="isImage( resource )" class="object-cover h-full" :src="resource.sizes.thumb" :alt="resource.name"/>

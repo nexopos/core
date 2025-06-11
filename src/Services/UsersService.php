@@ -4,14 +4,15 @@ namespace Ns\Services;
 
 use Ns\Exceptions\NotAllowedException;
 use Ns\Exceptions\NotFoundException;
-use NsMail\ActivateYourAccountMail;
-use NsMail\UserRegisteredMail;
-use NsMail\WelcomeMail;
-use Ns\Role;
+use Ns\Mail\ActivateYourAccountMail;
+use Ns\Mail\UserRegisteredMail;
+use Ns\Mail\WelcomeMail;
+use Ns\Models\Role;
 use Ns\Models\User;
 use Ns\Models\UserAttribute;
 use Ns\Models\UserRoleRelation;
 use Ns\Models\UserWidget;
+use Ns\Classes\Hook;
 use Exception;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
@@ -56,7 +57,11 @@ class UsersService
         $registration_role = ns()->option->get( 'ns_registration_role', false );
         $assignedRole = Role::find( $registration_role );
 
-        if ( ! $assignedRole instanceof Role ) {
+        /**
+         * We should check for the default role if
+         * no role is provided on the attributes.
+         */
+        if ( ! $assignedRole instanceof Role && empty( $attributes[ 'roles' ] )) {
             throw new NotFoundException( __( 'The default role that must be assigned to new users cannot be retrieved.' ) );
         }
 

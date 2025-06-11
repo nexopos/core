@@ -58,7 +58,7 @@ class AuthController extends Controller
          * account ? Not possible.
          */
         if ( $user->active ) {
-            return redirect( nsRoute( 'ns.login' ) )->with( 'errorMessage', __( 'No activation is needed for this account.' ) );
+            return redirect( nsRoute( Hook::filter( 'ns.sign-in.route', 'ns.login' ) ) )->with( 'errorMessage', __( 'No activation is needed for this account.' ) );
         }
 
         /**
@@ -66,7 +66,7 @@ class AuthController extends Controller
          * let's throw an exception.
          */
         if ( $user->activation_token !== $token || $user->activation_token === null ) {
-            return redirect( nsRoute( 'ns.login' ) )->with( 'errorMessage', __( 'Invalid activation token.' ) );
+            return redirect( nsRoute( Hook::filter( 'ns.sign-in.route', 'ns.login' ) ) )->with( 'errorMessage', __( 'Invalid activation token.' ) );
         }
 
         /**
@@ -74,7 +74,7 @@ class AuthController extends Controller
          * the user to the login page with a message.
          */
         if ( ! ns()->date->lessThan( Carbon::parse( $user->activation_expiration ) ) ) {
-            return redirect( nsRoute( 'ns.login' ) )->with( 'errorMessage', __( 'The expiration token has expired.' ) );
+            return redirect( nsRoute( Hook::filter( 'ns.sign-in.route', 'ns.login' ) ) )->with( 'errorMessage', __( 'The expiration token has expired.' ) );
         }
 
         $user->activation_expiration = null;
@@ -142,8 +142,10 @@ class AuthController extends Controller
     {
         BeforeSignInEvent::dispatch( $request );
 
+        $attribute = Hook::filter( 'ns.sign-in.attribute', 'username' );
+
         $attempt = Auth::attempt( [
-            'username' => $request->input( 'username' ),
+            $attribute => $request->input( 'username' ),
             'password' => $request->input( 'password' ),
         ] );
 
@@ -167,7 +169,7 @@ class AuthController extends Controller
                 $validator = Validator::make( $request->all(), [] );
                 $validator->errors()->add( 'username', __( 'This account is disabled.' ) );
 
-                return redirect( nsRoute( 'ns.login' ) )->withErrors( $validator );
+                return redirect( nsRoute( Hook::filter( 'ns.sign-in.route', 'ns.login' ) ) )->withErrors( $validator );
             }
 
             return redirect()->intended( Hook::filter( 'ns-login-redirect' ) );

@@ -20,9 +20,10 @@
 @import './phosphor/_pos.css';
 @import './phosphor/_ns-tab.css';
 @import './phosphor/_product.css';
-/* @import './phosphor/_typography.css'; */
+@import './phosphor/_typography.css';
 @import './phosphor/_table.css';
-/* @import './phosphor/_loader.css'; */
+@import './phosphor/_loader.css';
 @import './phosphor/_numpad.css';
 @import './phosphor/_media.css';
-/* @import './phosphor/_link.css'; */
+@import './phosphor/_link.css';
+@import './phosphor/_exceptions.css';

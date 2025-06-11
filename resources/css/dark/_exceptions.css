@@ -1,0 +1,7 @@
+#exception-page, #db-exception-page, #core-exception-page, #assets-exception-page, #http-exception-page,
+#dependency-exception-page, #module-exception-page, #not-allowed-exception-page, #not-enough-exception-page,
+#not-found-exception-page {
+    h1, h2, h3, h4, p {
+        @apply text-white
+    }
+}

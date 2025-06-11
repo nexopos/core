@@ -1,15 +1,15 @@
 @extends( 'ns::layout.default' )
 
 @section( 'layout.default.body' )
-    <div class="h-full w-full overflow-y-auto pb-10 bg-gradient-to-bl from-red-500 to-pink-500 flex items-center justify-center">
+    <div id="exception-page" class="h-full w-full overflow-y-auto pb-10 bg-gradient-to-bl from-red-500 to-pink-500 flex items-center justify-center">
         <div class="w-full md:w-1/2 xl:1/3 flex items-center flex-col justify-center">
             <span class="rounded-full text-6xl w-24 h-24 flex items-center justify-center bg-white shadow text-red-500 mb-4"><i class="las la-exclamation-circle"></i></span>
-            <h1 class="text-white text-3xl lg:text-5xl font-bold text-center">{!! $title !!}</h1>
+            <h1 class="text-3xl lg:text-5xl font-bold text-center">{!! $title !!}</h1>
             <div class="rounded-lg p-4 bg-white my-4 md:w-1/2 shadow">
                 <div class="p-4 text-fontcolor text-center text-sm">
                     {{ __( 'Unfortunately, something unexpected happened. You can start by giving another shot clicking on "Try Again". If the issue persist, uses the bellow output to receive support.' ) }}
                 </div>
-                <p class="md:w-auto w-95vw bg-gray-700 text-gray-100 lg:text-lg text-center p-4 my-2">{!! $message !!}</p>
+                <p class="md:w-auto w-95vw bg-gray-700 lg:text-lg text-center p-4 my-2">{!! $message !!}</p>
             </div>
             <div class="flex md:flex-row flex-col -mx-4 my-4 flex-wrap w-56 lg:w-auto">
                 <div class="px-4 mb-4">

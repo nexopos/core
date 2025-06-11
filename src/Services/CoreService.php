@@ -35,6 +35,8 @@ class CoreService
      */
     public $store;
 
+    public $cachedPermissions = [];
+
     public function __construct(
         public CurrencyService $currency,
         public UpdateService $update,
@@ -56,13 +58,11 @@ class CoreService
     public function restrict( $permissions, $message = '' ): void
     {
         if ( is_array( $permissions ) ) {
-            $passed = collect( $permissions )->filter( function ( $permission ) {
-                if ( is_bool( $permission ) ) {
-                    return $permission;
-                } else {
-                    return $this->allowedTo( $permission );
-                }
-            } )->count() === count( $permissions );
+            $permissions = collect( $permissions )->filter( function ( $permission ) {
+                return is_string( $permission );
+            } )->toArray();
+
+            $passed = $this->allowedTo( $permissions );
         } elseif ( is_string( $permissions ) ) {
             $passed = $this->allowedTo( $permissions );
         } elseif ( is_bool( $permissions ) ) {
@@ -249,15 +249,15 @@ class CoreService
             Permission::get()->each( function ( $permission ) {
                 if ( ! Gate::has( $permission->namespace ) ) {
                     Gate::define( $permission->namespace, function ( User $user ) use ( $permission ) {
-                        $permissions = Cache::remember( 'ns-all-permissions-' . $user->id, 3600, function () use ( $user ) {
-                            return $user->roles()
+                        if ( ! isset( $this->cachedPermissions[ $user->id ] ) ) {
+                            $this->cachedPermissions[ $user->id ] = $user->roles()
                                 ->with( 'permissions' )
                                 ->get()
                                 ->map( fn( $role ) => $role->permissions->map( fn( $permission ) => $permission->namespace ) )
                                 ->flatten();
-                        } )->toArray();
+                        }
 
-                        return in_array( $permission->namespace, $permissions );
+                        return in_array( $permission->namespace, $this->cachedPermissions[ $user->id ]->toArray() );
                     } );
                 }
             } );

@@ -55,24 +55,6 @@ class User extends Authenticatable
 
     public $user_id;
 
-    public function setDependencies()
-    {
-        return [
-            Product::class => Model::dependant(
-                local_name: 'username',
-                local_index: 'id',
-                foreign_name: 'name',
-                foreign_index: 'author',
-            ),
-            Order::class => Model::dependant(
-                local_name: 'username',
-                local_index: 'id',
-                foreign_name: 'code',
-                foreign_index: 'author',
-            ),
-        ];
-    }
-
     /**
      * The attributes that are mass assignable.
      *
