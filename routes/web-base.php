@@ -37,7 +37,7 @@ Route::middleware( [
         ->name( 'ns.database-update' );
 
     Route::middleware( [
-        Authenticate::class,
+        'auth',
         CheckApplicationHealthMiddleware::class,
         ClearRequestCacheMiddleware::class,
     ] )->group( function () {
