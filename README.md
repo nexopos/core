@@ -78,7 +78,15 @@ AUTH_MODEL = Ns\Models\User
 
 Define the default authentication route. You'll need to add on the app.php on the bootstrap directory where unauthenticated users should be redirected. 
 
-
+```php
+// ...
+->withMiddleware(function (Middleware $middleware) {
+        // ...
+        $middleware->redirectGuestsTo( fn() => route( 'ns.login' ) );
+        // ...
+    })
+// ...
+```
 
 - Sanctum (publish vendors)
 
@@ -94,16 +102,6 @@ As we've exported core feauture of NexoPOS, modules are supported. However, in o
 
 ### Routing Registration
 Modules comes with routes. But by default, Laravel will not load their route. Therefore, we need to instruct Laravel to load the module route while it's loading the application route. For that, on the app.php file located on the bootstrap folder, we'll add a "using" callback to the method "withRouting".
-
-```php
-// ...
-->withMiddleware(function (Middleware $middleware) {
-        // ...
-        $middleware->redirectGuestsTo( fn() => route( 'ns.login' ) );
-        // ...
-    })
-// ...
-```
 
 ```php
 use Ns\Classes\ModuleRouting;

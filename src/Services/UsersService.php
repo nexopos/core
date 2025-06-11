@@ -169,7 +169,7 @@ class UsersService
         }
 
         $validation_required = ns()->option->get( 'ns_registration_validated', 'yes' ) === 'yes' ? true : false;
-        $redirectTo = nsRoute( 'ns.login' );
+        $redirectTo = nsRoute( Hook::filter( 'ns.sign-in.route', 'ns.login' ) );
 
         return [
             'status' => 'success',
