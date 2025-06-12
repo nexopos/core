@@ -210,7 +210,7 @@ class ModuleMigrations extends Command
     {
         switch ( $content ) {
             case 'migration':
-                return view( 'generate.modules.migration', [
+                return view( 'ns::generate.modules.migration', [
                     'module' => $this->module,
                     'migration' => $this->migration,
                     'table' => $this->table,
