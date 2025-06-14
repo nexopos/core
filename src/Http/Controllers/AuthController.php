@@ -93,7 +93,7 @@ class AuthController extends Controller
 
     public function passwordLost()
     {
-        return view( 'pages.auth.password-lost', [
+        return view( 'ns::pages.auth.password-lost', [
             'title' => __( 'Password Lost' ),
         ] );
     }
@@ -114,7 +114,7 @@ class AuthController extends Controller
             throw new NotAllowedException( __( 'The token has expired. Please request a new activation token.' ) );
         }
 
-        return view( 'pages.auth.new-password', [
+        return view( Hook::filter( 'ns-views.auth.new-password', 'ns::pages.auth.new-password' ), [
             'title' => __( 'Set New Password' ),
             'user' => $userId,
             'token' => $token,
@@ -133,7 +133,7 @@ class AuthController extends Controller
 
     public function updateDatabase()
     {
-        return view( 'pages.database-update', [
+        return view( 'ns::pages.database-update', [
             'title' => __( 'Database Update' ),
         ] );
     }
@@ -179,7 +179,7 @@ class AuthController extends Controller
         $validator->errors()->add( 'username', __( 'Unable to find record having that username.' ) );
         $validator->errors()->add( 'password', __( 'Unable to find record having that password.' ) );
 
-        return redirect( nsRoute( 'ns.login' ) )->withErrors( $validator );
+        return redirect( nsRoute( Hook::filter( 'ns.sign-in.route', 'ns.login' ) ) )->withErrors( $validator );
     }
 
     public function handleJsonRequests( $request, $attempt )
@@ -224,7 +224,7 @@ class AuthController extends Controller
                 message: __( 'The recovery email has been send to your inbox.' ),
                 data: [
                     'redirectTo' => route( 'ns.intermediate', [
-                        'route' => 'ns.login',
+                        'route' => Hook::filter( 'ns.sign-in.route', 'ns.login' ),
                         'from' => 'ns.password-lost',
                     ] ),
                 ]
@@ -251,7 +251,7 @@ class AuthController extends Controller
             if ( $request->expectsJson() ) {
                 return $response;
             } else {
-                return redirect()->route( 'ns.login', [
+                return redirect()->route( Hook::filter( 'ns.sign-in.route', 'ns.login' ), [
                     'status' => 'success',
                     'message' => $response[ 'message' ],
                 ] );
@@ -299,7 +299,7 @@ class AuthController extends Controller
             'message' => __( 'Your password has been updated.' ),
             'data' => [
                 'redirectTo' => route( 'ns.intermediate', [
-                    'route' => 'ns.login',
+                    'route' => Hook::filter( 'ns.sign-in.route', 'ns.login' ),
                     'from' => 'ns.password-updated',
                 ] ),
             ],

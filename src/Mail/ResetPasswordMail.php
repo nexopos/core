@@ -33,6 +33,6 @@ class ResetPasswordMail extends Mailable
         return $this
             ->from( ns()->option->get( 'ns_store_email', 'contact@nexopos.com' ), ns()->option->get( 'ns_store_name', env( 'APP_NAME' ) ) )
             ->to( $this->user->email )
-            ->markdown( 'mails/reset-password-mail' );
+            ->markdown( 'ns::mails/reset-password-mail' );
     }
 }

@@ -16,7 +16,7 @@ use Ns\Events\RenderNewPasswordFooterEvent;
                     <img class="w-32" src="{{ asset( 'vendor/ns/svg/nexopos-variant-1.svg' ) }}" alt="NexoPOS">
                 </div>
                 {!! Output::dispatch( RenderBeforeNewPasswordFormEvent::class ) !!}
-                @include( '/common/auth/new-password-form' )
+                @include( 'ns::common/auth/new-password-form' )
                 {!! Output::dispatch( RenderAfterNewPasswordFormEvent::class ) !!}
             </div>
         </div>

@@ -76,7 +76,7 @@ class WidgetService
      */
     public function canAccess( ?User $user = null ): bool
     {
-        return ! $this->permission ?: ( $user == null ? Gate::allows( $this->permission ) : Gate::forUser( $user )->allows( $this->permission ) );
+        return ! $this->permission ?: ( $user == null ? Gate::any( $this->permission ) : Gate::forUser( $user )->any( $this->permission ) );
     }
 
     /**
@@ -117,7 +117,7 @@ class WidgetService
      * Returns only the declared perimssion. If
      * not defined, will return false.
      */
-    public function getPermission(): string|bool
+    public function getPermission(): string|bool|array
     {
         return $this->permission;
     }
@@ -239,7 +239,7 @@ class WidgetService
                         ->where( 'column', $columnName )
                         ->orderBy( 'position' )
                         ->get()
-                        ->filter( fn( $widget ) => Gate::allows( ( new $widget->class_name )->getPermission() ) )
+                        ->filter( fn( $widget ) => Gate::any( ( new $widget->class_name )->getPermission() ) )
                         ->values(),
                 ];
             } )->toArray();
