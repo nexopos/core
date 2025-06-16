@@ -6,6 +6,7 @@ import Warning from '@editorjs/warning';
 import Paragraph from '@editorjs/paragraph';
 import Delimiter from '@editorjs/delimiter';
 import EditorjsList from '@editorjs/list';
+import DragDrop from "editorjs-drag-drop";
 import { onMounted, ref } from 'vue';
 import { __ } from '~/libraries/lang';
 import { default as nsMedia } from '~/pages/dashboard/ns-media.vue';
@@ -23,7 +24,7 @@ class Media {
     private __align: string = 'left';
 
     private data = {
-        url: '',
+        url: undefined,
         align: 'left',
     };
 
@@ -83,7 +84,8 @@ class Media {
         return wrapper;
     }
 
-    render() {        
+    render() { 
+        console.log( 'render' );       
         this.wrapper = document.createElement('div');
         this.imageWrapper = document.createElement('div');
         this.buttonWrapper = document.createElement('div');
@@ -144,10 +146,9 @@ class Media {
     }
 
     setImage( url, align ) {
-        this.image.src = url;
-        this.align = align || 'left';
-
-        if (this.image.src) {
+        if (url) {
+            this.image.src = url;
+            this.align = align || 'left';
             this.imageWrapper.classList.remove('hide');
             this.buttonWrapper.classList.add('hide');
         } else {
@@ -182,13 +183,42 @@ let editor: EditorJS; // Make editor accessible in onChange
 const emit = defineEmits(['change']);
 
 onMounted(() => {
+    console.log( props.field );
     editor = new EditorJS({
         holder: editorElement.value as HTMLElement,
         data: props.field.value ? (
             typeof props.field.value === 'string' ? JSON.parse(props.field.value) : props.field.value
         ) : {},
+        onReady: () => {
+            // Initialize drag and drop
+            new DragDrop(editor);
+        },
         tools: {
+            header: {
+                class: Header,
+                inlineToolbar: true,
+                config: {
+                    placeholder: __('Enter a header'),
+                    levels: [1, 2, 3],
+                    defaultLevel: 2,
+                }
+            },
             media: Media,
+            paragraph: {
+                class: Paragraph,
+                inlineToolbar: true,
+                config: {
+                    placeholder: __('Enter text here...'),
+                }
+            },
+            quote: {
+                class: Quote,
+                inlineToolbar: true,
+                config: {
+                    quotePlaceholder: __('Enter a quote'),
+                    captionPlaceholder: __('Quote\'s author'),
+                }
+            },
             list: {
                 class: EditorjsList,
                 inlineToolbar: true,
@@ -209,30 +239,6 @@ onMounted(() => {
                     messagePlaceholder: __('Message'),
                 },
             },
-            paragraph: {
-                class: Paragraph,
-                inlineToolbar: true,
-                config: {
-                    placeholder: __('Enter text here...'),
-                }
-            },
-            quote: {
-                class: Quote,
-                inlineToolbar: true,
-                config: {
-                    quotePlaceholder: __('Enter a quote'),
-                    captionPlaceholder: __('Quote\'s author'),
-                }
-            },
-            header: {
-                class: Header,
-                inlineToolbar: true,
-                config: {
-                    placeholder: __('Enter a header'),
-                    levels: [1, 2, 3],
-                    defaultLevel: 2,
-                }
-            }
         },
         onChange: async (api, event) => {
             const data = await editor.save();

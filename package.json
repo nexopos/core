@@ -14,6 +14,7 @@
     "@tailwindcss/postcss": "^4.0.7",
     "@tailwindcss/vite": "^4.1.4",
     "@vitejs/plugin-vue": "^5.2.3",
+    "editorjs-drag-drop": "^1.1.16",
     "laravel-echo": "^1.17.1",
     "laravel-vite-plugin": "^1.2.0",
     "pusher-js": "^8.4.0-rc2",
