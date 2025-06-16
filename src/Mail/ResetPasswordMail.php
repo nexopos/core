@@ -21,7 +21,7 @@ class ResetPasswordMail extends Mailable
     public function __construct( User $user )
     {
         $this->user = $user;
-    }
+        }
 
     /**
      * Build the message.

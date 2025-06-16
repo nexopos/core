@@ -22,6 +22,15 @@ class Media {
 
     private __align: string = 'left';
 
+    private data = {
+        url: '',
+        align: 'left',
+    };
+
+    constructor({ data }) {
+        this.data = data || this.data;
+    }
+
     static get toolbox() {
         return {
             title: __('Media'),
@@ -38,7 +47,7 @@ class Media {
         this.imageWrapper.classList.add(`align-${value}`);
     }
 
-    renderSettings() {
+    renderSettings( data ) {
         const settings = [
             {
                 name: __( 'Align Left' ),
@@ -74,7 +83,7 @@ class Media {
         return wrapper;
     }
 
-    render() {
+    render() {        
         this.wrapper = document.createElement('div');
         this.imageWrapper = document.createElement('div');
         this.buttonWrapper = document.createElement('div');
@@ -94,7 +103,6 @@ class Media {
         this.choose.classList.add('ns-editor-media-choose');
 
         this.choose.innerText = __('Choose');
-
         this.choose.addEventListener( 'click', async () => {
             try {
                 interface NewType {
@@ -127,12 +135,31 @@ class Media {
             }
         })
 
+        /**
+         * Let's restore the saved data
+         */
+        this.setImage(this.data.url, this.data.align);
+
         return this.wrapper;
+    }
+
+    setImage( url, align ) {
+        this.image.src = url;
+        this.align = align || 'left';
+
+        if (this.image.src) {
+            this.imageWrapper.classList.remove('hide');
+            this.buttonWrapper.classList.add('hide');
+        } else {
+            this.imageWrapper.classList.add('hide');
+            this.buttonWrapper.classList.remove('hide');
+        }
     }
 
     save(blockContent) {
         return {
             url: blockContent.querySelector('img').src,
+            align: this.align,
         };
     }
 }
