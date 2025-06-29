@@ -183,7 +183,6 @@ let editor: EditorJS; // Make editor accessible in onChange
 const emit = defineEmits(['change']);
 
 onMounted(() => {
-    console.log( props.field );
     editor = new EditorJS({
         holder: editorElement.value as HTMLElement,
         data: props.field.value ? (
