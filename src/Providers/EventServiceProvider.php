@@ -7,6 +7,7 @@ use Ns\Filters\MenusFilter;
 use Ns\Services\ModulesService;
 use Ns\Services\OrdersService;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Auth\Events\Validated;
 
 class EventServiceProvider extends ServiceProvider
 {

@@ -70,6 +70,8 @@ This commands will perform two things:
 - It will update your api.php to trigger an event.
 
 ## Authentication
+
+### Sanctum Configuration
 NexoPOS Core uses it's own implementation of authentication. While it's created on top of laravel, it provides more features. Therefore, it's recommended to change the model provider on the config/auth.php. If you're using Laravel 12, you only need to set it using "AUTH_MODEL" on the environment file.
 
 ```
@@ -131,3 +133,16 @@ use Illuminate\Support\Facades\Route;
 Note that if you use "using", then any load of web.php file or api.php file set as parameter of withRouting, will be ignored. That's the reason why we've imported the api.php and web.php file within the anonymous function.
 
 
+## Socket Support
+We've created a custom approach for working with Sockets on NexoPOS. The idea here is that when the user logs in, we'll create an access token that will be stored on the personnal_access_token table and set on the session. 
+
+```php
+public function handle( Validated $event)
+{
+    $token = $event->user->createToken( 'token', ['*'], now()->addWeek() )->plainTextToken;
+
+    session()->put( 'token', $token );
+}
+```
+
+This token is then used to authenticate the socket connexion.

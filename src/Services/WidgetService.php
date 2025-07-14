@@ -35,7 +35,7 @@ class WidgetService
      * anyone can see the widget
      * by default.
      */
-    protected $permission = false;
+    protected bool | array | string $permission = false;
 
     /**
      * here is stored the widget ares.

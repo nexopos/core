@@ -67,9 +67,7 @@ class ServiceProvider extends CoreServiceProvider
          * This groups all the things that are only needed when the app is running in console.
          */
         if ( $this->app->runningInConsole() ) {
-            $this->publishesMigrations([
-                __DIR__ . '/../../database/migrations' => database_path( 'migrations' ),
-            ]);
+            $this->loadMigrationsFrom( __DIR__ . '/../../database/migrations' );
     
             $this->publishes([
                 __DIR__ . '/../../public' => public_path( 'vendor/ns' ),

@@ -17,7 +17,7 @@ if ( defined( 'NEXO_CREATE_PERMISSIONS' ) ) {
          * The permission is created only
          * if the widget declares some permission.
          */
-        if ( $widget->instance->getPermission() ) {
+        if ( is_string( $widget->instance->getPermission() ) ){
             $taxes = Permission::firstOrNew( [ 'namespace' => $widget->instance->getPermission() ] );
             $taxes->name = sprintf( __( 'Widget: %s' ), $widget->instance->getName() );
             $taxes->namespace = $widget->instance->getPermission();
