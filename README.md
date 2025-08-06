@@ -10,10 +10,17 @@ This package is a separation of the core features of NexoPOS from the POS relate
 ## Installation
 This package is available on packagist and can be installed as a package on a regular laravel installation:
 
-```composer require nexopos/core```
+```composer require nexopos/core:dev-main```
+
+You'll instruct composer to allow such project by editing the composer.json file with:
+
+```json
+"minimum-stability": "dev",
+"prefer-stable": true
+```
 
 ### Filesystem Configuration
-The package include a command to write filesystem configuration to the filesystem.php. For that you need to run the command:
+The package includes a command to writethe  filesystem configuration to the filesystem.php. For that, you need to run the command:
 
 ```
 php artisan ns:install --filesystem
@@ -28,7 +35,7 @@ php artisan vendor:publish
 Note that you'll be asked to select the provider. Select `Provider: Ns\Providers\ServiceProvider`
 
 #### Laravel Sanctum
-As the project relies on Laravel Sanctum, you need to run this command to install (publish) Larvel Sanctum configuration.
+As the project relies on Laravel Sanctum, you need to run this command to install (publish) Laravel Sanctum configuration.
 Note that the package is already a dependency.
 
 ```
@@ -42,12 +49,12 @@ use Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestAreStateful;
 use Ns\Http\Middleware\ApiMiddleware;
 
 // ...
-->middleware( function( Middleware $middleware ) {
+->withMiddleware( function( Middleware $middleware ) {
     $middleware->statefulApi();
     $middleware->group( 'api', [
         EnsureFrontendRequestsAreStateful::class,
         ApiMiddleware::class,
-    ])
+    ]);
 })
 // ...
 ```
