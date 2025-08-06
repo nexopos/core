@@ -1,5 +1,5 @@
 # NexoPOS Core
-This package is a separation of the core features of NexoPOS from the POS related features. This gives all the necessary to start a lightweight app with yet proven features:
+This package is a separation of the core features of NexoPOS from the POS related features. This gives all the necessary to start a lightweight app with proven features:
 
 - User Authentication
 - Roles Management
@@ -8,11 +8,13 @@ This package is a separation of the core features of NexoPOS from the POS relate
 - Settings Support
 
 ## Installation
-This package is available on packagist and can be installed as a package on a regular laravel installation:
+This package is available on Packagist and can be installed as a package on a regular Laravel installation:
 
-```composer require nexopos/core:dev-main```
+```bash
+composer require nexopos/core:dev-main
+```
 
-You'll instruct composer to allow such project by editing the composer.json file with:
+You'll instruct composer to allow such a project by editing the composer.json file with:
 
 ```json
 "minimum-stability": "dev",
