@@ -18,43 +18,6 @@ trait NsForms
         return get_called_class() . '@' . $methodName;
     }
 
-    public function extractProductValidaton( $model = null ): array
-    {
-        $form = $this->getFormObject( $model );
-
-        $rules = [];
-
-        if ( isset( $form['main']['validation'] ) ) {
-            $rules[$form['main']['name']] = $form['main']['validation'];
-        }
-
-        foreach ( $form['variations'] as $variationKey => $variation ) {
-            foreach ( $variation[ 'tabs' ] as $tabIdentifier => $tab ) {
-                if ( ! empty( $tab[ 'fields' ] ) ) {
-                    foreach ( $tab[ 'fields' ] as $field ) {
-                        if ( isset( $field[ 'validation' ] ) ) {
-                            $rules[ 'variations' ][ '*' ][ $tabIdentifier ][ $field[ 'name' ] ] = $field[ 'validation' ];
-                        }
-
-                        if ( isset( $field[ 'groups' ] ) ) {
-                            foreach ( $field[ 'groups' ] as $index => $groupField ) {
-                                if ( isset( $groupField[ 'fields' ] ) ) {
-                                    foreach ( $groupField[ 'fields' ] as $__field ) {
-                                        if ( isset( $__field[ 'validation' ] ) ) {
-                                            $rules[ 'variations' ][ '*' ][ $tabIdentifier ][ $field[ 'name' ] ][ '*' ][ $__field[ 'name' ] ] = $__field[ 'validation' ];
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        return $rules;
-    }
-
     /**
      * Extracts validation from either a crud form or setting page.
      */

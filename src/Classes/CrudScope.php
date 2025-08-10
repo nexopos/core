@@ -6,5 +6,6 @@ class CrudScope
 {
     public function __construct(
         public string | array $class,
+        public array $arguments = [],
     ) {}
 }

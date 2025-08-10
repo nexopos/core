@@ -18,7 +18,26 @@ class NsRestrictMiddleware
      */
     public function handle( Request $request, Closure $next, $permission )
     {
-        if ( ns()->allowedTo( $permission ) ) {
+        // if the permission has ":any:" we will expect the permission to be separated by "|"
+        // and we'll check if the user has at least one of the permissions.
+
+        if ( str_contains( $permission, 'any:' ) ) {
+            $permissions = explode( '|', str_replace( 'any:', '', $permission ) );
+
+            foreach ( $permissions as $perm ) {
+                if ( ns()->allowedTo( $perm ) ) {
+                    return $next( $request );
+                }
+            }
+
+            $message = sprintf(
+                __( 'You don\'t have enough permission for any of the following: "%s".' ),
+                implode( ', ', $permissions )
+            );
+
+            throw new NotEnoughPermissionException( $message );
+
+        } elseif ( ns()->allowedTo( $permission ) ) {
             return $next( $request );
         }
 

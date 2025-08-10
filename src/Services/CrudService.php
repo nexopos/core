@@ -840,14 +840,14 @@ class CrudService
             $instance   =   $attribute->newInstance();
 
             if ( is_string( $instance->class ) ) {
-                $this->triggerScope( new $instance->class, $query );
+                $this->triggerScope( new $instance->class( ...$instance->arguments ), $query );
             }
 
             if ( is_array( $instance->class ) ) {
                 foreach ( $instance->class as $class ) {
                     if ( is_string( $class ) ) {
-                        $this->triggerScope( new $class, $query );
-                    } 
+                        $this->triggerScope( new $class( ...$instance->arguments ), $query );
+                    }
                 }
             }            
         }

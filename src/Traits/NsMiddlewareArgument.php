@@ -12,4 +12,9 @@ trait NsMiddlewareArgument
             return self::class . ':' . $arguments;
         }
     }
+
+    public static function any( array $arguments )
+    {
+        return self::class . ':any:' . collect( $arguments )->join( '|' );
+    }
 }
