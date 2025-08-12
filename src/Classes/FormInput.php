@@ -202,9 +202,9 @@ class FormInput extends CrudInput
      * @param callable|null $show A callable that determines whether the select field should be displayed.
      * @return array An associative array representing the select field configuration.
      */
-    public static function select( $label, $name, $options, $value = '', $validation = '', $description = '', $disabled = false, $type = 'select', $component = '', $props = [], $refresh = false, $errors = [], $show = null )
+    public static function select( $label, $name, $options, $value = '', $validation = '', $description = '', $disabled = false, $type = 'select', $component = '', $props = [], $refresh = false, $errors = [], $show = null, $boolean = false )
     {
-        return compact( 'label', 'name', 'validation', 'options', 'value', 'description', 'disabled', 'type', 'component', 'props', 'refresh', 'errors', 'show' );
+        return compact( 'label', 'name', 'validation', 'options', 'value', 'description', 'disabled', 'type', 'component', 'props', 'refresh', 'errors', 'show', 'boolean' );
     }
 
     /**
@@ -406,9 +406,10 @@ class FormInput extends CrudInput
      * @param bool $disabled Whether the switch field is disabled.
      * @param array $errors An array of error messages for the switch field.
      * @param callable|null $show A callable that determines whether the switch field should be displayed.
+     * @param bool $boolean Whether the switch field is a boolean switch.
      * @return array An associative array representing the switch field configuration.
      */
-    public static function switch( $label, $name, $options, $value = '', $validation = '', $description = '', $disabled = false, $errors = [], $show = null )
+    public static function switch( $label, $name, $options, $value = '', $validation = '', $description = '', $disabled = false, $errors = [], $show = null, $boolean = false )
     {
         return self::select(
             label: $label,
@@ -420,7 +421,8 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'switch',
             errors: $errors,
-            show: $show
+            show: $show,
+            boolean: $boolean
         );
     }
 

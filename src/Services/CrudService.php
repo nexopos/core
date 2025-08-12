@@ -1243,7 +1243,7 @@ class CrudService
              * to provide custom query params
              * to every outgoing request on the table
              */
-            'queryParams' => [],
+            'queryParams' => $queryParams,
 
             /**
              * An instance of the current called crud component.

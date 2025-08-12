@@ -18,11 +18,16 @@ export default {
     name: 'ns-switch',
     emits: [ 'change', 'blur' ],
     mounted() {
+        console.log( this.field );
     },
     computed: {
         _options() {
             return this.field.options.map( option => {
-                option.selected     =   option.value    === this.field.value;
+                if ( this.field.boolean ) {
+                    option.selected     =   Boolean( option.value ) === this.field.value;
+                } else {
+                    option.selected     =   option.value === this.field.value;
+                }
                 return option;
             })
         },
