@@ -2,11 +2,11 @@
 
 namespace Ns\Http\Middleware;
 
-use Ns\Exceptions\NotAllowedException;
-use Ns\Services\Helper;
 use Closure;
 use Illuminate\Support\Facades\App;
+use Ns\Exceptions\NotAllowedException;
 use Ns\Models\Role;
+use Ns\Services\Helper;
 
 class NotInstalledStateMiddleware
 {
@@ -31,7 +31,7 @@ class NotInstalledStateMiddleware
          * We'll also check if there is at least
          * and administrator. If he's deleted, it will be required to create a new one.
          */
-        $totalAdmins    =   Role::withNamespace( Role::ADMIN )->whereHas( 'users' )->count();
+        $totalAdmins = Role::withNamespace( Role::ADMIN )->whereHas( 'users' )->count();
 
         if ( ! Helper::installed() || $totalAdmins === 0 ) {
             return $next( $request );

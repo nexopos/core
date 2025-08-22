@@ -2,8 +2,8 @@
 
 namespace Ns\Http\Requests;
 
-use Ns\Services\CrudService;
 use Illuminate\Foundation\Http\FormRequest;
+use Ns\Services\CrudService;
 
 class BaseCrudRequest extends FormRequest
 {

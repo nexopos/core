@@ -2,11 +2,11 @@
 
 namespace Ns\Services;
 
-use Ns\Models\Migration;
 use Exception;
 use Illuminate\Database\Migrations\Migration as MigrationsMigration;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Ns\Models\Migration;
 
 class UpdateService
 {

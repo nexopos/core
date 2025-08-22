@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use Ns\Classes\Hook;
 use Ns\Http\Controllers\Dashboard\CrudController;
-use Illuminate\Support\Facades\Route;
 
 Route::get( 'crud/{namespace}', [ CrudController::class, 'crudList' ] );
 Route::get( 'crud/{namespace}/columns', [ CrudController::class, 'getColumns' ] );

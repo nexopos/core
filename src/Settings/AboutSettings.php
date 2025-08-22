@@ -2,8 +2,8 @@
 
 namespace Ns\Settings;
 
-use Ns\Services\SettingsPage;
 use Illuminate\Support\Facades\View;
+use Ns\Services\SettingsPage;
 
 class AboutSettings extends SettingsPage
 {

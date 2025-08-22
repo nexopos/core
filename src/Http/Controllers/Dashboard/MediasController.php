@@ -2,14 +2,14 @@
 
 namespace Ns\Http\Controllers\Dashboard;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 use Ns\Exceptions\NotAllowedException;
 use Ns\Http\Controllers\DashboardController;
 use Ns\Models\Media;
 use Ns\Services\DateService;
 use Ns\Services\MediaService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\View;
 
 class MediasController extends DashboardController
 {

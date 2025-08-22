@@ -2,6 +2,14 @@
 
 namespace Ns\Services;
 
+use Exception;
+use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+use Ns\Classes\Hook;
 use Ns\Exceptions\NotAllowedException;
 use Ns\Exceptions\NotFoundException;
 use Ns\Mail\ActivateYourAccountMail;
@@ -12,14 +20,6 @@ use Ns\Models\User;
 use Ns\Models\UserAttribute;
 use Ns\Models\UserRoleRelation;
 use Ns\Models\UserWidget;
-use Ns\Classes\Hook;
-use Exception;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Str;
 
 class UsersService
 {
@@ -61,7 +61,7 @@ class UsersService
          * We should check for the default role if
          * no role is provided on the attributes.
          */
-        if ( ! $assignedRole instanceof Role && empty( $attributes[ 'roles' ] )) {
+        if ( ! $assignedRole instanceof Role && empty( $attributes[ 'roles' ] ) ) {
             throw new NotFoundException( __( 'The default role that must be assigned to new users cannot be retrieved.' ) );
         }
 
@@ -71,7 +71,7 @@ class UsersService
             if ( $countRoles !== count( $attributes[ 'roles' ] ) ) {
                 throw new NotFoundException( __( 'One or more roles could not be found.' ) );
             }
-        } 
+        }
 
         collect( [
             'username' => fn() => User::where( 'username', $attributes[ 'username' ] ),

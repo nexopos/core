@@ -2,15 +2,15 @@
 
 /**
  * Table Migration
-**/
+ **/
+use Illuminate\Database\Migrations\Migration;
 use Ns\Models\Role;
 use Ns\Services\Options;
-use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {
     protected $options;
-    
+
     /**
      * Determine whether the migration
      * should execute when we're accessing

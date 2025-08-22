@@ -2,11 +2,11 @@
 
 namespace Ns\Providers;
 
+use Illuminate\Support\ServiceProvider;
 use Ns\Events\ModulesBootedEvent;
 use Ns\Events\ModulesLoadedEvent;
 use Ns\Services\Helper;
 use Ns\Services\ModulesService;
-use Illuminate\Support\ServiceProvider;
 
 class ModulesServiceProvider extends ServiceProvider
 {

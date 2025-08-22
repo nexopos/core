@@ -1,7 +1,8 @@
 <?php
+
+use Illuminate\Support\Facades\Route;
 use Ns\Events\BeforeStartWebRouteEvent;
 use Ns\Http\Controllers\DevController;
-use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,7 +23,7 @@ $domain = pathinfo( env( 'APP_URL' ) );
  * this will be performmed here.
  */
 BeforeStartWebRouteEvent::dispatch();
- 
+
 /**
  * By default, wildcard is disabled
  * on the system. In order to enable it, the user

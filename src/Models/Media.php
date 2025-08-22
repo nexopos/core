@@ -2,8 +2,8 @@
 
 namespace Ns\Models;
 
-use Ns\Casts\DateCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Ns\Casts\DateCast;
 
 /**
  * @property int            $user_id

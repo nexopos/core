@@ -2,8 +2,8 @@
 
 namespace Ns\Exceptions;
 
-use Ns\Services\Helper;
 use Exception;
+use Ns\Services\Helper;
 
 class NotFoundException extends Exception
 {

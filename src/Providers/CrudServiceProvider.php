@@ -2,11 +2,11 @@
 
 namespace Ns\Providers;
 
-use Ns\Classes\Cache;
-use Ns\Services\ModulesService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Ns\Classes\Cache;
 use Ns\Classes\Hook;
+use Ns\Services\ModulesService;
 
 class CrudServiceProvider extends ServiceProvider
 {

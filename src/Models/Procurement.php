@@ -2,12 +2,12 @@
 
 namespace Ns\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Ns\Events\ProcurementAfterCreateEvent;
 use Ns\Events\ProcurementAfterDeleteEvent;
 use Ns\Events\ProcurementAfterUpdateEvent;
 use Ns\Events\ProcurementBeforeDeleteEvent;
 use Ns\Events\ProcurementBeforeUpdateEvent;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * @property int            $id

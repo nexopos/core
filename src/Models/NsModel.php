@@ -2,10 +2,10 @@
 
 namespace Ns\Models;
 
-use Ns\Classes\Hook;
-use Ns\Traits\NsDependable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
+use Ns\Classes\Hook;
+use Ns\Traits\NsDependable;
 
 abstract class NsModel extends NsRootModel
 {
@@ -35,7 +35,7 @@ abstract class NsModel extends NsRootModel
                 $model->oldAttributes = $model->getOriginal();
             }
 
-            if (! $model->incrementing && empty($model->{$model->getKeyName()})) {
+            if ( ! $model->incrementing && empty( $model->{$model->getKeyName()} ) ) {
                 $model->{$model->getKeyName()} = (string) Str::uuid();
             }
         } );

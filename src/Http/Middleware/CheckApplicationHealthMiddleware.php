@@ -2,10 +2,10 @@
 
 namespace Ns\Http\Middleware;
 
-use Ns\Events\AfterAppHealthCheckedEvent;
-use Ns\Services\ModulesService;
 use Closure;
 use Illuminate\Http\Request;
+use Ns\Events\AfterAppHealthCheckedEvent;
+use Ns\Services\ModulesService;
 
 class CheckApplicationHealthMiddleware
 {

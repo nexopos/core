@@ -2,7 +2,13 @@
 
 namespace Ns\Services;
 
+use Carbon\Carbon;
+use Faker\Factory;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Ns\Customer;
+use Ns\Models\User;
 use Ns\Procurement;
 use Ns\Product;
 use Ns\ProductCategory;
@@ -10,12 +16,6 @@ use Ns\ProductUnitQuantity;
 use Ns\Provider;
 use Ns\TaxGroup;
 use Ns\UnitGroup;
-use Ns\Models\User;
-use Carbon\Carbon;
-use Faker\Factory;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 class TestService
 {

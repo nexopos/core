@@ -2,14 +2,14 @@
 
 namespace Ns\Services;
 
-use Ns\Classes\Hook;
-use Ns\Models\User;
-use Ns\Models\UserWidget;
-use Ns\Widgets\ProfileWidget;
 use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Ns\Classes\Hook;
+use Ns\Models\User;
+use Ns\Models\UserWidget;
+use Ns\Widgets\ProfileWidget;
 
 class WidgetService
 {
@@ -35,7 +35,7 @@ class WidgetService
      * anyone can see the widget
      * by default.
      */
-    protected bool | array | string $permission = false;
+    protected bool|array|string $permission = false;
 
     /**
      * here is stored the widget ares.

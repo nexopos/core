@@ -2,14 +2,11 @@
 
 namespace Ns\Events;
 
-use Ns\Classes\Output;
-use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Ns\Classes\Output;
 
 class BeforeLoginFieldsEvent
 {
@@ -31,7 +28,7 @@ class BeforeLoginFieldsEvent
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('channel-name'),
+            new PrivateChannel( 'channel-name' ),
         ];
     }
 }

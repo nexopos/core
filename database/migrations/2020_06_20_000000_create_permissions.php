@@ -2,10 +2,10 @@
 
 /**
  * Table Migration
-**/
+ **/
+use Illuminate\Database\Migrations\Migration;
 use Ns\Models\Permission;
 use Ns\Services\Options;
-use Illuminate\Database\Migrations\Migration;
 
 return new class extends Migration
 {

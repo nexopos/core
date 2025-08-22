@@ -8,11 +8,11 @@
 
 namespace Ns\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Ns\Classes\JsonResponse;
 use Ns\Http\Requests\ApplicationConfigRequest;
 use Ns\Services\SetupService;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class SetupController extends Controller
 {

@@ -2,15 +2,6 @@
 
 namespace Ns\Services;
 
-use NsCasts\DateCast;
-use Ns\Classes\CrudScope;
-use Ns\Classes\Cache;
-use Ns\Classes\Output;
-use Ns\Events\CrudActionEvent;
-use Ns\Events\CrudHookEvent;
-use Ns\Events\CrudReflectionInitialized;
-use Ns\Exceptions\NotAllowedException;
-use Ns\Traits\NsForms;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\View\View as ContractView;
@@ -20,7 +11,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Str;
+use Ns\Classes\Cache;
+use Ns\Classes\CrudScope;
+use Ns\Classes\Output;
+use Ns\Events\CrudActionEvent;
+use Ns\Events\CrudHookEvent;
+use Ns\Events\CrudReflectionInitialized;
+use Ns\Exceptions\NotAllowedException;
+use Ns\Traits\NsForms;
+use NsCasts\DateCast;
 use ReflectionClass;
 use TorMorten\Eventy\Facades\Events as Hook;
 
@@ -227,10 +226,10 @@ class CrudService
          * We're introducing attribute support
          * for scoped queries.
          */
-        $this->reflection     =   new ReflectionClass( get_called_class() );
+        $this->reflection = new ReflectionClass( get_called_class() );
 
         /**
-         * We're adding a way for module to 
+         * We're adding a way for module to
          * support custom class attributes.
          */
         CrudReflectionInitialized::dispatch( $this->reflection );
@@ -239,9 +238,9 @@ class CrudService
     /**
      * Shorthand for preparing and submitting crud request
      *
-     * @param  array  $inputs
-     * @param  mixed  $id
-     * @return array  as a crud response
+     * @param  array $inputs
+     * @param  mixed $id
+     * @return array as a crud response
      */
     public function submitPreparedRequest( $inputs, $id = null ): array
     {
@@ -438,7 +437,6 @@ class CrudService
 
     /**
      * This methods returns the Crud table configuration.
-     * @return array
      */
     public function getCrudConfig(): array
     {
@@ -580,7 +578,7 @@ class CrudService
     private function triggerScope( $scope, $query )
     {
         if ( method_exists( $scope, 'apply' ) ) {
-            $scope->apply( $query, new ($this->getModel()) );
+            $scope->apply( $query, new ( $this->getModel() ) );
         } else {
             throw new Exception( sprintf(
                 'The class "%s" must have a method "apply" to be used as a scope.',
@@ -834,10 +832,10 @@ class CrudService
         /**
          * This section will explicitely add support to CrudScope.
          */
-        $attributes     =   $this->reflection->getAttributes( CrudScope::class );
+        $attributes = $this->reflection->getAttributes( CrudScope::class );
 
-        foreach( $attributes as $attribute ) {
-            $instance   =   $attribute->newInstance();
+        foreach ( $attributes as $attribute ) {
+            $instance = $attribute->newInstance();
 
             if ( is_string( $instance->class ) ) {
                 $this->triggerScope( new $instance->class( ...$instance->arguments ), $query );
@@ -849,7 +847,7 @@ class CrudService
                         $this->triggerScope( new $class( ...$instance->arguments ), $query );
                     }
                 }
-            }            
+            }
         }
 
         /**
@@ -1101,13 +1099,13 @@ class CrudService
      */
     public function getFillable(): array
     {
-        $model  = $this->getModel();
+        $model = $this->getModel();
+
         return $this->fillable ?: ( new $model )->getFillable();
     }
 
     /**
      * Get crud instance
-     *
      */
     public function getCrudInstance( string $identifier ): CrudService
     {
@@ -1329,7 +1327,7 @@ class CrudService
             /**
              * We might additionnaly pass the instance itself
              */
-            'instance' =>  $instance,
+            'instance' => $instance,
 
             /**
              * We'll return here the select attribute that will

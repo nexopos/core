@@ -8,10 +8,10 @@
 
 namespace Ns\Http\Controllers\Dashboard;
 
+use Exception;
 use Ns\Http\Controllers\DashboardController;
 use Ns\Http\Requests\FormsRequest;
 use Ns\Services\SettingsPage;
-use Exception;
 use TorMorten\Eventy\Facades\Events as Hook;
 
 class FormsController extends DashboardController

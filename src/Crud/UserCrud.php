@@ -2,7 +2,11 @@
 
 namespace Ns\Crud;
 
-use Ns\Casts\CurrencyCast;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Ns\Casts\GenderCast;
 use Ns\Casts\NotDefinedCast;
 use Ns\Casts\YesNoBoolCast;
@@ -10,21 +14,15 @@ use Ns\Classes\CrudTable;
 use Ns\Classes\JsonResponse;
 use Ns\Events\UserAfterActivationSuccessfulEvent;
 use Ns\Exceptions\NotAllowedException;
-use Ns\Models\UserBillingAddress;
-use Ns\Models\UserShippingAddress;
 use Ns\Models\Role;
 use Ns\Models\User;
+use Ns\Models\UserBillingAddress;
+use Ns\Models\UserShippingAddress;
 use Ns\Services\CrudEntry;
 use Ns\Services\CrudService;
 use Ns\Services\Helper;
 use Ns\Services\Options;
 use Ns\Services\UsersService;
-use Carbon\Carbon;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rule;
 use TorMorten\Eventy\Facades\Events as Hook;
 
 class UserCrud extends CrudService

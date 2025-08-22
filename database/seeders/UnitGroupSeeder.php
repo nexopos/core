@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Ns\Models\UnitGroup;
 use Illuminate\Database\Seeder;
+use Ns\Models\UnitGroup;
 
 class UnitGroupSeeder extends Seeder
 {

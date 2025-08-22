@@ -2,10 +2,10 @@
 
 namespace Ns\Providers;
 
-use Ns\Classes\Cache;
-use Ns\Services\ModulesService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Ns\Classes\Cache;
+use Ns\Services\ModulesService;
 use TorMorten\Eventy\Facades\Events as Hook;
 
 class SettingsPageProvider extends ServiceProvider

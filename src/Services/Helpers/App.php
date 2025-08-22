@@ -2,13 +2,11 @@
 
 namespace Ns\Services\Helpers;
 
-use Ns\Classes\Cache;
-use Ns\Classes\Hook;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Ns\Models\Role;
+use Ns\Classes\Hook;
 
 trait App
 {
@@ -30,7 +28,7 @@ trait App
             }
 
             return false;
-            
+
         } catch ( \Exception $e ) {
             return false;
         }

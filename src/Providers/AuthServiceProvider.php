@@ -1,4 +1,5 @@
 <?php
+
 namespace Ns\Providers;
 
 use Illuminate\Support\ServiceProvider;
@@ -15,8 +16,5 @@ class AuthServiceProvider extends ServiceProvider
         Sanctum::usePersonalAccessTokenModel( PersonalAccessToken::class );
     }
 
-    public function register()
-    {
-        
-    }
+    public function register() {}
 }

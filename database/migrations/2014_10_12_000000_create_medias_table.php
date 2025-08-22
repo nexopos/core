@@ -1,8 +1,8 @@
 <?php
 
-use Ns\Classes\Schema;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Ns\Classes\Schema;
 
 return new class extends Migration
 {
@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        if (!Schema::hasTable('medias')) {
-            Schema::create('medias', function (Blueprint $table) {
-                $table->increments('id');
-                $table->string('name');
-                $table->string('type');
+        if ( ! Schema::hasTable( 'medias' ) ) {
+            Schema::create( 'medias', function ( Blueprint $table ) {
+                $table->increments( 'id' );
+                $table->string( 'name' );
+                $table->string( 'type' );
                 $table->string( 'slug' );
                 $table->string( 'extension' );
                 $table->integer( 'user_id' );
                 $table->timestamps();
-            });
+            } );
         }
     }
 
@@ -33,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('medias');
+        Schema::dropIfExists( 'medias' );
     }
 };

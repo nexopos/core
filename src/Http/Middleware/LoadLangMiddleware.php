@@ -2,12 +2,12 @@
 
 namespace Ns\Http\Middleware;
 
-use Ns\Events\LocaleDefinedEvent;
-use Ns\Models\UserAttribute;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Ns\Events\LocaleDefinedEvent;
+use Ns\Models\UserAttribute;
 
 class LoadLangMiddleware
 {

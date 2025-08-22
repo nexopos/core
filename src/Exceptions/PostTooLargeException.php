@@ -2,8 +2,8 @@
 
 namespace Ns\Exceptions;
 
-use Ns\Services\Helper;
 use Illuminate\Http\Exceptions\PostTooLargeException as ExceptionsPostTooLargeException;
+use Ns\Services\Helper;
 
 class PostTooLargeException extends ExceptionsPostTooLargeException
 {

@@ -1,10 +1,10 @@
 <?php
 
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Support\Facades\Route;
 use Ns\Http\Controllers\SetupController;
 use Ns\Http\Middleware\ClearRequestCacheMiddleware;
 use Ns\Http\Middleware\InstalledStateMiddleware;
-use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Support\Facades\Route;
 
 Route::middleware( [
     InstalledStateMiddleware::class,

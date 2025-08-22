@@ -2,18 +2,6 @@
 
 namespace Ns\Services;
 
-use Ns\Classes\Cache;
-use Ns\Classes\XMLParser;
-use Ns\Events\ModulesAfterDisabledEvent;
-use Ns\Events\ModulesAfterEnabledEvent;
-use Ns\Events\ModulesAfterRemovedEvent;
-use Ns\Events\ModulesBeforeDisabledEvent;
-use Ns\Events\ModulesBeforeEnabledEvent;
-use Ns\Events\ModulesBeforeRemovedEvent;
-use Ns\Exceptions\MissingDependencyException;
-use Ns\Exceptions\ModuleVersionMismatchException;
-use Ns\Exceptions\NotAllowedException;
-use Ns\Models\ModuleMigration;
 use Error as GlobalError;
 use Exception;
 use Illuminate\Contracts\View\View as ViewView;
@@ -27,6 +15,18 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use Ns\Classes\Cache;
+use Ns\Classes\XMLParser;
+use Ns\Events\ModulesAfterDisabledEvent;
+use Ns\Events\ModulesAfterEnabledEvent;
+use Ns\Events\ModulesAfterRemovedEvent;
+use Ns\Events\ModulesBeforeDisabledEvent;
+use Ns\Events\ModulesBeforeEnabledEvent;
+use Ns\Events\ModulesBeforeRemovedEvent;
+use Ns\Exceptions\MissingDependencyException;
+use Ns\Exceptions\ModuleVersionMismatchException;
+use Ns\Exceptions\NotAllowedException;
+use Ns\Models\ModuleMigration;
 use PhpParser\Error;
 use PhpParser\ParserFactory;
 use SimpleXMLElement;
@@ -70,8 +70,8 @@ class ModulesService
          * As module might load composer, we need to store current composer
          * configuration and restore them after having loaded all modules.
          */
-        $this->composer     =   [
-            '_composer_bin_dir' =>  $GLOBALS[ '_composer_bin_dir' ] ?? null,
+        $this->composer = [
+            '_composer_bin_dir' => $GLOBALS[ '_composer_bin_dir' ] ?? null,
             '_composer_autoload_path' => $GLOBALS[ '_composer_autoload_path' ] ?? null,
             '_composer_bin_dir' => $GLOBALS[ '_composer_bin_dir' ] ?? null,
             '__composer_autoload_files' => $GLOBALS[ '__composer_autoload_files' ] ?? null,
@@ -120,7 +120,7 @@ class ModulesService
          * When all module are loaded, we should revert all composer
          * configuration that might be changed by the modules.
          */
-        foreach( $this->composer as $key => $value ) {
+        foreach ( $this->composer as $key => $value ) {
             // there is no need to set null value as a global variable
             if ( $value !== null ) {
                 $GLOBALS[ $key ] = $value;
@@ -188,16 +188,17 @@ class ModulesService
             }
 
             // We'll check if the the product description has localization tags. If it's the case
-            // based on the current locale we'll load the right description otherwise fallback on "english" or says the description 
+            // based on the current locale we'll load the right description otherwise fallback on "english" or says the description
             // has an invalid format
 
-            $locales    =   $xmlElement->children()->description->xpath( 'locale' );
+            $locales = $xmlElement->children()->description->xpath( 'locale' );
 
             if ( count( $locales ) > 0 ) {
-                $config[ 'description' ]  =  collect( $locales )->mapWithKeys( function( $locale ) {
+                $config[ 'description' ] = collect( $locales )->mapWithKeys( function ( $locale ) {
                     $locale = (array) $locale;
+
                     return [ $locale[ '@attributes' ][ 'lang' ] => $locale[ 0 ] ];
-                });
+                } );
             }
 
             $config[ 'requires' ] = collect( $xmlElement->children()->requires->xpath( '//dependency' ) )->mapWithKeys( function ( $module ) {
@@ -521,7 +522,7 @@ class ModulesService
          * After the complicance check, we'll autoload
          * the composer vendor if the module has an autoload file.
          */
-        $autoloadPath   =   $module[ 'path' ] . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+        $autoloadPath = $module[ 'path' ] . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
         if ( is_file( $autoloadPath ) ) {
             require_once $autoloadPath;
@@ -538,13 +539,13 @@ class ModulesService
 
         // we'll try to load all configuration files that are available on this module
         // and make sure to load them on global object.
-        foreach( $module[ 'config-files' ] as $file ) {
-            $config     =   include( base_path( 'modules' ) . DIRECTORY_SEPARATOR . $file );
-            $config     =   Arr::dot( $config );
-            $config     =   collect( $config )->mapWithKeys( function ( $value, $key ) use ( $module ) {
+        foreach ( $module[ 'config-files' ] as $file ) {
+            $config = include base_path( 'modules' ) . DIRECTORY_SEPARATOR . $file;
+            $config = Arr::dot( $config );
+            $config = collect( $config )->mapWithKeys( function ( $value, $key ) use ( $module ) {
                 return [ 'modules.' . $module[ 'namespace' ] . '.' . $key => $value ];
             } );
-            $config     =   $config->toArray();
+            $config = $config->toArray();
             config( $config );
         }
     }
@@ -1087,7 +1088,7 @@ class ModulesService
              * We revert all migrations made by the modules.
              */
             $this->revertMigrations( $module );
-            $this->dropModuleMigration( $module ); 
+            $this->dropModuleMigration( $module );
 
             /**
              * Delete module from filesystem.

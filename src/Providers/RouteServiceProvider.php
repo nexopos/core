@@ -2,9 +2,6 @@
 
 namespace Ns\Providers;
 
-use Ns\Models\Driver;
-use Ns\Models\Role;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class RouteServiceProvider extends ServiceProvider

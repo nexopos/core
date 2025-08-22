@@ -2,8 +2,8 @@
 
 namespace Ns\Exceptions;
 
-use Ns\Services\Helper;
 use Illuminate\Validation\ValidationException as MainValidationException;
+use Ns\Services\Helper;
 
 class ValidationException extends MainValidationException
 {

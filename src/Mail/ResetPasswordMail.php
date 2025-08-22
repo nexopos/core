@@ -2,10 +2,10 @@
 
 namespace Ns\Mail;
 
-use Ns\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Ns\Models\User;
 
 class ResetPasswordMail extends Mailable
 {
@@ -21,7 +21,7 @@ class ResetPasswordMail extends Mailable
     public function __construct( User $user )
     {
         $this->user = $user;
-        }
+    }
 
     /**
      * Build the message.

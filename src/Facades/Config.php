@@ -1,8 +1,9 @@
 <?php
+
 namespace Ns\Facades;
 
-use Ns\Classes\Config as ClassesConfig;
 use Illuminate\Support\Facades\Facade;
+use Ns\Classes\Config as ClassesConfig;
 
 class Config extends Facade
 {

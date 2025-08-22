@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
 use Ns\Models\Provider;
 use Ns\Models\Role;
-use Illuminate\Database\Seeder;
 
 class DefaultProviderSeeder extends Seeder
 {

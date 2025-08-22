@@ -2,12 +2,11 @@
 
 namespace Ns\Http\Controllers\Dashboard;
 
+use Illuminate\Http\Request;
 use Ns\Http\Controllers\DashboardController;
 use Ns\Services\DateService;
-use Ns\Services\DemoService;
 use Ns\Services\ResetService;
 use Ns\Services\SetupService;
-use Illuminate\Http\Request;
 
 class ResetController extends DashboardController
 {

@@ -1,4 +1,5 @@
 <?php
+
 namespace Ns\Events;
 
 use Illuminate\Broadcasting\InteractsWithSockets;

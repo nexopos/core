@@ -2,9 +2,9 @@
 
 namespace Ns\Exceptions;
 
+use Exception;
 use Ns\Classes\JsonResponse;
 use Ns\Services\Helper;
-use Exception;
 
 class NotAllowedException extends Exception
 {

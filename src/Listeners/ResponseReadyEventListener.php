@@ -2,9 +2,9 @@
 
 namespace Ns\Listeners;
 
+use Illuminate\Support\Facades\Auth;
 use Ns\Classes\Cache;
 use Ns\Events\ResponseReadyEvent;
-use Illuminate\Support\Facades\Auth;
 
 class ResponseReadyEventListener
 {

@@ -2,11 +2,11 @@
 
 namespace Ns\Classes;
 
+use Illuminate\Support\Facades\Route;
 use Ns\Http\Middleware\CheckApplicationHealthMiddleware;
 use Ns\Http\Middleware\CheckMigrationStatus;
 use Ns\Http\Middleware\InstalledStateMiddleware;
 use Ns\Services\ModulesService;
-use Illuminate\Support\Facades\Route;
 
 class ModuleRouting
 {
@@ -44,7 +44,7 @@ class ModuleRouting
     public static function mapModuleDomainRoutes( $module )
     {
         Route::domain( env( 'APP_URL' ) )
-            ->middleware( [ 
+            ->middleware( [
                 'web',
                 InstalledStateMiddleware::class,
                 CheckApplicationHealthMiddleware::class,
@@ -57,11 +57,11 @@ class ModuleRouting
     public static function mapModuleWebRoutes( $module )
     {
         Route::middleware( [
-                'web',
-                InstalledStateMiddleware::class,
-                CheckApplicationHealthMiddleware::class,
-                CheckMigrationStatus::class 
-            ] )
+            'web',
+            InstalledStateMiddleware::class,
+            CheckApplicationHealthMiddleware::class,
+            CheckMigrationStatus::class,
+        ] )
             ->namespace( 'Modules\\' . $module[ 'namespace' ] . '\Http\Controllers' )
             ->group( $module[ 'routes-file' ] );
     }

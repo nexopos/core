@@ -2,10 +2,10 @@
 
 namespace Ns\Http\Middleware;
 
-use Ns\Traits\NsMiddlewareArgument;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\ThrottleRequests;
+use Ns\Traits\NsMiddlewareArgument;
 use Symfony\Component\HttpFoundation\Response;
 
 class ThrottleMiddelware extends ThrottleRequests

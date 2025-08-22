@@ -1,7 +1,7 @@
 <?php
 
-use Ns\Http\Controllers\Dashboard\UsersController;
 use Illuminate\Support\Facades\Route;
+use Ns\Http\Controllers\Dashboard\UsersController;
 
 Route::get( '/users/roles', [ UsersController::class, 'getRoles' ] );
 Route::get( '/users', [ UsersController::class, 'getUsers' ] );

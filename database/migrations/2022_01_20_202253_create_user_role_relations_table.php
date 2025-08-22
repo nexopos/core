@@ -1,11 +1,11 @@
 <?php
 
-use Ns\Models\Role;
-use Ns\Models\User;
-use Ns\Models\UserRoleRelation;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Ns\Models\Role;
+use Ns\Models\User;
+use Ns\Models\UserRoleRelation;
 
 return new class extends Migration
 {
@@ -43,7 +43,7 @@ return new class extends Migration
                         $relation = UserRoleRelation::where( 'user_id', $user->id )
                             ->where( 'role_id', $role->id )
                             ->firstOrNew();
-                            
+
                         $relation->user_id = $user->id;
                         $relation->role_id = $role->id;
                         $relation->save();

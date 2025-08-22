@@ -2,12 +2,12 @@
 
 namespace Ns\Console\Commands;
 
-use Ns\Models\ModuleMigration;
-use Ns\Services\ModulesService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Ns\Models\ModuleMigration;
+use Ns\Services\ModulesService;
 
 class ModuleMigrations extends Command
 {

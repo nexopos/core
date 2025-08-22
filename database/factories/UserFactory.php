@@ -4,10 +4,10 @@ namespace Database\Factories;
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use Ns\Classes\Hook;
-use Ns\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use Ns\Classes\Hook;
+use Ns\Models\User;
 
 /*
 |--------------------------------------------------------------------------

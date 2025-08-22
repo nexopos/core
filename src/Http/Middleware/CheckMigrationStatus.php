@@ -2,11 +2,11 @@
 
 namespace Ns\Http\Middleware;
 
+use Closure;
+use Illuminate\Http\Request;
 use Ns\Events\AfterMigrationStatusCheckedEvent;
 use Ns\Services\Helper;
 use Ns\Services\ModulesService;
-use Closure;
-use Illuminate\Http\Request;
 
 class CheckMigrationStatus
 {

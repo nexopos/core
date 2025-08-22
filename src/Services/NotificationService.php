@@ -2,14 +2,14 @@
 
 namespace Ns\Services;
 
-use Ns\Events\NotificationDeletedEvent;
-use Ns\Models\Notification;
-use Ns\Models\Role;
-use Ns\Models\User;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\support\Str;
+use Ns\Events\NotificationDeletedEvent;
+use Ns\Models\Notification;
+use Ns\Models\Role;
+use Ns\Models\User;
 
 class NotificationService
 {
@@ -124,7 +124,7 @@ class NotificationService
             $this->notification->source = $this->source;
             $this->notification->url = $this->url;
             $this->notification->identifier = $this->identifier;
-            $this->notification->actions    =   $this->actions;
+            $this->notification->actions = $this->actions;
             $this->notification->save();
         } else {
             $this->notification->title = $this->title;
@@ -132,7 +132,7 @@ class NotificationService
             $this->notification->dismissable = $this->dismissable;
             $this->notification->source = $this->source;
             $this->notification->url = $this->url;
-            $this->notification->actions    =   $this->actions;
+            $this->notification->actions = $this->actions;
             $this->notification->save();
         }
     }

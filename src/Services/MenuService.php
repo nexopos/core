@@ -2,8 +2,8 @@
 
 namespace Ns\Services;
 
-use Ns\Classes\AsideMenu;
 use Illuminate\Support\Facades\Gate;
+use Ns\Classes\AsideMenu;
 use TorMorten\Eventy\Facades\Eventy as Hook;
 
 class MenuService
@@ -27,7 +27,7 @@ class MenuService
                     )
                 ),
             ),
-            
+
             AsideMenu::menu(
                 label: __( 'Medias' ),
                 icon: 'la-photo-video',
@@ -35,7 +35,7 @@ class MenuService
                 permissions: [ 'nexopos.upload.medias', 'nexopos.see.medias' ],
                 href: nsUrl( '/dashboard/medias' ),
             ),
-            
+
             AsideMenu::menu(
                 label: __( 'Modules' ),
                 icon: 'la-plug',
@@ -105,7 +105,7 @@ class MenuService
                         href: nsUrl( '/dashboard/users/roles/permissions-manager' )
                     ),
                 ),
-            ),            
+            ),
             AsideMenu::menu(
                 label: __( 'Settings' ),
                 icon: 'la-cogs',

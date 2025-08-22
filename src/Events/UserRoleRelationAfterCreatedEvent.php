@@ -2,9 +2,9 @@
 
 namespace Ns\Events;
 
-use Ns\Models\UserRoleRelation;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Ns\Models\UserRoleRelation;
 
 class UserRoleRelationAfterCreatedEvent
 {
@@ -12,7 +12,7 @@ class UserRoleRelationAfterCreatedEvent
 
     public $userRoleRelation;
 
-    public function __construct(UserRoleRelation $userRoleRelation)
+    public function __construct( UserRoleRelation $userRoleRelation )
     {
         $this->userRoleRelation = $userRoleRelation;
     }

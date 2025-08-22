@@ -8,14 +8,14 @@
 
 namespace Ns\Http\Controllers\Dashboard;
 
-use Ns\Http\Controllers\DashboardController;
-use Ns\Http\Requests\ModuleUploadRequest;
-use Ns\Services\DateService;
-use Ns\Services\ModulesService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Str;
+use Ns\Http\Controllers\DashboardController;
+use Ns\Http\Requests\ModuleUploadRequest;
+use Ns\Services\DateService;
+use Ns\Services\ModulesService;
 
 class ModulesController extends DashboardController
 {

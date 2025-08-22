@@ -2,9 +2,9 @@
 
 namespace Ns\Http\Middleware;
 
-use Ns\Classes\Hook;
 use Closure;
 use Illuminate\Http\Request;
+use Ns\Classes\Hook;
 
 class HandleCommonRoutesMiddleware
 {

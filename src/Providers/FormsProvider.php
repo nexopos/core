@@ -2,14 +2,14 @@
 
 namespace Ns\Providers;
 
+use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Ns\Forms\POSAddressesForm;
 use Ns\Forms\ProcurementForm;
 use Ns\Forms\UserProfileForm;
 use Ns\Services\ModulesService;
-use Illuminate\Support\ServiceProvider;
 use ReflectionClass;
 use TorMorten\Eventy\Facades\Events as Hook;
-use Illuminate\Support\Str;
 
 class FormsProvider extends ServiceProvider
 {
@@ -55,24 +55,25 @@ class FormsProvider extends ServiceProvider
             path: __DIR__ . '/../Fields',
             classRoot: 'Ns\\Fields\\'
         );
-        
+
         /**
          * Now for all the modules that are enabled we'll make sure
          * to load their fields if they are set to be autoloaded
+         *
          * @var ModulesService
          */
         $moduleService = app()->make( ModulesService::class );
 
-        $moduleService->getEnabledAndAutoloadedModules()->each( function ( $module ) use ( $moduleService ) {
-            $module = ( object ) $module;
-            
+        $moduleService->getEnabledAndAutoloadedModules()->each( function ( $module ) {
+            $module = (object) $module;
+
             $this->autoloadFields(
-                path: Str::finish( $module->path,  DIRECTORY_SEPARATOR ) . 'Fields',
+                path: Str::finish( $module->path, DIRECTORY_SEPARATOR ) . 'Fields',
                 classRoot: 'Modules\\' . $module->namespace . '\\Fields\\'
             );
 
             $this->autoloadForms(
-                path: Str::finish( $module->path,  DIRECTORY_SEPARATOR ) . 'Forms',
+                path: Str::finish( $module->path, DIRECTORY_SEPARATOR ) . 'Forms',
                 classRoot: 'Modules\\' . $module->namespace . '\\Forms\\'
             );
         } );
@@ -83,10 +84,10 @@ class FormsProvider extends ServiceProvider
         if ( ! is_dir( $path ) ) {
             return;
         }
-        
+
         $forms = scandir( $path );
 
-        foreach( $forms as $form ) {
+        foreach ( $forms as $form ) {
             if ( in_array( $form, [ '.', '..' ] ) ) {
                 continue;
             }
@@ -116,10 +117,10 @@ class FormsProvider extends ServiceProvider
         if ( ! is_dir( $path ) ) {
             return;
         }
-        
+
         $fields = scandir( $path );
 
-        foreach( $fields as $field ) {
+        foreach ( $fields as $field ) {
             if ( in_array( $field, [ '.', '..' ] ) ) {
                 continue;
             }
@@ -132,7 +133,7 @@ class FormsProvider extends ServiceProvider
             $field = str_replace( '.php', '', $field );
             $field = $classRoot . $field;
 
-            $reflection     =   new ReflectionClass( $field );
+            $reflection = new ReflectionClass( $field );
 
             if ( class_exists( $field ) && $reflection->hasConstant( 'AUTOLOAD' ) && $field::AUTOLOAD && $reflection->hasConstant( 'IDENTIFIER' ) ) {
                 Hook::addFilter( 'ns.fields', function ( $identifier ) use ( $field ) {
@@ -141,7 +142,7 @@ class FormsProvider extends ServiceProvider
                     }
 
                     return $identifier;
-                });
+                } );
             }
         }
     }

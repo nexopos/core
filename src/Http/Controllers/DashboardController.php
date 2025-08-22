@@ -8,9 +8,9 @@
 
 namespace Ns\Http\Controllers;
 
-use Ns\Services\DateService;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\View;
+use Ns\Services\DateService;
 
 class DashboardController extends Controller
 {

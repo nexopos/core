@@ -1,4 +1,5 @@
 <?php
+
 namespace Ns\Console\Commands;
 
 use Illuminate\Console\Command;
@@ -15,23 +16,23 @@ class RefreshAssetsCommand extends Command
         /**
          * we'll locate the directory "public/vendor/ns" and delete it.
          */
-        $vendorPath = public_path('vendor/ns');
+        $vendorPath = public_path( 'vendor/ns' );
 
-        if (is_dir($vendorPath)) {
-            $this->info('Removing existing assets...');
-            
+        if ( is_dir( $vendorPath ) ) {
+            $this->info( 'Removing existing assets...' );
+
             Storage::deleteDirectory( $vendorPath );
-            
-            $this->info('Assets removed successfully.');
+
+            $this->info( 'Assets removed successfully.' );
         }
 
-        $this->info('Publishing assets...');
+        $this->info( 'Publishing assets...' );
 
         $this->call( 'vendor:publish', [
             '--tag' => 'nexopos-assets',
             '--force' => true,
-        ]);
+        ] );
 
-        $this->info('Assets published successfully.');
+        $this->info( 'Assets published successfully.' );
     }
 }

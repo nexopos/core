@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Ns\Models\UserAddress;
 use Ns\Services\UsersService;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * @var UsersService

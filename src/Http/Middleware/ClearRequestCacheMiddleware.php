@@ -2,9 +2,9 @@
 
 namespace Ns\Http\Middleware;
 
-use Ns\Events\ResponseReadyEvent;
 use Closure;
 use Illuminate\Http\Request;
+use Ns\Events\ResponseReadyEvent;
 
 class ClearRequestCacheMiddleware
 {

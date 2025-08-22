@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use Ns\Http\Controllers\AuthController;
 use Ns\Http\Middleware\PasswordRecoveryMiddleware;
 use Ns\Http\Middleware\RegistrationMiddleware;
-use Illuminate\Support\Facades\Route;
 
 Route::get( '/sign-in', [ AuthController::class, 'signIn' ] )->name( nsRouteName( 'ns.login' ) );
 Route::get( '/auth/activate/{user}/{token}', [ AuthController::class, 'activateAccount' ] )->name( nsRouteName( 'ns.activate-account' ) );

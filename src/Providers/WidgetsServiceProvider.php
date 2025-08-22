@@ -2,8 +2,8 @@
 
 namespace Ns\Providers;
 
-use Ns\Services\WidgetService;
 use Illuminate\Support\ServiceProvider;
+use Ns\Services\WidgetService;
 
 class WidgetsServiceProvider extends ServiceProvider
 {

@@ -2,11 +2,11 @@
 
 namespace Ns\Providers;
 
-use Ns\Events\LocaleDefinedEvent;
-use Ns\Services\ModulesService;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
+use Ns\Events\LocaleDefinedEvent;
+use Ns\Services\ModulesService;
 
 class LocalizationServiceProvider extends ServiceProvider
 {

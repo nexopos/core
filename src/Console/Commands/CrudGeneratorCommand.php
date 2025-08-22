@@ -2,11 +2,11 @@
 
 namespace Ns\Console\Commands;
 
-use Ns\Services\ModulesService;
 use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Ns\Services\ModulesService;
 
 class CrudGeneratorCommand extends Command
 {

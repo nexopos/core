@@ -1,8 +1,8 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use Ns\Http\Controllers\DashboardController;
 use Ns\Http\Middleware\NsRestrictMiddleware;
-use Illuminate\Support\Facades\Route;
 
 Route::get( '', [ DashboardController::class, 'home' ] )->name( nsRouteName( 'ns.dashboard.home' ) )
     ->middleware( [ NsRestrictMiddleware::arguments( 'read.dashboard' )] );

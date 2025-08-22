@@ -1,7 +1,7 @@
 <?php
 
-use Ns\Http\Controllers\Dashboard\ModulesController;
 use Illuminate\Support\Facades\Route;
+use Ns\Http\Controllers\Dashboard\ModulesController;
 
 Route::get( '/modules', [ ModulesController::class, 'listModules' ] )->name( 'ns.dashboard.modules-list' );
 Route::get( '/modules/upload', [ ModulesController::class, 'showUploadModule' ] )->name( 'ns.dashboard.modules-upload' );

@@ -2,10 +2,10 @@
 
 namespace Ns\Events;
 
-use Ns\Services\CrudService;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Ns\Services\CrudService;
 use stdClass;
 
 class CrudAfterDeleteEvent

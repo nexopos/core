@@ -2,10 +2,10 @@
 
 namespace Ns\Events;
 
-use Ns\Models\DashboardMonth;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Ns\Models\DashboardMonth;
 
 class DashboardMonthAfterUpdatedEvent
 {

@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
+use Illuminate\Support\Str;
 use Ns\Models\Unit;
 use Ns\Models\UnitGroup;
 use Ns\Models\User;
-use Illuminate\Database\Seeder;
-use Illuminate\Support\Str;
 
 class FirstExampleUnitGroupSeeder extends Seeder
 {

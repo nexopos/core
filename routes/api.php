@@ -1,8 +1,8 @@
 <?php
 
-use Ns\Events\BeforeStartApiRouteEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Ns\Events\BeforeStartApiRouteEvent;
 
 /*
 |--------------------------------------------------------------------------

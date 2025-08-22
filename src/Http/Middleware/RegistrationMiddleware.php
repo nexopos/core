@@ -2,9 +2,9 @@
 
 namespace Ns\Http\Middleware;
 
-use Ns\Exceptions\NotAllowedException;
 use Closure;
 use Illuminate\Http\Request;
+use Ns\Exceptions\NotAllowedException;
 
 class RegistrationMiddleware
 {

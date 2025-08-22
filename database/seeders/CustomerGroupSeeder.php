@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Ns\Models\CustomerGroup;
 use Illuminate\Database\Seeder;
+use Ns\Models\CustomerGroup;
 
 class CustomerGroupSeeder extends Seeder
 {

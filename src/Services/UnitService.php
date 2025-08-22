@@ -2,12 +2,12 @@
 
 namespace Ns\Services;
 
-use Ns\Exceptions\NotFoundException;
-use Ns\Unit;
-use Ns\UnitGroup;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Ns\Exceptions\NotFoundException;
+use Ns\Unit;
+use Ns\UnitGroup;
 
 class UnitService
 {

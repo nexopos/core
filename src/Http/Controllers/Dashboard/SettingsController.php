@@ -8,11 +8,11 @@
 
 namespace Ns\Http\Controllers\Dashboard;
 
+use Exception;
+use Illuminate\Support\Facades\Gate;
 use Ns\Http\Controllers\DashboardController;
 use Ns\Http\Requests\SettingsRequest;
 use Ns\Services\SettingsPage;
-use Exception;
-use Illuminate\Support\Facades\Gate;
 use TorMorten\Eventy\Facades\Events as Hook;
 
 class SettingsController extends DashboardController

@@ -2,10 +2,10 @@
 
 namespace Ns\Http\Controllers\Dashboard;
 
-use Ns\Http\Controllers\DashboardController;
-use Ns\Services\FieldsService;
 use Exception;
 use Illuminate\Http\Request;
+use Ns\Http\Controllers\DashboardController;
+use Ns\Services\FieldsService;
 use TorMorten\Eventy\Facades\Events as Hook;
 
 class FieldsController extends DashboardController

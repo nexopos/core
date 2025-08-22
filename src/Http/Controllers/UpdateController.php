@@ -8,10 +8,10 @@
 
 namespace Ns\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Ns\Events\AfterMigrationExecutedEvent;
 use Ns\Services\ModulesService;
 use Ns\Services\UpdateService;
-use Illuminate\Http\Request;
 
 class UpdateController extends Controller
 {

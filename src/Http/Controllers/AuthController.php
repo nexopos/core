@@ -8,6 +8,14 @@
 
 namespace Ns\Http\Controllers;
 
+use Carbon\Carbon;
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Ns\Classes\Hook;
 use Ns\Classes\JsonResponse;
 use Ns\Events\AfterSuccessfulLoginEvent;
@@ -24,14 +32,6 @@ use Ns\Http\Requests\SignUpRequest;
 use Ns\Mail\ResetPasswordMail;
 use Ns\Models\User;
 use Ns\Services\UsersService;
-use Carbon\Carbon;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {

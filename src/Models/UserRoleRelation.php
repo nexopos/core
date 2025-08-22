@@ -2,10 +2,10 @@
 
 namespace Ns\Models;
 
-use Ns\Events\UserRoleRelationAfterCreatedEvent;
-use Ns\Events\UserRoleRelationAfterUpdatedEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Ns\Events\UserRoleRelationAfterCreatedEvent;
+use Ns\Events\UserRoleRelationAfterUpdatedEvent;
 
 /**
  * @method combinaison( User $user, Role $role )

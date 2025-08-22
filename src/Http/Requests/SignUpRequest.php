@@ -2,9 +2,9 @@
 
 namespace Ns\Http\Requests;
 
+use Illuminate\Foundation\Http\FormRequest;
 use Ns\Exceptions\NotAllowedException;
 use Ns\Services\Options;
-use Illuminate\Foundation\Http\FormRequest;
 
 class SignUpRequest extends FormRequest
 {

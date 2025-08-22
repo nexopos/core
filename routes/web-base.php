@@ -1,19 +1,18 @@
 <?php
 
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Support\Facades\Route;
 use Ns\Events\WebRoutesLoadedEvent;
 use Ns\Http\Controllers\Dashboard\CrudController;
 use Ns\Http\Controllers\Dashboard\HomeController;
 use Ns\Http\Controllers\SetupController;
 use Ns\Http\Controllers\UpdateController;
-use Ns\Http\Middleware\Authenticate;
 use Ns\Http\Middleware\CheckApplicationHealthMiddleware;
 use Ns\Http\Middleware\CheckMigrationStatus;
 use Ns\Http\Middleware\ClearRequestCacheMiddleware;
 use Ns\Http\Middleware\HandleCommonRoutesMiddleware;
 use Ns\Http\Middleware\InstalledStateMiddleware;
 use Ns\Http\Middleware\NotInstalledStateMiddleware;
-use Illuminate\Routing\Middleware\SubstituteBindings;
-use Illuminate\Support\Facades\Route;
 
 Route::middleware( [ 'web' ] )->group( function () {
     Route::get( '/', [ HomeController::class, 'welcome' ] )->name( 'ns.welcome' );

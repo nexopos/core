@@ -2,11 +2,11 @@
 
 namespace Ns\Console\Commands;
 
-use Ns\Services\ModulesService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Ns\Services\ModulesService;
 
 class ExtractTranslation extends Command
 {

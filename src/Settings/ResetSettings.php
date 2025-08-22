@@ -2,14 +2,13 @@
 
 namespace Ns\Settings;
 
+use Illuminate\Support\Facades\Event;
 use Ns\Classes\FormInput;
 use Ns\Classes\Hook;
-use Ns\Classes\Output;
 use Ns\Classes\SettingForm;
 use Ns\Events\RenderFooterEvent;
 use Ns\Services\Helper;
 use Ns\Services\SettingsPage;
-use Illuminate\Support\Facades\Event;
 
 class ResetSettings extends SettingsPage
 {
@@ -59,8 +58,8 @@ class ResetSettings extends SettingsPage
 
     public function beforeRenderForm()
     {
-        Event::listen( RenderFooterEvent::class, function( $event ) {
+        Event::listen( RenderFooterEvent::class, function ( $event ) {
             $event->output->addView( 'ns::pages.dashboard.settings.reset-footer' );
-        });
+        } );
     }
 }

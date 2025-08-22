@@ -2,10 +2,10 @@
 
 namespace Ns\Http\Requests;
 
-use Ns\Services\CrudService;
-use Ns\Services\SettingsPage;
 use Exception;
 use Illuminate\Foundation\Http\FormRequest;
+use Ns\Services\CrudService;
+use Ns\Services\SettingsPage;
 use TorMorten\Eventy\Facades\Events;
 
 class FormsRequest extends FormRequest

@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Seeder;
 use Ns\Models\Role;
 use Ns\Models\Unit;
 use Ns\Models\UnitGroup;
-use Illuminate\Database\Seeder;
 
 class DefaultUnitGroupSeeder extends Seeder
 {

@@ -2,8 +2,8 @@
 
 namespace Ns\Http\Requests;
 
-use Ns\Services\SettingsPage;
 use Exception;
+use Ns\Services\SettingsPage;
 use TorMorten\Eventy\Facades\Events as Hook;
 
 class SettingsRequest extends BaseCrudRequest

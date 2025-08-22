@@ -1,9 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use Ns\Classes\Hook;
 use Ns\Http\Controllers\Dashboard\ModulesController;
 use Ns\Http\Middleware\NsRestrictMiddleware;
-use Illuminate\Support\Facades\Route;
 
 Route::middleware( [
     NsRestrictMiddleware::arguments( 'manage.modules' ),

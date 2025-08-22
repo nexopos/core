@@ -6,6 +6,10 @@
 
 namespace Ns\Http\Controllers\Dashboard;
 
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Ns\Classes\Cache;
 use Ns\Events\CrudAfterDeleteEvent;
 use Ns\Events\CrudBeforeExportEvent;
@@ -15,10 +19,6 @@ use Ns\Http\Controllers\DashboardController;
 use Ns\Http\Requests\CrudPostRequest;
 use Ns\Http\Requests\CrudPutRequest;
 use Ns\Services\CrudService;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Csv;
 use TorMorten\Eventy\Facades\Events as Hook;
@@ -97,7 +97,7 @@ class CrudController extends DashboardController
      * receive and treat a PUT request for CRUD resource
      *
      * @param  string $identifier
-     * @param  int    $id        primary key
+     * @param  int    $id         primary key
      * @return void
      */
     public function crudPut( $identifier, $id, CrudPutRequest $request )

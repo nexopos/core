@@ -2,10 +2,10 @@
 
 namespace Ns\Traits;
 
+use Illuminate\Http\Request;
 use Ns\Classes\Hook;
 use Ns\Services\CrudService;
 use Ns\Services\SettingsPage;
-use Illuminate\Http\Request;
 
 trait NsForms
 {

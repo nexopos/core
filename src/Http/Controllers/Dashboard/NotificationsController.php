@@ -8,11 +8,11 @@
 
 namespace Ns\Http\Controllers\Dashboard;
 
+use Illuminate\Support\Facades\Auth;
 use Ns\Http\Controllers\DashboardController;
 use Ns\Models\Notification;
 use Ns\Services\DateService;
 use Ns\Services\NotificationService;
-use Illuminate\Support\Facades\Auth;
 
 class NotificationsController extends DashboardController
 {

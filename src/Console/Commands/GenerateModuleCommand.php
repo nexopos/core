@@ -2,10 +2,10 @@
 
 namespace Ns\Console\Commands;
 
+use Illuminate\Console\Command;
 use Ns\Exceptions\NotAllowedException;
 use Ns\Services\Helper;
 use Ns\Services\ModulesService;
-use Illuminate\Console\Command;
 
 class GenerateModuleCommand extends Command
 {

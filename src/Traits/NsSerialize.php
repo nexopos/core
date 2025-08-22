@@ -2,9 +2,9 @@
 
 namespace Ns\Traits;
 
+use Modules\NsMultiStore\Models\Store;
 use Ns\Events\JobBeforeSerializeEvent;
 use Ns\Jobs\Middleware\UnserializeMiddleware;
-use Modules\NsMultiStore\Models\Store;
 
 trait NsSerialize
 {

@@ -2,9 +2,9 @@
 
 namespace Ns\Exceptions;
 
-use Ns\Services\Helper;
 use Exception;
 use Illuminate\Http\Request;
+use Ns\Services\Helper;
 
 class QueryException extends Exception
 {

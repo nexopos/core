@@ -2,14 +2,12 @@
 
 namespace Ns\Services;
 
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Ns\Classes\Hook;
 use Ns\Classes\Schema;
 use Ns\Events\AfterHardResetEvent;
 use Ns\Events\BeforeHardResetEvent;
-use Ns\Models\Customer;
-use Ns\Models\Option;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\DB;
 
 class ResetService
 {

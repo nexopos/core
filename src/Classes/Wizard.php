@@ -1,4 +1,5 @@
 <?php
+
 namespace Ns\Classes;
 
 class Wizard

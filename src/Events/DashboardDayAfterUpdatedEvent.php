@@ -2,10 +2,10 @@
 
 namespace Ns\Events;
 
-use Ns\Models\DashboardDay;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use Ns\Models\DashboardDay;
 
 class DashboardDayAfterUpdatedEvent
 {

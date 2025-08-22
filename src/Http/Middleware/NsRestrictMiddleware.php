@@ -2,10 +2,10 @@
 
 namespace Ns\Http\Middleware;
 
-use Ns\Exceptions\NotEnoughPermissionException;
-use Ns\Traits\NsMiddlewareArgument;
 use Closure;
 use Illuminate\Http\Request;
+use Ns\Exceptions\NotEnoughPermissionException;
+use Ns\Traits\NsMiddlewareArgument;
 
 class NsRestrictMiddleware
 {
@@ -36,7 +36,6 @@ class NsRestrictMiddleware
             );
 
             throw new NotEnoughPermissionException( $message );
-
         } elseif ( ns()->allowedTo( $permission ) ) {
             return $next( $request );
         }

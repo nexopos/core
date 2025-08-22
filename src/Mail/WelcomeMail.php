@@ -2,10 +2,10 @@
 
 namespace Ns\Mail;
 
-use Ns\Models\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Ns\Models\User;
 
 class WelcomeMail extends Mailable
 {

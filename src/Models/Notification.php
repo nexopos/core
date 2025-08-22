@@ -2,10 +2,10 @@
 
 namespace Ns\Models;
 
-use Ns\Events\NotificationCreatedEvent;
-use Ns\Events\NotificationUpdatedEvent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
+use Ns\Events\NotificationCreatedEvent;
+use Ns\Events\NotificationUpdatedEvent;
 
 /**
  * @property int            $id
@@ -40,7 +40,7 @@ class Notification extends NsModel
     const NSSYMBOLICLINKSMISSING = 'ns.notifications.symbolic-links-missing';
 
     /**
-     * We saving, we want to make sure the "actions" property is actually a json and not an array. 
+     * We saving, we want to make sure the "actions" property is actually a json and not an array.
      * We also want to make sure while retreiving, the JSON is converted to an array.
      */
     public static function boot()

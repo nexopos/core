@@ -8,8 +8,8 @@
 
 namespace Ns\Http\Controllers\Dashboard;
 
-use Ns\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\View;
+use Ns\Http\Controllers\DashboardController;
 
 class HomeController extends DashboardController
 {

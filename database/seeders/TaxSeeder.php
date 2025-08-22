@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Ns\Models\TaxGroup;
 use Illuminate\Database\Seeder;
+use Ns\Models\TaxGroup;
 
 class TaxSeeder extends Seeder
 {

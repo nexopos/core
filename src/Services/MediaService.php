@@ -2,14 +2,14 @@
 
 namespace Ns\Services;
 
-use Ns\Classes\Hook;
-use Ns\Models\Media;
 use Exception;
 use Gumlet\ImageResize;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Ns\Classes\Hook;
+use Ns\Models\Media;
 
 class MediaService
 {

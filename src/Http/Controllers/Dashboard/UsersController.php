@@ -8,6 +8,11 @@
 
 namespace Ns\Http\Controllers\Dashboard;
 
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\View;
 use Ns\Crud\RolesCrud;
 use Ns\Crud\UserCrud;
 use Ns\Http\Controllers\DashboardController;
@@ -16,11 +21,6 @@ use Ns\Models\Role;
 use Ns\Models\User;
 use Ns\Services\DateService;
 use Ns\Services\UsersService;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\View;
 
 class UsersController extends DashboardController
 {

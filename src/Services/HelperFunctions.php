@@ -94,7 +94,6 @@ function __m( $key, $namespace = 'default' )
     return $key;
 }
 
-
 /**
  * Returns a route to which apply
  * the filter "ns-route".

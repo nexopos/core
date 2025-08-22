@@ -2,15 +2,15 @@
 
 namespace Ns\Crud;
 
+use Exception;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Ns\Models\Role;
 use Ns\Models\User;
 use Ns\Services\CrudEntry;
 use Ns\Services\CrudService;
 use Ns\Services\UsersService;
-use Exception;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use TorMorten\Eventy\Facades\Events as Hook;
 
 class RolesCrud extends CrudService

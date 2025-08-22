@@ -2,9 +2,9 @@
 
 namespace Ns\Console\Commands;
 
-use Ns\Services\ModulesService;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
+use Ns\Services\ModulesService;
 
 class ModuleSymlinkCommand extends Command
 {

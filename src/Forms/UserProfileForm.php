@@ -2,18 +2,18 @@
 
 namespace Ns\Forms;
 
-use Ns\Classes\Hook;
-use Ns\Classes\JsonResponse;
-use Ns\Models\User;
-use Ns\Models\UserAttribute;
-use Ns\Services\SettingsPage;
-use Ns\Services\UserOptions;
 use Illuminate\Http\JsonResponse as HttpJsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Ns\Classes\Hook;
+use Ns\Classes\JsonResponse;
+use Ns\Models\User;
 use Ns\Models\UserAddress;
+use Ns\Models\UserAttribute;
+use Ns\Services\SettingsPage;
+use Ns\Services\UserOptions;
 use Ns\Services\UsersService;
 
 class UserProfileForm extends SettingsPage
@@ -154,17 +154,17 @@ class UserProfileForm extends SettingsPage
         if ( ! empty( $billing ) || ! empty( $shipping ) ) {
             $currentBilling = UserAddress::from( Auth::id(), 'billing' )->firstOrNew();
             $currentShipping = UserAddress::from( Auth::id(), 'shipping' )->firstOrNew();
-    
+
             foreach ( $validFields as $field ) {
                 $currentBilling->$field = $billing[ $field ];
                 $currentShipping->$field = $shipping[ $field ];
             }
-    
+
             $currentBilling->customer_id = Auth::id();
             $currentBilling->type = 'billing';
             $currentBilling->author = Auth::id();
             $currentBilling->save();
-    
+
             $currentShipping->customer_id = Auth::id();
             $currentShipping->type = 'shipping';
             $currentShipping->author = Auth::id();

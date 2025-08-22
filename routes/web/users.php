@@ -1,7 +1,7 @@
 <?php
 
-use Ns\Http\Controllers\Dashboard\UsersController;
 use Illuminate\Support\Facades\Route;
+use Ns\Http\Controllers\Dashboard\UsersController;
 
 Route::get( '/users', [ UsersController::class, 'listUsers' ] )->name( 'ns.dashboard.users' );
 Route::get( '/users/create', [ UsersController::class, 'createUser' ] )->name( 'ns.dashboard.users-create' );

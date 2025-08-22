@@ -2,10 +2,10 @@
 
 namespace Ns\Http\Middleware;
 
-use Ns\Services\Helper;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Ns\Services\Helper;
 
 class KillSessionIfNotInstalledMiddleware
 {

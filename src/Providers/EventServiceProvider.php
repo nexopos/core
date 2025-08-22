@@ -2,12 +2,8 @@
 
 namespace Ns\Providers;
 
-use Ns\Classes\Hook;
-use Ns\Filters\MenusFilter;
-use Ns\Services\ModulesService;
-use Ns\Services\OrdersService;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Auth\Events\Validated;
+use Ns\Services\ModulesService;
 
 class EventServiceProvider extends ServiceProvider
 {

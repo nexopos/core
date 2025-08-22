@@ -1,7 +1,7 @@
 <?php
 
-use Ns\Services\Helper;
 use Illuminate\Support\Facades\Auth;
+use Ns\Services\Helper;
 
 return [
     'label' => __( 'General' ),

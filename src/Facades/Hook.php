@@ -2,8 +2,8 @@
 
 namespace Ns\Facades;
 
-use Ns\Classes\Hook as ClassesHook;
 use Illuminate\Support\Facades\Facade;
+use Ns\Classes\Hook as ClassesHook;
 
 class Hook extends Facade
 {

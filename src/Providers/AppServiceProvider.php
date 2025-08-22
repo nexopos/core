@@ -1,4 +1,5 @@
 <?php
+
 namespace Ns\Providers;
 
 use Illuminate\Foundation\AliasLoader;
@@ -29,9 +30,9 @@ class AppServiceProvider extends ServiceProvider
     {
         include_once dirname( __FILE__ ) . '/../Services/HelperFunctions.php';
 
-        $this->app->singleton( 'eventy', function() {
+        $this->app->singleton( 'eventy', function () {
             return new Events;
-        });
+        } );
 
         AliasLoader::getInstance()->alias( 'Hook', Hook::class );
 
@@ -62,7 +63,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton( UserOptions::class, function () {
             return new UserOptions( Auth::id() );
         } );
-        
+
         $this->app->singleton( WidgetService::class, function ( $app ) {
             return new WidgetService(
                 $app->make( UsersService::class )
@@ -70,8 +71,8 @@ class AppServiceProvider extends ServiceProvider
         } );
 
         $this->app->singleton( Config::class, function () {
-            return new ClassesConfig();
-        });
+            return new ClassesConfig;
+        } );
 
         $this->app->singleton( CoreService::class, function () {
             return new CoreService(
@@ -101,7 +102,7 @@ class AppServiceProvider extends ServiceProvider
                 ]
             );
         } );
-    
+
         $this->app->singleton( Validation::class, function ( $app ) {
             return new Validation;
         } );

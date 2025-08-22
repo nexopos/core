@@ -2,9 +2,9 @@
 
 namespace Ns\Http\Middleware;
 
-use Ns\Traits\NsMiddlewareArgument;
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Ns\Traits\NsMiddlewareArgument;
 
 class RedirectIfAuthenticated
 {
