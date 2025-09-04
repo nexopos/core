@@ -9,6 +9,7 @@ use Illuminate\Support\ServiceProvider as CoreServiceProvider;
 use Ns\Classes\ModuleRouting;
 use Ns\Classes\NsViteDirective;
 use Ns\Console\Commands\CrudGeneratorCommand;
+use Ns\Console\Commands\DoctorCommand;
 use Ns\Console\Commands\ExtractTranslation;
 use Ns\Console\Commands\GenerateModuleCommand;
 use Ns\Console\Commands\InstallCommand;
@@ -81,7 +82,8 @@ class ServiceProvider extends CoreServiceProvider
                 __DIR__ . '/../../database/permissions' => database_path( 'permissions' ),
             ], 'nexopos-permissions' );
 
-            $this->commands( [
+            $this->commands([
+                DoctorCommand::class,
                 InstallCommand::class,
                 ExtractTranslation::class,
                 GenerateModuleCommand::class,
