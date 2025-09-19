@@ -34,7 +34,14 @@ trait NsForms
         foreach ( $form[ 'tabs' ] as $tabIdentifier => $tab ) {
             if ( ! empty( $tab[ 'fields' ] ) ) {
                 foreach ( $tab[ 'fields' ] as $field ) {
-                    if ( isset( $field[ 'validation' ] ) ) {
+                    if ( isset( $field[ 'validation' ] ) && ( 
+                        ! isset( $field[ 'show' ] ) || 
+                        ( 
+                            isset( $field[ 'show' ] ) && 
+                            is_callable( $field[ 'show' ] ) && 
+                            $field[ 'show' ]( $model ) 
+                        ) 
+                    ) ) {
                         $rules[ $tabIdentifier ][ $field[ 'name' ] ] = $field[ 'validation' ];
                     }
                 }
@@ -106,14 +113,24 @@ trait NsForms
              */
             if ( ! in_array( $tabKey, $keys ) && ! empty( $tab[ 'fields' ] ) ) {
                 foreach ( $tab[ 'fields' ] as $field ) {
-                    $value = data_get( $fields, $tabKey . '.' . $field[ 'name' ] );
+                    if ( ! isset( $field[ 'show' ] ) || ( isset( $field[ 'show' ] ) && is_callable( $field[ 'show' ] ) && $field[ 'show' ]( $model, $fields ) ) ) {
+                        /**
+                         * some fields might be hidden. We should implement a logic 
+                         * for ensuring we only extract visible fields
+                         */
+                        if ( isset( $field[ 'show' ] ) && is_callable( $field[ 'show' ] ) && ! $field[ 'show' ]( $model ) ) {
+                            continue;
+                        }
 
-                    /**
-                     * if the field doesn't have any value
-                     * we'll omit it. To avoid filling wrong value
-                     */
-                    if ( ! empty( $value ) || (int) $value === 0 ) {
-                        $data[ $field[ 'name' ] ] = $value;
+                        $value = data_get( $fields, $tabKey . '.' . $field[ 'name' ] );
+    
+                        /**
+                         * if the field doesn't have any value
+                         * we'll omit it. To avoid filling wrong value
+                         */
+                        if ( ! empty( $value ) || (int) $value === 0 ) {
+                            $data[ $field[ 'name' ] ] = $value;
+                        }
                     }
                 }
             }
@@ -123,10 +140,10 @@ trait NsForms
          * We'll add custom fields
          * that might be added by modules
          */
-        $fieldsToIgnore = array_keys( collect( $form[ 'tabs' ] )->toArray() );
+        $excluded = array_keys( collect( $form[ 'tabs' ] )->toArray() );
 
         foreach ( $fields as $field => $value ) {
-            if ( ! in_array( $field, $fieldsToIgnore ) ) {
+            if ( ! in_array( $field, $excluded ) ) {
                 $data[ $field ] = $value;
             }
         }
@@ -174,6 +191,10 @@ trait NsForms
     public function extractFields( $fields, $formValue = [] )
     {
         foreach ( $fields as $field ) {
+            if ( isset( $field[ 'show' ] ) && is_callable( $field[ 'show' ] ) && ! $field[ 'show' ]() ) {
+                continue;
+            }
+            
             $formValue[$field['name']] = $field['value'] ?? '';
         }
 

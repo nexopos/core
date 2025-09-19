@@ -10,7 +10,9 @@ use Illuminate\Validation\Rule;
 use Ns\Casts\GenderCast;
 use Ns\Casts\NotDefinedCast;
 use Ns\Casts\YesNoBoolCast;
+use Ns\Classes\CrudForm;
 use Ns\Classes\CrudTable;
+use Ns\Classes\FormInput;
 use Ns\Classes\JsonResponse;
 use Ns\Events\UserAfterActivationSuccessfulEvent;
 use Ns\Exceptions\NotAllowedException;
@@ -184,247 +186,249 @@ class UserCrud extends CrudService
      */
     public function getForm( $entry = null )
     {
-        return [
-            'main' => [
-                'label' => __( 'Username' ),
-                'name' => 'username',
-                'value' => $entry->username ?? '',
-                'validation' => $entry === null ? 'required|unique:users,username' : [
+        return CrudForm::form(
+            main: FormInput::text(
+                label: __( 'Username' ),
+                name: 'username',
+                value: $entry->username ?? '',
+                validation: $entry === null ? 'required|unique:users,username' : [
                     'required',
                     Rule::unique( 'users', 'username' )->ignore( $entry->id ),
                 ],
-                'description' => __( 'Provide a name to the resource.' ),
-            ],
-            'tabs' => [
-                'general' => [
-                    'label' => __( 'General' ),
-                    'fields' => [
-                        [
-                            'type' => 'text',
-                            'name' => 'email',
-                            'label' => __( 'Email' ),
-                            'validation' => $entry === null ? 'required|email|unique:users,email' : [
+                description: __( 'Provide a name to the resource.' ),
+            ),
+            tabs: CrudForm::tabs(
+                CrudForm::tab(
+                    identifier: 'general',
+                    label: __( 'General' ),
+                    fields: CrudForm::fields(
+                        FormInput::text(
+                            label: __( 'Email' ),
+                            name: 'email',
+                            value: $entry->email ?? '',
+                            validation: $entry === null ? 'required|email|unique:users,email' : [
                                 'required',
                                 'email',
                                 Rule::unique( 'users', 'email' )->ignore( $entry->id ),
                             ],
-                            'description' => __( 'Will be used for various purposes such as email recovery.' ),
-                            'value' => $entry->email ?? '',
-                        ], [
-                            'type' => 'text',
-                            'name' => 'first_name',
-                            'value' => $entry?->first_name,
-                            'label' => __( 'First Name' ),
-                            'description' => __( 'Provide the user first name.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'last_name',
-                            'value' => $entry?->last_name,
-                            'label' => __( 'Last Name' ),
-                            'description' => __( 'Provide the user last name.' ),
-                        ], [
-                            'type' => 'password',
-                            'name' => 'password',
-                            'label' => __( 'Password' ),
-                            'validation' => 'sometimes|min:6',
-                            'description' => __( 'Make a unique and secure password.' ),
-                        ], [
-                            'type' => 'password',
-                            'name' => 'password_confirm',
-                            'validation' => 'sometimes|same:general.password',
-                            'label' => __( 'Confirm Password' ),
-                            'description' => __( 'Should be the same as the password.' ),
-                        ], [
-                            'type' => 'switch',
-                            'options' => Helper::kvToJsOptions( [ __( 'No' ), __( 'Yes' ) ] ),
-                            'name' => 'active',
-                            'label' => __( 'Active' ),
-                            'description' => __( 'Define whether the user can use the application.' ),
-                            'value' => ( $entry !== null && $entry->active ? 1 : 0 ) ?? 0,
-                        ], [
-                            'type' => 'multiselect',
-                            'options' => Helper::toJsOptions( Role::get(), [ 'id', 'name' ] ),
-                            'description' => __( 'Define what roles applies to the user' ),
-                            'name' => 'roles',
-                            'label' => __( 'Roles' ),
-                            'value' => $entry !== null ? ( $entry->roles()->get()->map( fn( $role ) => $role->id )->toArray() ?? '' ) : [],
-                        ], [
-                            'type' => 'datetimepicker',
-                            'label' => __( 'Birth Date' ),
-                            'name' => 'birth_date',
-                            'value' => $entry instanceof User && $entry->birth_date !== null ? Carbon::parse( $entry->birth_date )->format( 'Y-m-d H:i:s' ) : null,
-                            'description' => __( 'Displays the customer birth date' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'credit_limit_amount',
-                            'value' => $entry?->credit_limit_amount,
-                            'label' => __( 'Credit Limit' ),
-                            'description' => __( 'Set the limit that can\'t be exceeded by the user.' ),
-                        ], [
-                            'type' => 'select',
-                            'name' => 'gender',
-                            'value' => $entry?->gender,
-                            'label' => __( 'Gender' ),
-                            'options' => Helper::kvToJsOptions( [
+                            description: __( 'Will be used for various purposes such as email recovery.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'First Name' ),
+                            name: 'first_name',
+                            value: $entry?->first_name,
+                            description: __( 'Provide the user first name.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Last Name' ),
+                            name: 'last_name',
+                            value: $entry?->last_name,
+                            description: __( 'Provide the user last name.' ),
+                        ),
+                        FormInput::password(
+                            label: __( 'Password' ),
+                            name: 'password',
+                            validation: 'sometimes|min:6',
+                            value: null,
+                            description: __( 'Make a unique and secure password.' ),
+                        ),
+                        FormInput::password(
+                            label: __( 'Confirm Password' ),
+                            name: 'password_confirm',
+                            validation: 'sometimes|same:general.password',
+                            value: null,
+                            description: __( 'Should be the same as the password.' ),
+                        ),
+                        FormInput::switch(
+                            label: __( 'Active' ),
+                            name: 'active',
+                            options: Helper::kvToJsOptions( [ __( 'No' ), __( 'Yes' ) ] ),
+                            value: ( $entry !== null && $entry->active ? 1 : 0 ) ?? 0,
+                            description: __( 'Define whether the user can use the application.' ),
+                        ),
+                        FormInput::multiselect(
+                            label: __( 'Roles' ),
+                            name: 'roles',
+                            options: Helper::toJsOptions( Role::get(), [ 'id', 'name' ] ),
+                            value: $entry !== null ? ( $entry->roles()->get()->map( fn( $role ) => $role->id )->toArray() ?? '' ) : [],
+                            description: __( 'Define what roles applies to the user' ),
+                        ),
+                        FormInput::datetime(
+                            label: __( 'Birth Date' ),
+                            name: 'birth_date',
+                            value: $entry instanceof User && $entry->birth_date !== null ? Carbon::parse( $entry->birth_date )->format( 'Y-m-d H:i:s' ) : null,
+                            description: __( 'Displays the customer birth date.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Credit Limit' ),
+                            name: 'credit_limit_amount',
+                            value: $entry?->credit_limit_amount,
+                            description: __( 'Set the limit that can\'t be exceeded by the user.' ),
+                        ),
+                        FormInput::select(
+                            label: __( 'Gender' ),
+                            name: 'gender',
+                            options: Helper::kvToJsOptions( [
                                 '' => __( 'Not Defined' ),
                                 'male' => __( 'Male' ),
                                 'female' => __( 'Female' ),
                             ] ),
-                            'description' => __( 'Set the user gender.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'phone',
-                            'value' => $entry?->phone,
-                            'label' => __( 'Phone' ),
-                            'validation' => collect( [
+                            value: $entry?->gender,
+                            description: __( 'Select the gender of the user.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Phone' ),
+                            name: 'phone',
+                            value: $entry?->phone,
+                            validation: collect( [
                                 ns()->option->get( 'ns_customers_force_unique_phone', 'no' ) === 'yes' ? (
                                     $entry instanceof User && ! empty( $entry->phone ) ? Rule::unique( 'users', 'phone' )->ignore( $entry->id ) : Rule::unique( 'users', 'phone' )
                                 ) : '',
                             ] )->toArray(),
-                            'description' => __( 'Set the user phone number.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'pobox',
-                            'value' => $entry?->pobox,
-                            'label' => __( 'PO Box' ),
-                            'description' => __( 'Set the user PO Box.' ),
-                        ],
-                    ],
-                ],
-                'billing' => [
-                    'label' => __( 'Billing Address' ),
-                    'fields' => [
-                        [
-                            'type' => 'text',
-                            'name' => 'first_name',
-                            'value' => $entry->billing->first_name ?? '',
-                            'label' => __( 'First Name' ),
-                            'description' => __( 'Provide the billing First Name.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'last_name',
-                            'value' => $entry->billing->last_name ?? '',
-                            'label' => __( 'Last name' ),
-                            'description' => __( 'Provide the billing last name.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'phone',
-                            'value' => $entry->billing->phone ?? '',
-                            'label' => __( 'Phone' ),
-                            'description' => __( 'Billing phone number.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'address_1',
-                            'value' => $entry->billing->address_1 ?? '',
-                            'label' => __( 'Address 1' ),
-                            'description' => __( 'Billing First Address.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'address_2',
-                            'value' => $entry->billing->address_2 ?? '',
-                            'label' => __( 'Address 2' ),
-                            'description' => __( 'Billing Second Address.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'country',
-                            'value' => $entry->billing->country ?? '',
-                            'label' => __( 'Country' ),
-                            'description' => __( 'Billing Country.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'city',
-                            'value' => $entry->billing->city ?? '',
-                            'label' => __( 'City' ),
-                            'description' => __( 'City' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'pobox',
-                            'value' => $entry->billing->pobox ?? '',
-                            'label' => __( 'PO.Box' ),
-                            'description' => __( 'Postal Address' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'company',
-                            'value' => $entry->billing->company ?? '',
-                            'label' => __( 'Company' ),
-                            'description' => __( 'Company' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'email',
-                            'value' => $entry->billing->email ?? '',
-                            'label' => __( 'Email' ),
-                            'description' => __( 'Email' ),
-                        ],
-                    ],
-                ],
-                'shipping' => [
-                    'label' => __( 'Shipping Address' ),
-                    'fields' => [
-                        [
-                            'type' => 'text',
-                            'name' => 'first_name',
-                            'value' => $entry->shipping->first_name ?? '',
-                            'label' => __( 'First Name' ),
-                            'description' => __( 'Provide the shipping First Name.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'last_name',
-                            'value' => $entry->shipping->last_name ?? '',
-                            'label' => __( 'Last Name' ),
-                            'description' => __( 'Provide the shipping Last Name.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'phone',
-                            'value' => $entry->shipping->phone ?? '',
-                            'label' => __( 'Phone' ),
-                            'description' => __( 'Shipping phone number.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'address_1',
-                            'value' => $entry->shipping->address_1 ?? '',
-                            'label' => __( 'Address 1' ),
-                            'description' => __( 'Shipping First Address.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'address_2',
-                            'value' => $entry->shipping->address_2 ?? '',
-                            'label' => __( 'Address 2' ),
-                            'description' => __( 'Shipping Second Address.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'country',
-                            'value' => $entry->shipping->country ?? '',
-                            'label' => __( 'Country' ),
-                            'description' => __( 'Shipping Country.' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'city',
-                            'value' => $entry->shipping->city ?? '',
-                            'label' => __( 'City' ),
-                            'description' => __( 'City' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'pobox',
-                            'value' => $entry->shipping->pobox ?? '',
-                            'label' => __( 'PO.Box' ),
-                            'description' => __( 'Postal Address' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'company',
-                            'value' => $entry->shipping->company ?? '',
-                            'label' => __( 'Company' ),
-                            'description' => __( 'Company' ),
-                        ], [
-                            'type' => 'text',
-                            'name' => 'email',
-                            'value' => $entry->shipping->email ?? '',
-                            'label' => __( 'Email' ),
-                            'description' => __( 'Email' ),
-                        ],
-                    ],
-                ],
-            ],
-        ];
+                            description: __( 'Set the user phone number.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'PO box' ),
+                            name: 'pobox',
+                            value: $entry?->pobox,
+                            description: __( 'Set the user PO box.' ),
+                        )
+                    )
+                ),
+                CrudForm::tab(
+                    identifier: 'billing',
+                    label: __( 'Billing Address' ),
+                    fields: CrudForm::fields(
+                        FormInput::text(
+                            label: __( 'First Name' ),
+                            name: 'first_name',
+                            value: $entry->billing->first_name ?? '',
+                            description: __( 'Provide the billing First Name.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Last name' ),
+                            name: 'last_name',
+                            value: $entry->billing->last_name ?? '',
+                            description: __( 'Provide the billing last name.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Phone' ),
+                            name: 'phone',
+                            value: $entry->billing->phone ?? '',
+                            description: __( 'Billing phone number.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Address 1' ),
+                            name: 'address_1',
+                            value: $entry->billing->address_1 ?? '',
+                            description: __( 'Billing First Address.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Address 2' ),
+                            name: 'address_2',
+                            value: $entry->billing->address_2 ?? '',
+                            description: __( 'Billing Second Address.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Country' ),
+                            name: 'country',
+                            value: $entry->billing->country ?? '',
+                            description: __( 'Billing Country.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'City' ),
+                            name: 'city',
+                            value: $entry->billing->city ?? '',
+                            description: __( 'City' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'PO.Box' ),
+                            name: 'pobox',
+                            value: $entry->billing->pobox ?? '',
+                            description: __( 'Postal Address' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Company' ),
+                            name: 'company',
+                            value: $entry->billing->company ?? '',
+                            description: __( 'Company' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Email' ),
+                            name: 'email',
+                            value: $entry->billing->email ?? '',
+                            description: __( 'Email' ),
+                        )
+                    )
+                ),
+                CrudForm::tab(
+                    identifier: 'shipping',
+                    label: __( 'Shipping Address' ),
+                    fields: CrudForm::fields(
+                        FormInput::text(
+                            label: __( 'First Name' ),
+                            name: 'first_name',
+                            value: $entry->shipping->first_name ?? '',
+                            description: __( 'Provide the shipping First Name.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Last Name' ),
+                            name: 'last_name',
+                            value: $entry->shipping->last_name ?? '',
+                            description: __( 'Provide the shipping Last Name.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Phone' ),
+                            name: 'phone',
+                            value: $entry->shipping->phone ?? '',
+                            description: __( 'Shipping phone number.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Address 1' ),
+                            name: 'address_1',
+                            value: $entry->shipping->address_1 ?? '',
+                            description: __( 'Shipping First Address.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Address 2' ),
+                            name: 'address_2',
+                            value: $entry->shipping->address_2 ?? '',
+                            description: __( 'Shipping Second Address.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Country' ),
+                            name: 'country',
+                            value: $entry->shipping->country ?? '',
+                            description: __( 'Shipping Country.' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'City' ),
+                            name: 'city',
+                            value: $entry->shipping->city ?? '',
+                            description: __( 'City' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'PO.Box' ),
+                            name: 'pobox',
+                            value: $entry->shipping->pobox ?? '',
+                            description: __( 'Postal Address' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Company' ),
+                            name: 'company',
+                            value: $entry->shipping->company ?? '',
+                            description: __( 'Company' ),
+                        ),
+                        FormInput::text(
+                            label: __( 'Email' ),
+                            name: 'email',
+                            value: $entry->shipping->email ?? '',
+                            description: __( 'Email' ),
+                        )
+                    )
+                )
+            )
+        );
     }
 
     /**
