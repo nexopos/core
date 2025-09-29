@@ -54,7 +54,9 @@ class ServiceProvider extends CoreServiceProvider
             } );
         }
 
-        define( 'NS_ROOT', __DIR__ . '/../../' );
+        if ( ! defined( 'NS_ROOT' ) ) {
+            define( 'NS_ROOT', __DIR__ . '/../../' );
+        }
     }
 
     public function boot()
