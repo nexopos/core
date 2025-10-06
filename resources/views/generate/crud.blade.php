@@ -12,7 +12,7 @@ use Illuminate\Http\Request;
 use Ns\Services\CrudService;
 use Ns\Services\CrudEntry;
 use Ns\Classes\CrudTable;
-use Ns\Classes\CrudInput;
+use Ns\Classes\FormInput;
 use Ns\Classes\CrudForm;
 use Ns\Exceptions\NotAllowedException;
 use TorMorten\Eventy\Facades\Events as Hook;
@@ -176,7 +176,7 @@ class {{ ucwords( $Str::camel( $resource_name ) ) }}Crud extends CrudService
     public function getForm( {{ trim( $lastClassName ) }} | null $entry = null ): array
     {
         return CrudForm::form(
-            main: CrudInput::text(
+            main: FormInput::text(
                 label: {{ isset( $module ) ? '__m' : '__' }}( 'Name'{!! isset( $module ) ? ', \'' . $module[ 'namespace' ] . '\'' : "" !!} ),
                 name: 'name',
                 validation: 'required',
@@ -187,7 +187,7 @@ class {{ ucwords( $Str::camel( $resource_name ) ) }}Crud extends CrudService
                     identifier: 'general',
                     label: {{ isset( $module ) ? '__m' : '__' }}( 'General'{!! isset( $module ) ? ', \'' . $module[ 'namespace' ] . '\'' : "" !!} ),
                     fields: CrudForm::fields(
-                        @foreach( $Schema::getColumnListing( $table_name ) as $column )CrudInput::text(
+                        @foreach( $Schema::getColumnListing( $table_name ) as $column )FormInput::text(
                             label: {{ isset( $module ) ? '__m' : '__' }}( '{{ ucwords( $column ) }}'{!! isset( $module ) ? ', \'' . $module[ 'namespace' ] . '\'' : "" !!} ),
                             name: '{{ $column }}',
                             validation: 'required',
@@ -387,12 +387,13 @@ class {{ ucwords( $Str::camel( $resource_name ) ) }}Crud extends CrudService
      */
     public function getLinks(): array
     {
+        nsUrl( '/path/{foo}/{bar}', $bar, $foo )
         return  CrudTable::links(
-            list:  ns()->url( 'dashboard/' . '{{ strtolower( trim( $route_name ) ) }}' ),
-            create:  ns()->url( 'dashboard/' . '{{ strtolower( trim( $route_name ) ) }}/create' ),
-            edit:  ns()->url( 'dashboard/' . '{{ strtolower( trim( $route_name ) ) }}/edit/' ),
-            post:  ns()->url( 'api/crud/' . self::IDENTIFIER ),
-            put:  ns()->url( 'api/crud/' . self::IDENTIFIER . '/{id}' . '' ),
+            list:  nsUrl( 'dashboard/' . '{{ strtolower( trim( $route_name ) ) }}' ),
+            create:  nsUrl( 'dashboard/' . '{{ strtolower( trim( $route_name ) ) }}/create' ),
+            edit:  nsUrl( 'dashboard/' . '{{ strtolower( trim( $route_name ) ) }}/edit/' ),
+            post:  nsUrl( 'api/crud/' . self::IDENTIFIER ),
+            put:  nsUrl( 'api/crud/' . self::IDENTIFIER . '/{id}' . '' ),
         );
     }
 
@@ -405,7 +406,7 @@ class {{ ucwords( $Str::camel( $resource_name ) ) }}Crud extends CrudService
             [
                 'label'         =>  {{ isset( $module ) ? '__m' : '__' }}( 'Delete Selected Entries'{!! isset( $module ) ? ', \'' . $module[ 'namespace' ] . '\'' : "" !!} ),
                 'identifier'    =>  'delete_selected',
-                'url'           =>  ns()->route( 'ns.api.crud-bulk-actions', [
+                'url'           =>  nsRoute( 'ns.api.crud-bulk-actions', [
                     'namespace' =>  self::IDENTIFIER
                 ])
             ]

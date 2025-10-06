@@ -2,7 +2,7 @@
 
 namespace Ns\Classes;
 
-class FormInput extends CrudInput
+class FormInput
 {
     /**
      * Creates a text input field with various customizable parameters.
