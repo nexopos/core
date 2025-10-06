@@ -44,10 +44,11 @@ class FormInput extends CrudInput
      * @param  string        $validation  Validation rules for the password field.
      * @param  string        $description A description or help text for the password field.
      * @param  bool          $disabled    Whether the password field is disabled.
+     * @param  array         $data        Additional data attributes for the password field.
      * @param  callable|null $show        A callable that determines whether the password field should be displayed.
      * @return array         An associative array representing the password field configuration.
      */
-    public static function password( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $show = null )
+    public static function password( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $data = [], $show = null )
     {
         return self::text(
             label: $label,
@@ -57,6 +58,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'password',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -70,10 +72,11 @@ class FormInput extends CrudInput
      * @param  string        $validation  Validation rules for the email field.
      * @param  string        $description A description or help text for the email field.
      * @param  bool          $disabled    Whether the email field is disabled.
+     * @param  array         $data        Additional data attributes for the email field.
      * @param  callable|null $show        A callable that determines whether the email field should be displayed.
      * @return array         An associative array representing the email field configuration.
      */
-    public static function email( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $show = null )
+    public static function email( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $data = [], $show = null )
     {
         return self::text(
             label: $label,
@@ -83,6 +86,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'email',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -97,10 +101,11 @@ class FormInput extends CrudInput
      * @param  string        $description A description or help text for the number field.
      * @param  bool          $disabled    Whether the number field is disabled.
      * @param  array         $errors      An array of error messages for the number field.
+     * @param  array         $data        Additional data attributes for the number field.
      * @param  callable|null $show        A callable that determines whether the number field should be displayed.
      * @return array         An associative array representing the number field configuration.
      */
-    public static function number( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $errors = [], $show = null )
+    public static function number( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $errors = [], $data = [], $show = null )
     {
         return self::text(
             label: $label,
@@ -111,6 +116,7 @@ class FormInput extends CrudInput
             type: 'number',
             value: $value,
             errors: $errors,
+            data: $data,
             show: $show
         );
     }
@@ -125,10 +131,11 @@ class FormInput extends CrudInput
      * @param  string        $description A description or help text for the telephone field.
      * @param  bool          $disabled    Whether the telephone field is disabled.
      * @param  string        $type        The type of the input field (default is 'tel').
+     * @param  array         $data        Additional data attributes for the telephone field.
      * @param  callable|null $show        A callable that determines whether the telephone field should be displayed.
      * @return array         An associative array representing the telephone field configuration.
      */
-    public static function tel( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $type = 'tel', $show = null )
+    public static function tel( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $type = 'tel', $data = [], $show = null )
     {
         return self::text(
             label: $label,
@@ -138,6 +145,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'tel',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -152,10 +160,11 @@ class FormInput extends CrudInput
      * @param  string        $description A description or help text for the hidden field.
      * @param  bool          $disabled    Whether the hidden field is disabled.
      * @param  array         $errors      An array of error messages for the hidden field.
+     * @param  array         $data        Additional data attributes for the hidden field.
      * @param  callable|null $show        A callable that determines whether the hidden field should be displayed.
      * @return array         An associative array representing the hidden field configuration.
      */
-    public static function hidden( $name, $label = '', $value = '', $validation = '', $description = '', $disabled = false, $errors = [], $show = null )
+    public static function hidden( $name, $label = '', $value = '', $validation = '', $description = '', $disabled = false, $errors = [], $data = [], $show = null )
     {
         return self::text(
             label: $label,
@@ -165,6 +174,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'hidden',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -178,10 +188,11 @@ class FormInput extends CrudInput
      * @param  string        $validation  Validation rules for the date field.
      * @param  string        $description A description or help text for the date field.
      * @param  bool          $disabled    Whether the date field is disabled.
+     * @param  array         $data        Additional data attributes for the date field.
      * @param  callable|null $show        A callable that determines whether the date field should be displayed.
      * @return array         An associative array representing the date field configuration.
      */
-    public static function date( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $show = null )
+    public static function date( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $data = [], $show = null )
     {
         return self::text(
             label: $label,
@@ -191,6 +202,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'date',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -210,12 +222,14 @@ class FormInput extends CrudInput
      * @param  array         $props       Additional properties for the select field.
      * @param  bool          $refresh     Whether the select field should be refreshable.
      * @param  array         $errors      An array of error messages for the select field.
+     * @param  array         $data        Additional data attributes for the select field.
      * @param  callable|null $show        A callable that determines whether the select field should be displayed.
+     * @param  bool          $boolean     Whether the select field is a boolean select.
      * @return array         An associative array representing the select field configuration.
      */
-    public static function select( $label, $name, $options, $value = '', $validation = '', $description = '', $disabled = false, $type = 'select', $component = '', $props = [], $refresh = false, $errors = [], $show = null, $boolean = false )
+    public static function select( $label, $name, $options, $value = '', $validation = '', $description = '', $disabled = false, $type = 'select', $component = '', $props = [], $refresh = false, $errors = [], $data = [], $show = null, $boolean = false )
     {
-        return compact( 'label', 'name', 'validation', 'options', 'value', 'description', 'disabled', 'type', 'component', 'props', 'refresh', 'errors', 'show', 'boolean' );
+        return compact( 'label', 'name', 'validation', 'options', 'value', 'description', 'disabled', 'type', 'component', 'props', 'refresh', 'errors', 'data', 'show', 'boolean' );
     }
 
     /**
@@ -232,10 +246,11 @@ class FormInput extends CrudInput
      * @param  array         $props       Additional properties for the searchable select field.
      * @param  bool          $refresh     Whether the searchable select field should be refreshable.
      * @param  array         $errors      An array of error messages for the searchable select field.
+     * @param  array         $data        Additional data attributes for the searchable select field.
      * @param  callable|null $show        A callable that determines whether the searchable select field should be displayed.
      * @return array         An associative array representing the searchable select field configuration.
      */
-    public static function searchSelect( $label, $name, $value = '', $options = [], $validation = '', $description = '', $disabled = false, $component = '', $props = [], $refresh = false, $errors = [], $show = null )
+    public static function searchSelect( $label, $name, $value = '', $options = [], $validation = '', $description = '', $disabled = false, $component = '', $props = [], $refresh = false, $errors = [], $data = [], $show = null )
     {
         return self::select(
             label: $label,
@@ -250,6 +265,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             refresh: $refresh,
             errors: $errors,
+            data: $data,
             show: $show
         );
     }
@@ -304,10 +320,11 @@ class FormInput extends CrudInput
      * @param  string        $validation  Validation rules for the checkbox field.
      * @param  string        $description A description or help text for the checkbox field.
      * @param  bool          $disabled    Whether the checkbox field is disabled.
+     * @param  array         $data        Additional data attributes for the checkbox field.
      * @param  callable|null $show        A callable that determines whether the checkbox field should be displayed.
      * @return array         An associative array representing the checkbox field configuration.
      */
-    public static function checkbox( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $show = null )
+    public static function checkbox( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $data = [], $show = null )
     {
         return self::text(
             label: $label,
@@ -317,6 +334,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'checkbox',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -331,10 +349,11 @@ class FormInput extends CrudInput
      * @param  string        $validation  Validation rules for the multiselect field.
      * @param  string        $description A description or help text for the multiselect field.
      * @param  bool          $disabled    Whether the multiselect field is disabled.
+     * @param  array         $data        Additional data attributes for the multiselect field.
      * @param  callable|null $show        A callable that determines whether the multiselect field should be displayed.
      * @return array         An associative array representing the multiselect field configuration.
      */
-    public static function multiselect( $label, $name, $options, $value = '', $validation = '', $description = '', $disabled = false, $show = null )
+    public static function multiselect( $label, $name, $options, $value = '', $validation = '', $description = '', $disabled = false, $data = [], $show = null )
     {
         return self::select(
             label: $label,
@@ -345,6 +364,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'multiselect',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -359,10 +379,11 @@ class FormInput extends CrudInput
      * @param  string        $validation  Validation rules for the inline multiselect field.
      * @param  string        $description A description or help text for the inline multiselect field.
      * @param  bool          $disabled    Whether the inline multiselect field is disabled.
+     * @param  array         $data        Additional data attributes for the inline multiselect field.
      * @param  callable|null $show        A callable that determines whether the inline multiselect field should be displayed.
      * @return array         An associative array representing the inline multiselect field configuration.
      */
-    public static function inlineMultiselect( $label, $name, $value, $options, $validation = '', $description = '', $disabled = false, $show = null )
+    public static function inlineMultiselect( $label, $name, $value, $options, $validation = '', $description = '', $disabled = false, $data = [], $show = null )
     {
         return self::select(
             label: $label,
@@ -373,6 +394,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'inline-multiselect',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -387,10 +409,11 @@ class FormInput extends CrudInput
      * @param  string        $validation  Validation rules for the select audio field.
      * @param  string        $description A description or help text for the select audio field.
      * @param  bool          $disabled    Whether the select audio field is disabled.
+     * @param  array         $data        Additional data attributes for the select audio field.
      * @param  callable|null $show        A callable that determines whether the select audio field should be displayed.
      * @return array         An associative array representing the select audio field configuration.
      */
-    public static function selectAudio( $label, $name, $value, $options, $validation = '', $description = '', $disabled = false, $show = null )
+    public static function selectAudio( $label, $name, $value, $options, $validation = '', $description = '', $disabled = false, $data = [], $show = null )
     {
         return self::select(
             label: $label,
@@ -401,6 +424,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'select-audio',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -416,11 +440,12 @@ class FormInput extends CrudInput
      * @param  string        $description A description or help text for the switch field.
      * @param  bool          $disabled    Whether the switch field is disabled.
      * @param  array         $errors      An array of error messages for the switch field.
+     * @param  array         $data        Additional data attributes for the switch field.
      * @param  callable|null $show        A callable that determines whether the switch field should be displayed.
      * @param  bool          $boolean     Whether the switch field is a boolean switch.
      * @return array         An associative array representing the switch field configuration.
      */
-    public static function switch( $label, $name, $options, $value = '', $validation = '', $description = '', $disabled = false, $errors = [], $show = null, $boolean = false )
+    public static function switch( $label, $name, $options, $value = '', $validation = '', $description = '', $disabled = false, $errors = [], $data = [], $show = null, $boolean = false )
     {
         return self::select(
             label: $label,
@@ -432,6 +457,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'switch',
             errors: $errors,
+            data: $data,
             show: $show,
             boolean: $boolean
         );
@@ -476,10 +502,11 @@ class FormInput extends CrudInput
      * @param  string        $validation  Validation rules for the CKEditor field.
      * @param  string        $description A description or help text for the CKEditor field.
      * @param  bool          $disabled    Whether the CKEditor field is disabled.
+     * @param  array         $data        Additional data attributes for the CKEditor field.
      * @param  callable|null $show        A callable that determines whether the CKEditor field should be displayed.
      * @return array         An associative array representing the CKEditor field configuration.
      */
-    public static function ckeditor( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $show = null )
+    public static function ckeditor( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $data = [], $show = null )
     {
         return self::text(
             label: $label,
@@ -489,6 +516,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'ckeditor',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -502,10 +530,11 @@ class FormInput extends CrudInput
      * @param  string        $validation  Validation rules for the datetime picker field.
      * @param  string        $description A description or help text for the datetime picker field.
      * @param  bool          $disabled    Whether the datetime picker field is disabled.
+     * @param  array         $data        Additional data attributes for the datetime picker field.
      * @param  callable|null $show        A callable that determines whether the datetime picker field should be displayed.
      * @return array         An associative array representing the datetime picker field configuration.
      */
-    public static function datetime( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $show = null )
+    public static function datetime( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $data = [], $show = null )
     {
         return self::text(
             label: $label,
@@ -515,6 +544,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'datetimepicker',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -528,10 +558,11 @@ class FormInput extends CrudInput
      * @param  string        $validation  Validation rules for the date range picker field.
      * @param  string        $description A description or help text for the date range picker field.
      * @param  bool          $disabled    Whether the date range picker field is disabled.
+     * @param  array         $data        Additional data attributes for the date range picker field.
      * @param  callable|null $show        A callable that determines whether the date range picker field should be displayed.
      * @return array         An associative array representing the date range picker field configuration.
      */
-    public static function daterange( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $show = null )
+    public static function daterange( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $data = [], $show = null )
     {
         return self::text(
             label: $label,
@@ -541,6 +572,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'daterangepicker',
             value: $value,
+            data: $data,
             show: $show
         );
     }
@@ -572,10 +604,11 @@ class FormInput extends CrudInput
      * @param  string        $validation  Validation rules for the editor field.
      * @param  string        $description A description or help text for the editor field.
      * @param  bool          $disabled    Whether the editor field is disabled.
+     * @param  array         $data        Additional data attributes for the editor field.
      * @param  callable|null $show        A callable that determines whether the editor field should be displayed.
      * @return array         An associative array representing the editor field configuration.
      */
-    public static function editor( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $show = null )
+    public static function editor( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $data = [], $show = null )
     {
         return self::text(
             label: $label,
@@ -585,6 +618,7 @@ class FormInput extends CrudInput
             disabled: $disabled,
             type: 'editor',
             value: $value,
+            data: $data,
             show: $show
         );
     }
