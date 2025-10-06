@@ -133,7 +133,7 @@ trait App
      * @param array $arguments
      * @return string
      */
-    public function swapArguments( $string, $arguments = [] )
+    public static function swapArguments( $string, $arguments = [] )
     {
         // we'll replace any template argument by it's value
         // the template looks like {argument}
