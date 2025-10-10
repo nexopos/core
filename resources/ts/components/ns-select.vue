@@ -8,7 +8,14 @@
                 :class="inputClass" 
                 class="form-input block w-full pl-7 pr-12 sm:text-sm sm:leading-5 h-10 appearance-none">
                 <option :value="null">{{ __( 'Choose an option' ) }}</option>
-                <option :key="index" :value="option.value" v-for="(option,index) of field.options" class="py-2">{{ option.label }}</option>
+                <template v-if="field.value.length > 0">
+                    <template v-for="(option, index) of field.options" :key="index">
+                        <ns-select-option :option="option" :level="0"></ns-select-option>
+                    </template>
+                </template>
+                <template v-else>
+                    <option :disabled="option.disabled || false" :key="index" :value="option.value" v-for="(option,index) of field.options" class="py-2">{{ option.label }}</option>
+                </template>
             </select>
         </div>
         <ns-field-description :field="field"></ns-field-description>
@@ -16,6 +23,7 @@
 </template>
 <script>
 import { __ } from '~/libraries/lang';
+
 export default {
     data: () => {
         return {
