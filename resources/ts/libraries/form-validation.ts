@@ -450,7 +450,7 @@ export default class FormValidation {
                     field.value === undefined || field.value === null || field.value.length === 0,
     
                 email: (field, rule) =>
-                    field.value !== undefined && field.value.length > 0 && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(field.value),
+                    field.value !== undefined && field.value.length > 0 && !/^[\w.-]+@([\w-]+\.)+[\w-]{2,}$/i.test(field.value),
     
                 same: (field, rule) => {
                     const similar = this.getValueByDotNotation( form, rule.value );

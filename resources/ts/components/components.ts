@@ -35,7 +35,6 @@ import nsPromptPopup        from  '~/popups/ns-prompt-popup.vue';
 import nsSearch             from  './ns-search.vue';
 import nsSearchSelect       from  './ns-search-select.vue';
 import nsSelect             from  './ns-select.vue';
-import nsSelectOption from './ns-select-option.vue';
 import nsSelectAudio        from  './ns-select-audio.vue';
 import nsSpinner            from  './ns-spinner.vue';
 import nsSubmenu            from  './ns-submenu.vue';
@@ -55,7 +54,6 @@ export {
     nsInput, 
     nsInlineMultiselect,
     nsSelect, 
-    nsSelectOption,
     nsCheckbox, 
     nsCrud, 
     nsDragzone,
