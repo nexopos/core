@@ -36,7 +36,7 @@ php artisan vendor:publish
 ```
 Note that you'll be asked to select the provider. Select `Provider: Ns\Providers\ServiceProvider`. Alternatively, you'll update/install assets by running this command:
 
-````
+```
 php artisan ns:publish-assets
 ```
 
