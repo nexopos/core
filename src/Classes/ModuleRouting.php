@@ -84,9 +84,7 @@ class ModuleRouting
 
         foreach ( $modulesService->getEnabledAndAutoloadedModules() as $module ) {
             if ( $module[ 'console-file' ] !== false ) {
-                $schedule->group( function( Schedule $schedule ) use ( $module ) {
-                    include_once $module[ 'console-file' ];
-                });
+                include_once $module[ 'console-file' ];
             }
         }
     }
