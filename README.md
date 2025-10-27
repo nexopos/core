@@ -74,6 +74,8 @@ The impacted files are:
 - config/filesystems.php
 - routes/api.php
 
+#### Installing Web and API routes
+
 ```
 php artisan ns:install --routes
 ```
@@ -81,6 +83,13 @@ These commands will perform two things:
 
 - It will publish the filesystem required to the filesystems.php
 - It will update your api.php to trigger an event.
+
+#### Installing Scheduling
+to give access to laravel scheduling to the module, we need to enable it by running the following command:
+
+```
+php artisan ns:install --scheduling
+```
 
 ## Authentication
 

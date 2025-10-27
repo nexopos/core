@@ -2,6 +2,7 @@
 
 namespace Ns\Classes;
 
+use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Support\Facades\Route;
 use Ns\Http\Middleware\CheckApplicationHealthMiddleware;
 use Ns\Http\Middleware\CheckMigrationStatus;
@@ -72,5 +73,21 @@ class ModuleRouting
             ->middleware( [ InstalledStateMiddleware::class, 'api' ] )
             ->namespace( 'Modules\\' . $module[ 'namespace' ] . '\Http\Controllers' )
             ->group( $module[ 'api-file' ] );
+    }
+
+    public static function schedule( Schedule $schedule )
+    {
+        /**
+         * @var ModulesService $Modules
+         */
+        $modulesService = app()->make( ModulesService::class );
+
+        foreach ( $modulesService->getEnabledAndAutoloadedModules() as $module ) {
+            if ( $module[ 'console-file' ] !== false ) {
+                $schedule->group( function( Schedule $schedule ) use ( $module ) {
+                    include_once $module[ 'console-file' ];
+                });
+            }
+        }
     }
 }
