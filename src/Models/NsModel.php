@@ -49,12 +49,16 @@ abstract class NsModel extends NsRootModel
         static::created( function ( $model ) {
             if ( $model->hasDispatchableFields() ) {
                 $model->detectChanges();
+                // Update oldAttributes to current state after detecting changes
+                $model->oldAttributes = $model->getAttributes();
             }
         } );
 
         static::updated( function ( $model ) {
             if ( $model->hasDispatchableFields() ) {
                 $model->detectChanges();
+                // Update oldAttributes to current state after detecting changes
+                $model->oldAttributes = $model->getAttributes();
             }
         } );
     }
@@ -136,6 +140,15 @@ abstract class NsModel extends NsRootModel
             $oldAttributes = array_filter( $this->oldAttributes, function ( $value ) {
                 return is_string( $value ) || is_numeric( $value ) || is_bool( $value );
             } );
+
+            /**
+             * We need to apply casting to the current attributes
+             */
+            $castable = $this->getCasts();
+
+            $currentAttributes = collect( $currentAttributes )->mapWithKeys( function ( $value, $key ) use ( $castable ) {
+                return [ $key => in_array( $key, array_keys( $castable ), true ) ? $this->castAttribute( $key, $value ) : $value ];
+            } )->toArray();
 
             $changedAttributes = array_diff_assoc( $currentAttributes, $oldAttributes );
 

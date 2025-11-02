@@ -199,6 +199,22 @@ class ModulesService
 
                     return [ $locale[ '@attributes' ][ 'lang' ] => $locale[ 0 ] ];
                 } );
+            } else {
+                // Fallback: if there is a <description> element without <locale> children, treat its text as English.
+                $descriptionNode = $xmlElement->children()->description ?? null;
+                if ( $descriptionNode instanceof \SimpleXMLElement ) {
+                    $rawDescription = trim( (string) $descriptionNode );
+                    if ( $rawDescription !== '' ) {
+                        // Ensure description is an array and assign to 'en'.
+                        if ( ! isset( $config[ 'description' ] ) || ! is_array( $config[ 'description' ] ) ) {
+                            $config[ 'description' ] = [];
+                        }
+                        // Don't overwrite if already defined.
+                        if ( ! isset( $config[ 'description' ][ 'en' ] ) ) {
+                            $config[ 'description' ][ 'en' ] = $rawDescription;
+                        }
+                    }
+                }
             }
 
             $config[ 'requires' ] = collect( $xmlElement->children()->requires->xpath( '//dependency' ) )->mapWithKeys( function ( $module ) {
@@ -664,6 +680,8 @@ class ModulesService
                 return $module;
             }
         }
+
+        return null;
     }
 
     /**
@@ -767,6 +785,7 @@ class ModulesService
                 'module' => $module,
             ];
         }
+        return [];
     }
 
     /**
@@ -968,15 +987,25 @@ class ModulesService
             Storage::disk( 'ns-modules' )->exists( $moduleNamespace . DIRECTORY_SEPARATOR . 'Public' ) &&
             ! is_link( base_path( 'public' ) . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . strtolower( $moduleNamespace ) )
         ) {
-            $target = base_path( 'modules/' . $moduleNamespace . '/Public' );
+            $linkPath = base_path( 'public' ) . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . strtolower( $moduleNamespace );
+            
+            // Check if link exists and is broken, then remove it
+            if ( is_link( $linkPath ) && ! file_exists( readlink( $linkPath ) ) ) {
+                unlink( $linkPath );
+            }
+            
+            // Create symlink if it doesn't exist
+            if ( ! is_link( $linkPath ) ) {
+                $target = base_path( 'modules/' . $moduleNamespace . '/Public' );
 
-            if ( ! \windows_os() ) {
-                $link = @\symlink( $target, public_path( '/modules/' . strtolower( $moduleNamespace ) ) );
-            } else {
-                $mode = 'J';
-                $link = public_path( 'modules' . DIRECTORY_SEPARATOR . strtolower( $moduleNamespace ) );
-                $target = base_path( 'modules' . DIRECTORY_SEPARATOR . $moduleNamespace . DIRECTORY_SEPARATOR . 'Public' );
-                $link = exec( "mklink /{$mode} \"{$link}\" \"{$target}\"" );
+                if ( ! \windows_os() ) {
+                    $link = @\symlink( $target, public_path( '/modules/' . strtolower( $moduleNamespace ) ) );
+                } else {
+                    $mode = 'J';
+                    $link = public_path( 'modules' . DIRECTORY_SEPARATOR . strtolower( $moduleNamespace ) );
+                    $target = base_path( 'modules' . DIRECTORY_SEPARATOR . $moduleNamespace . DIRECTORY_SEPARATOR . 'Public' );
+                    $link = exec( "mklink /{$mode} \"{$link}\" \"{$target}\"" );
+                }
             }
         }
 
@@ -988,15 +1017,25 @@ class ModulesService
             Storage::disk( 'ns-modules' )->exists( $moduleNamespace . DIRECTORY_SEPARATOR . 'Lang' ) &&
             ! is_link( base_path( 'public' ) . DIRECTORY_SEPARATOR . 'modules-lang' . DIRECTORY_SEPARATOR . strtolower( $moduleNamespace ) )
         ) {
-            $target = base_path( 'modules/' . $moduleNamespace . '/Lang' );
+            $linkPath = base_path( 'public' ) . DIRECTORY_SEPARATOR . 'modules-lang' . DIRECTORY_SEPARATOR . strtolower( $moduleNamespace );
+            
+            // Check if link exists and is broken, then remove it
+            if ( is_link( $linkPath ) && ! file_exists( readlink( $linkPath ) ) ) {
+                unlink( $linkPath );
+            }
+            
+            // Create symlink if it doesn't exist
+            if ( ! is_link( $linkPath ) ) {
+                $target = base_path( 'modules/' . $moduleNamespace . '/Lang' );
 
-            if ( ! \windows_os() ) {
-                $link = @\symlink( $target, public_path( '/modules-lang/' . strtolower( $moduleNamespace ) ) );
-            } else {
-                $mode = 'J';
-                $link = public_path( 'modules-lang' . DIRECTORY_SEPARATOR . strtolower( $moduleNamespace ) );
-                $target = base_path( 'modules' . DIRECTORY_SEPARATOR . $moduleNamespace . DIRECTORY_SEPARATOR . 'Lang' );
-                $link = exec( "mklink /{$mode} \"{$link}\" \"{$target}\"" );
+                if ( ! \windows_os() ) {
+                    $link = @\symlink( $target, public_path( '/modules-lang/' . strtolower( $moduleNamespace ) ) );
+                } else {
+                    $mode = 'J';
+                    $link = public_path( 'modules-lang' . DIRECTORY_SEPARATOR . strtolower( $moduleNamespace ) );
+                    $target = base_path( 'modules' . DIRECTORY_SEPARATOR . $moduleNamespace . DIRECTORY_SEPARATOR . 'Lang' );
+                    $link = exec( "mklink /{$mode} \"{$link}\" \"{$target}\"" );
+                }
             }
         }
     }
@@ -1771,6 +1810,8 @@ class ModulesService
                     'name' => $config[ 'namespace' ] . 'Event',
                 ] );
                 break;
+            default:
+                throw new \InvalidArgumentException( 'Unsupported stream content type: ' . $content );
         }
     }
 }
