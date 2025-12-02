@@ -48,9 +48,9 @@ class ModulesServiceProvider extends ServiceProvider
     {
         $this->app->singleton( ModulesService::class, function ( $app ) {
             $this->modules = new ModulesService;
+            $this->modules->load();
 
             if ( Helper::installed() ) {
-                $this->modules->load();
 
                 /**
                  * We want to make sure all modules are loaded, before
@@ -77,8 +77,9 @@ class ModulesServiceProvider extends ServiceProvider
                     $this->modules->triggerServiceProviders( $module, 'register', ServiceProvider::class );
                 } );
 
-                event( new ModulesLoadedEvent( $this->modules->get() ) );
             }
+            
+            ModulesLoadedEvent::dispatch( $this->modules->get() );
 
             return $this->modules;
         } );
