@@ -35,6 +35,7 @@
     "@editorjs/list": "^2.0.8",
     "@editorjs/paragraph": "^2.11.7",
     "@editorjs/quote": "^2.7.6",
+    "@editorjs/table": "^2.4.5",
     "@editorjs/warning": "^1.4.1",
     "@wordpress/hooks": "^4.15.0",
     "chart.js": "^4.4.7",

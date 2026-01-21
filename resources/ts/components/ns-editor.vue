@@ -6,11 +6,11 @@ import Warning from '@editorjs/warning';
 import Paragraph from '@editorjs/paragraph';
 import Delimiter from '@editorjs/delimiter';
 import EditorjsList from '@editorjs/list';
+import Table from '@editorjs/table';
 import DragDrop from "editorjs-drag-drop";
 import { onMounted, ref } from 'vue';
 import { __ } from '~/libraries/lang';
 import { default as nsMedia } from '~/pages/dashboard/ns-media.vue';
-import NsPosLoadingPopup from '~/popups/ns-pos-loading-popup.vue';
 
 declare const Popup;
 
@@ -223,6 +223,14 @@ onMounted(() => {
                 inlineToolbar: true,
                 config: {
                     defaultStyle: 'unordered'
+                },
+            },
+            table: {
+                class: Table,
+                inlineToolbar: true,
+                config: {
+                    rows: 2,
+                    cols: 3,
                 },
             },
             delimiter: {
