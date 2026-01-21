@@ -625,30 +625,6 @@ class UserCrud extends CrudService
         );
 
         $entry->action(
-            identifier: 'customers_orders',
-            label: __( 'Orders' ),
-            url: nsUrl( 'dashboard/users/' . $entry->id . '/orders' ),
-        );
-
-        $entry->action(
-            identifier: 'customers_rewards',
-            label: __( 'Rewards' ),
-            url: nsUrl( 'dashboard/users/' . $entry->id . '/rewards' ),
-        );
-
-        $entry->action(
-            identifier: 'customers_coupons',
-            label: __( 'Coupons' ),
-            url: nsUrl( 'dashboard/users/' . $entry->id . '/coupons' ),
-        );
-
-        $entry->action(
-            identifier: 'customers_history',
-            label: __( 'Wallet History' ),
-            url: nsUrl( 'dashboard/users/' . $entry->id . '/account-history' ),
-        );
-
-        $entry->action(
             identifier: 'delete',
             label: __( 'Delete' ),
             type: 'DELETE',

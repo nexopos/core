@@ -69,6 +69,8 @@ class CrudServiceProvider extends ServiceProvider
 
                 if ( $class->count() === 1 ) {
                     return $class->first();
+                } else if ( $class->count() > 1 ) {
+                    throw new \Exception( 'Multiple CRUD classes found for identifier ' . $identifier . ' in module ' . $module[ 'namespace' ] );
                 }
 
                 return false;

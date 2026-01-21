@@ -387,7 +387,6 @@ class {{ ucwords( $Str::camel( $resource_name ) ) }}Crud extends CrudService
      */
     public function getLinks(): array
     {
-        nsUrl( '/path/{foo}/{bar}', $bar, $foo )
         return  CrudTable::links(
             list:  nsUrl( 'dashboard/' . '{{ strtolower( trim( $route_name ) ) }}' ),
             create:  nsUrl( 'dashboard/' . '{{ strtolower( trim( $route_name ) ) }}/create' ),
