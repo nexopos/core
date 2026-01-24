@@ -4,6 +4,7 @@ namespace Ns\Models;
 
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Collection;
 
@@ -60,15 +61,13 @@ class Role extends NsRootModel
     /**
      * Relation with users
      **/
-    public function users()
+    public function users(): BelongsToMany
     {
-        return $this->hasManyThrough(
+        return $this->belongsToMany(
             User::class,
-            UserRoleRelation::class,
+            'users_roles_relations',
             'role_id',
-            'id',
-            'id',
-            'user_id',
+            'user_id'
         );
     }
 
