@@ -144,4 +144,39 @@ trait App
 
         return $string;
     }
+
+    /*
+     * @deprecated
+     */
+    public static function filesCopied()
+    {
+        /**
+         * We'll start by checking if we have our filessytem copied
+         */
+        $filesystemPath = config_path('filesystems.php');
+
+        $filesystemContent  =   file_get_contents($filesystemPath);
+
+        if ( ! preg_match( '/NexoPOS: FileSystem - Start/', $filesystemContent ) && ! preg_match( '/NexoPOS: FileSystem - End/', $filesystemContent ) ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static function filesystemRegistered()
+    {
+        /**
+         * We'll start by checking if we have our filesystem registered
+         */
+        $filesystemPath = config_path('filesystems.php');
+
+        $filesystemContent  =   file_get_contents($filesystemPath);
+
+        if ( ! preg_match( '/NexoPOS: FileSystem - Start/', $filesystemContent ) || ! preg_match( '/NexoPOS: FileSystem - End/', $filesystemContent ) ) {
+            return false;
+        }
+
+        return true;
+    }
 }

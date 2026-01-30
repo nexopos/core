@@ -236,7 +236,7 @@ class InstallCommand extends Command
         $apiFile = base_path( 'routes/api.php' );
 
         if ( ! file_exists( $apiFile ) ) {
-            return $this->error( __( 'An api file was found. Make sure to create one and try again.' ) );
+            return $this->error( __( 'An api file was not found. Make sure to create one and try again.' ) );
         }
 
         $apiContent = file_get_contents( $apiFile );

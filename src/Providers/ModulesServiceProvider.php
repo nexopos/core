@@ -50,7 +50,8 @@ class ModulesServiceProvider extends ServiceProvider
             $this->modules = new ModulesService;
             $this->modules->load();
 
-            if ( Helper::installed() ) {
+            if ( Helper::filesystemRegistered() ) {
+                $this->modules->load();
 
                 /**
                  * We want to make sure all modules are loaded, before

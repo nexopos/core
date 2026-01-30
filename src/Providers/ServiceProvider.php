@@ -32,8 +32,8 @@ class ServiceProvider extends CoreServiceProvider
          * If it's the case, we can register the service providers.
          */
         $this->app->register( AppServiceProvider::class );
-
-        if ( Helper::checkDatabaseExistence() ) {
+        
+        if ( Helper::checkDatabaseExistence() && Helper::filesystemRegistered() ) {
             $this->app->register( AuthServiceProvider::class );
             $this->app->register( CrudServiceProvider::class );
             $this->app->register( EventServiceProvider::class );
