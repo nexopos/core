@@ -270,7 +270,7 @@ The CoreService provides the primary interface for permission checking throughou
 ns()->allowedTo(string|array $permissions): bool
 
 // Check if current user has specific role
-ns()->hasRole(string $roleNamespace): bool
+ns()->hasRoles(string $roleNamespace): bool
 
 // Get current user details
 ns()->getUserDetails(): Collection
@@ -290,7 +290,7 @@ if (ns()->allowedTo(['create.products', 'update.products'])) {
 }
 
 // Check role
-if (ns()->hasRole(Role::ADMIN)) {
+if (ns()->hasRoles(Role::ADMIN)) {
     // User is admin
 }
 ```

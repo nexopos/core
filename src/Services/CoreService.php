@@ -102,7 +102,7 @@ class CoreService
     /**
      * check if the logged user has a specific role.
      */
-    public function hasRole( string $roleNamespace ): bool
+    public function hasRoles( string $roleNamespace ): bool
     {
         return Auth::user()
             ->roles()

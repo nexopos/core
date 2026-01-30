@@ -34,8 +34,8 @@ return new class extends Migration
          * Each of the following files will define a role
          * and permissions that are assigned to those roles.
          */
-        include_once dirname( __FILE__ ) . '/../permissions/user-role.php';
-        include_once dirname( __FILE__ ) . '/../permissions/admin-role.php';
+        include dirname( __FILE__ ) . '/../permissions/user-role.php';
+        include dirname( __FILE__ ) . '/../permissions/admin-role.php';
     }
 
     /**

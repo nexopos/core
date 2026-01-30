@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Ns\Classes\Model;
 use Ns\Events\UserAfterCreatedEvent;
 use Ns\Events\UserAfterUpdatedEvent;
+use Ns\Factory\UserFactory;
 use Ns\Services\UserOptions;
 use Ns\Traits\NsDependable;
 
@@ -37,6 +38,14 @@ class User extends Authenticatable
         NsDependable;
 
     protected $table = 'users';
+
+    /**
+     * Create a new factory instance for the model
+     */
+    protected static function newFactory()
+    {
+        return UserFactory::new();
+    }
 
     protected $casts = [
         'active' => 'boolean',
