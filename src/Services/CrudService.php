@@ -361,9 +361,9 @@ class CrudService
              * mentionned on the fillable array.
              */
             if ( empty( $fillable ) || (
-                in_array( $this->defaultAuthorColumn, $fillable )
+                in_array( $resource->defaultAuthorColumn, $fillable )
             ) ) {
-                $entry->{$this->defaultAuthorColumn} = Auth::id();
+                $entry->{$resource->defaultAuthorColumn} = Auth::id();
             }
 
             /**
@@ -408,7 +408,7 @@ class CrudService
                     }
 
                     $model->$localKey = $entry->$foreignKey;
-                    $model->{$this->defaultAuthorColumn} = Auth::id();
+                    $model->{$resource->defaultAuthorColumn} = Auth::id();
                     $model->save();
                 }
             }
