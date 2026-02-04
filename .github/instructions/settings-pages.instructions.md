@@ -292,7 +292,54 @@ ns()->option->set([
 
 ## Registration
 
-Settings with `AUTOLOAD = true` are automatically discovered. For manual registration:
+Settings with `AUTOLOAD = true` are automatically discovered and accessible at:
+```
+/dashboard/settings/{IDENTIFIER}
+```
+
+Where `{IDENTIFIER}` is the value of the `IDENTIFIER` constant in your settings class.
+
+### Adding Menu Link to Dashboard
+
+To make your settings page accessible from the dashboard menu, add it as a child of the "Settings" menu in your module's main file:
+
+```php
+<?php
+namespace Modules\ModuleName;
+
+use Ns\Services\Module;
+use Ns\Classes\Hook;
+
+class ModuleNameModule extends Module
+{
+    public function __construct()
+    {
+        parent::__construct(__FILE__);
+
+        // Add settings menu item under Settings menu
+        Hook::addFilter('ns-dashboard-menus', function ($menus) {
+            if (isset($menus['settings'])) {
+                if (!isset($menus['settings']['childrens'])) {
+                    $menus['settings']['childrens'] = [];
+                }
+
+                $menus['settings']['childrens']['module-settings'] = [
+                    'label' => __m('Module Settings', 'ModuleName'),
+                    'href' => url('/dashboard/settings/module_settings'), // Use IDENTIFIER here
+                ];
+            }
+
+            return $menus;
+        });
+    }
+}
+```
+
+**Important Notes:**
+- The `href` must match: `/dashboard/settings/{IDENTIFIER}`
+- The identifier in the URL must match the `IDENTIFIER` constant in your settings class
+- Use `__m()` for translatable labels
+- The menu key (`'module-settings'`) should be unique to avoid conflicts
 
 ## Best Practices
 
@@ -302,3 +349,4 @@ Settings with `AUTOLOAD = true` are automatically discovered. For manual registr
 4. **Validate input**: Use appropriate validation rules
 5. **Document settings**: Include helpful descriptions
 6. **Use proper naming**: Use descriptive setting names with module prefix
+7. **Register menu**: Always add a menu link to make settings discoverable

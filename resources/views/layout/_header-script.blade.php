@@ -30,10 +30,12 @@ $dateService    =   app()->make( DateService::class );
             format: `{{ $dateService->convertFormatToMomment( ns()->option->get( 'ns_datetime_format', 'Y-m-d H:i:s' ) ) }}`
         }
 
+        @if ( isset( $theme ) )
         /**
          * Let's define the actual theme used
          */
         window.ns.theme     =   `{{ $theme }}`;
+        @endif
 
         /**
          * define the current language selected by the user or

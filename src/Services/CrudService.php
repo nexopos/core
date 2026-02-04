@@ -38,6 +38,8 @@ class CrudService
         'checkboxes' => true, // enable checkboxes
     ];
 
+    protected $defaultAuthorColumn = 'author';
+
     /**
      * Actions Array
      */
@@ -359,9 +361,9 @@ class CrudService
              * mentionned on the fillable array.
              */
             if ( empty( $fillable ) || (
-                in_array( 'author', $fillable )
+                in_array( $this->defaultAuthorColumn, $fillable )
             ) ) {
-                $entry->author = Auth::id();
+                $entry->{$this->defaultAuthorColumn} = Auth::id();
             }
 
             /**
@@ -406,7 +408,7 @@ class CrudService
                     }
 
                     $model->$localKey = $entry->$foreignKey;
-                    $model->author = Auth::id();
+                    $model->{$this->defaultAuthorColumn} = Auth::id();
                     $model->save();
                 }
             }
