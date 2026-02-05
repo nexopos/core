@@ -17,7 +17,6 @@ return new class extends Migration
             Schema::create( 'medias', function ( Blueprint $table ) {
                 $table->increments( 'id' );
                 $table->string( 'name' );
-                $table->string( 'type' );
                 $table->string( 'slug' );
                 $table->string( 'extension' );
                 $table->integer( 'user_id' );
