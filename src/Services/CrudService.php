@@ -204,7 +204,7 @@ class CrudService
         'value' => 'id',
     ];
 
-    private $reflection;
+    protected $reflection;
 
     /**
      * Construct Parent
@@ -577,7 +577,7 @@ class CrudService
         return $this->prependOptions;
     }
 
-    private function triggerScope( $scope, $query )
+    protected function triggerScope( $scope, $query )
     {
         if ( method_exists( $scope, 'apply' ) ) {
             $scope->apply( $query, new ( $this->getModel() ) );
@@ -831,26 +831,7 @@ class CrudService
             $this->hook( $query );
         }
 
-        /**
-         * This section will explicitely add support to CrudScope.
-         */
-        $attributes = $this->reflection->getAttributes( CrudScope::class );
-
-        foreach ( $attributes as $attribute ) {
-            $instance = $attribute->newInstance();
-
-            if ( is_string( $instance->class ) ) {
-                $this->triggerScope( new $instance->class( ...$instance->arguments ), $query );
-            }
-
-            if ( is_array( $instance->class ) ) {
-                foreach ( $instance->class as $class ) {
-                    if ( is_string( $class ) ) {
-                        $this->triggerScope( new $class( ...$instance->arguments ), $query );
-                    }
-                }
-            }
-        }
+        $this->applyScopes( $query );
 
         /**
          * try to run the where in statement
@@ -1034,6 +1015,34 @@ class CrudService
         } );
 
         return $entries;
+    }
+
+    /**
+     * We'll decouple apply scope to allow future extensibility and to make sure that
+     * CrudScope can be applied even if the Crud instance doesn't have a "getEntries" method.
+     */
+    protected function applyScopes( $query ): void
+    {
+        /**
+         * This section will explicitely add support to CrudScope.
+         */
+        $attributes = $this->reflection->getAttributes( CrudScope::class );
+
+        foreach ( $attributes as $attribute ) {
+            $instance = $attribute->newInstance();
+
+            if ( is_string( $instance->class ) ) {
+                $this->triggerScope( new $instance->class( ...$instance->arguments ), $query );
+            }
+
+            if ( is_array( $instance->class ) ) {
+                foreach ( $instance->class as $class ) {
+                    if ( is_string( $class ) ) {
+                        $this->triggerScope( new $class( ...$instance->arguments ), $query );
+                    }
+                }
+            }
+        }
     }
 
     protected function setActions( CrudEntry $entry ): CrudEntry

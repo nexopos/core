@@ -21,7 +21,14 @@ class GenerateModuleCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'make:module {--force}';
+    protected $signature = 'make:module 
+                            {--force : Overwrite existing module}
+                            {--namespace= : Module namespace}
+                            {--name= : Module name}
+                            {--author= : Author name}
+                            {--description= : Module description}
+                            {--version=1.0 : Module version}
+                            {--no-interaction : Run without any interaction}';
 
     /**
      * The console command description.
@@ -49,10 +56,52 @@ class GenerateModuleCommand extends Command
     public function handle()
     {
         if ( Helper::installed() ) {
-            $this->askInformations();
+            if ( $this->option( 'no-interaction' ) || $this->hasAllRequiredOptions() ) {
+                $this->generateModuleNonInteractive();
+            } else {
+                $this->askInformations();
+            }
         } else {
             $this->error( 'NexoPOS is not yet installed.' );
         }
+    }
+
+    /**
+     * Check if all required options are provided
+     *
+     * @return bool
+     */
+    private function hasAllRequiredOptions()
+    {
+        return $this->option( 'namespace' ) 
+            && $this->option( 'name' ) 
+            && $this->option( 'author' ) 
+            && $this->option( 'description' );
+    }
+
+    /**
+     * Generate module without interaction
+     *
+     * @return void
+     */
+    private function generateModuleNonInteractive()
+    {
+        $this->module[ 'namespace' ] = ucwords( $this->option( 'namespace' ) );
+        $this->module[ 'name' ] = $this->option( 'name' );
+        $this->module[ 'author' ] = $this->option( 'author' );
+        $this->module[ 'description' ] = $this->option( 'description' );
+        $this->module[ 'version' ] = $this->option( 'version' ) ?: '1.0';
+        $this->module[ 'force' ] = $this->option( 'force' );
+
+        try {
+            $response = $this->moduleService->generateModule( $this->module );
+            $this->info( $response[ 'message' ] );
+        } catch ( NotAllowedException $exception ) {
+            $this->error( 'A similar module has been found. Use --force to overwrite.' );
+            return 1;
+        }
+
+        return 0;
     }
 
     /**

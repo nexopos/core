@@ -95,11 +95,11 @@ export default {
 
             this.formValidation.disableForm( this.form );
 
-            if ( this.submitUrl === undefined ) {
+            if ( this.submitUrl === undefined || this.links?.post === undefined ) {
                 return nsSnackBar.error( __( 'No submit URL was provided' ), __( 'Okay' ) );
             }
 
-            nsHttpClient[ this.submitMethod ? this.submitMethod.toLowerCase() : 'post' ]( this.appendQueryParamas( this.submitUrl ), this.formValidation.extractForm( this.form ) )
+            nsHttpClient[ this.submitMethod ? this.submitMethod.toLowerCase() : 'post' ]( this.appendQueryParamas( this.submitUrl || this.links.post ), this.formValidation.extractForm( this.form ) )
                 .subscribe( result => {
                     if ( result.status === 'success' ) {
                         /**

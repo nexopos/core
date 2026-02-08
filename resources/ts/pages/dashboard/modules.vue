@@ -60,8 +60,8 @@
                         </p>
                         <template v-if="typeof moduleObject.description === 'object'">
                             <p class="py-2 text-sm">
-                                {{ truncateText( moduleObject.description[ currentLocale ], 20, '...' ) }}
-                                <a class="text-xs text-info-tertiary hover:underline" @click="openPopupDetails( moduleObject )" v-if="countWords( moduleObject.description[ currentLocale ] ) > 20" href="javascript:void(0)">[{{  __( 'Read More' ) }}]</a>
+                                {{ truncateText( moduleObject.description[ currentLocale ] || moduleObject.description['en'] || '', 20, '...' ) }}
+                                <a class="text-xs text-info-tertiary hover:underline" @click="openPopupDetails( moduleObject )" v-if="countWords( moduleObject.description[ currentLocale ] || moduleObject.description['en'] || '' ) > 20" href="javascript:void(0)">[{{  __( 'Read More' ) }}]</a>
                             </p>
                         </template>
                     </div>

@@ -15,7 +15,15 @@ class CrudGeneratorCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'make:crud {module}';
+    protected $signature = 'make:crud 
+                            {module : Module namespace}
+                            {--resource= : CRUD resource name}
+                            {--table= : Database table name}
+                            {--slug= : URL slug/route name}
+                            {--identifier= : CRUD identifier (e.g., system.users)}
+                            {--model= : Full model class name (e.g., Ns\\Models\\Order)}
+                            {--relations=* : Relations in format "foreign_table,foreign_key,local_key"}
+                            {--fillable= : Comma-separated fillable columns}';
 
     /**
      * The console command description.
@@ -55,7 +63,60 @@ class CrudGeneratorCommand extends Command
             throw new Exception( sprintf( __( 'Unable to find a module having the identifier/namespace "%s"' ), $moduleNamespace ) );
         }
 
+        if ( $this->option( 'no-interaction' ) || $this->hasAllRequiredOptions() ) {
+            return $this->generateCrudNonInteractive();
+        }
+
         return $this->askResourceName();
+    }
+
+    /**
+     * Check if all required options are provided
+     *
+     * @return bool
+     */
+    private function hasAllRequiredOptions()
+    {
+        return $this->option( 'resource' ) 
+            && $this->option( 'table' ) 
+            && $this->option( 'slug' ) 
+            && $this->option( 'identifier' ) 
+            && $this->option( 'model' );
+    }
+
+    /**
+     * Generate CRUD without interaction
+     *
+     * @return void
+     */
+    private function generateCrudNonInteractive()
+    {
+        $this->crudDetails[ 'resource_name' ] = $this->option( 'resource' );
+        $this->crudDetails[ 'table_name' ] = $this->option( 'table' );
+        $this->crudDetails[ 'route_name' ] = $this->option( 'slug' );
+        $this->crudDetails[ 'identifier' ] = $this->option( 'identifier' );
+        $this->crudDetails[ 'model_name' ] = $this->option( 'model' );
+        
+        // Handle relations
+        $relations = $this->option( 'relations' );
+        if ( ! empty( $relations ) ) {
+            $this->crudDetails[ 'relations' ] = [];
+            foreach ( $relations as $relation ) {
+                $parameters = explode( ',', $relation );
+                if ( count( $parameters ) === 3 ) {
+                    $this->crudDetails[ 'relations' ][] = [
+                        trim( $parameters[0] ),
+                        trim( $parameters[0] ) . '.' . trim( $parameters[2] ),
+                        $this->crudDetails[ 'table_name' ] . '.' . trim( $parameters[1] ),
+                    ];
+                }
+            }
+        }
+        
+        // Handle fillable
+        $this->crudDetails[ 'fillable' ] = $this->option( 'fillable' ) ?: '';
+        
+        return $this->generateCrud();
     }
 
     /**
