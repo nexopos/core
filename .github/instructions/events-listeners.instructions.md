@@ -237,19 +237,29 @@ class LiveLessonStartedEvent implements ShouldBroadcast
 
 ## Common NexoPOS Core Events
 
+**Important**: Always import event classes at the top of your listener file instead of using the long namespace form.
+
 ### Core System Events
-- `Ns\Events\RenderFooterEvent` - Footer rendering
-- `Ns\Events\RenderHeaderEvent` - Header rendering
-- `Ns\Events\ModulesLoadedEvent` - All modules loaded
+- `RenderFooterEvent` - Footer rendering
+- `RenderHeaderEvent` - Header rendering
+- `ModulesLoadedEvent` - All modules loaded
 
 ### User Events
-- `Ns\Events\UserCreatedEvent` - User created
-- `Ns\Events\UserUpdatedEvent` - User updated
-- `Ns\Events\UserDeletedEvent` - User deleted
+- `UserCreatedEvent` - User created
+- `UserUpdatedEvent` - User updated
+- `UserDeletedEvent` - User deleted
 
 ### Module Events
-- `Ns\Events\ModuleEnabledEvent` - Module enabled
-- `Ns\Events\ModuleDisabledEvent` - Module disabled
+- `ModuleEnabledEvent` - Module enabled
+- `ModuleDisabledEvent` - Module disabled
+
+**Example Import Statements:**
+```php
+use Ns\Events\RenderFooterEvent;
+use Ns\Events\RenderHeaderEvent;
+use Ns\Events\UserCreatedEvent;
+use Ns\Events\ModuleEnabledEvent;
+```
 
 ## Event Discovery
 

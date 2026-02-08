@@ -234,7 +234,7 @@ class UserForm extends Form
 namespace Modules\ModuleName\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Ns\Http\Controllers\DashboardController;
 use Modules\ModuleName\Forms\ContactForm;
 
 class ContactController extends Controller

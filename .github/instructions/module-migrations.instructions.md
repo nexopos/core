@@ -22,32 +22,43 @@ Module migrations are stored in the `Migrations/` directory within each module:
 ```
 modules/ModuleName/
 └── Migrations/
-    ├── CreateUsersTable.php
-    ├── UpdateSettingsTable.php
-    └── AddIndexesToOrdersTable.php
+    ├── 2024_10_31_120000_create_users_table.php
+    ├── 2024_10_31_120001_update_settings_table.php
+    └── 2024_10_31_120002_add_indexes_to_orders_table.php
 ```
 
 ## Migration Naming Conventions
 
-- **Create operations**: Start with "Create" (e.g., `CreateUsersTable.php`)
-- **Update operations**: Start with "Update" (e.g., `UpdateSettingsTable.php`)
-- **Other operations**: Descriptive names (e.g., `AddIndexesToOrdersTable.php`)
+Migration files **MUST** follow Laravel's standard timestamped naming convention:
+
+```
+YYYY_MM_DD_HHMMSS_descriptive_migration_name.php
+```
+
+**Examples:**
+
+- **Create operations**: `2024_10_31_120000_create_{table_name}_table.php`
+- **Update operations**: `2024_10_31_120001_add_{column}_to_{table}_table.php`
+- **Modify operations**: `2024_10_31_120002_modify_{column}_on_{table}_table.php`
+- **Data migrations**: `2024_10_31_120003_migrate_{description}_data.php`
 
 ## Migration Structure
 
-Module migrations follow Laravel conventions:
+Module migrations follow Laravel 11+ conventions using **anonymous classes**:
 
 ```php
 <?php
-namespace Modules\ModuleName\Migrations;
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateExampleTable extends Migration
+return new class extends Migration
 {
-    public function up()
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
     {
         if (!Schema::hasTable('module_example')) {
             Schema::create('module_example', function (Blueprint $table) {
@@ -59,12 +70,22 @@ class CreateExampleTable extends Migration
         }
     }
 
-    public function down()
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
     {
         Schema::dropIfExists('module_example');
     }
-}
+};
 ```
+
+**Key Requirements:**
+- ✅ Use timestamp-based filenames (YYYY_MM_DD_HHMMSS_description.php)
+- ✅ Return anonymous class instance
+- ✅ Extend `Migration` class
+- ✅ Implement both `up()` and `down()` methods
+- ✅ Use type hints (`: void`)
 
 ## Safety Checks
 
@@ -72,7 +93,7 @@ Always include existence checks in your migrations:
 
 ### Table Creation
 ```php
-public function up()
+public function up(): void
 {
     if (!Schema::hasTable('table_name')) {
         Schema::create('table_name', function (Blueprint $table) {
@@ -84,7 +105,7 @@ public function up()
 
 ### Column Addition
 ```php
-public function up()
+public function up(): void
 {
     Schema::table('existing_table', function (Blueprint $table) {
         if (!Schema::hasColumn('existing_table', 'new_column')) {
@@ -96,7 +117,7 @@ public function up()
 
 ### Index Creation
 ```php
-public function up()
+public function up(): void
 {
     Schema::table('table_name', function (Blueprint $table) {
         if (!$this->indexExists('table_name', 'index_name')) {
@@ -128,7 +149,7 @@ private function indexExists($table, $index)
 5. **Use transactions** for complex operations:
 
 ```php
-public function up()
+public function up(): void
 {
     DB::transaction(function () {
         // Multiple related operations
@@ -149,7 +170,7 @@ Schema::table('child_table', function (Blueprint $table) {
 
 ### Seeding Data
 ```php
-public function up()
+public function up(): void
 {
     // Create table first
     if (!Schema::hasTable('settings')) {
@@ -167,3 +188,17 @@ public function up()
     ]);
 }
 ```
+
+## Generating Migration Files
+
+You can generate timestamped migration files using Laravel's artisan command:
+
+```bash
+# Create a new migration
+php artisan make:migration create_example_table --path=modules/ModuleName/Migrations
+
+# Create a migration to modify a table  
+php artisan make:migration add_status_to_products_table --path=modules/ModuleName/Migrations
+```
+
+This automatically creates files with proper timestamps and anonymous class structure.

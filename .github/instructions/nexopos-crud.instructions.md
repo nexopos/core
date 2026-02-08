@@ -21,7 +21,7 @@ The NexoPOS CRUD system consists of several interconnected components:
 
 ### 1. CrudService
 
-**Location**: `app/Services/CrudService.php`
+**Location**: `vendor/nexopos/core/src/Services/CrudService.php`
 
 The CrudService is the backbone of the CRUD system. All CRUD classes must extend this service.
 
@@ -76,7 +76,7 @@ public function allowedTo(string $permission): void
 
 ### 2. CrudEntry
 
-**Location**: `app/Services/CrudEntry.php`
+**Location**: `vendor/nexopos/core/src/Services/CrudEntry.php`
 
 Represents individual data rows with additional metadata and functionality.
 
@@ -106,7 +106,7 @@ public function __isset($index)
 
 ### 3. CrudController
 
-**Location**: `app/Http/Controllers/Dashboard/CrudController.php`
+**Location**: `vendor/nexopos/core/src/Http/Controllers/Dashboard/CrudController.php`
 
 Handles HTTP requests for CRUD operations.
 
@@ -131,7 +131,7 @@ public function crudExport(Request $request, $namespace)
 
 ### 4. CrudForm
 
-**Location**: `app/Classes/CrudForm.php`
+**Location**: `vendor/nexopos/core/src/Classes/CrudForm.php`
 
 Helper class for building form configurations.
 
@@ -193,11 +193,11 @@ Create a new CRUD class in `app/Crud/`:
 
 namespace App\Crud;
 
-use App\Classes\CrudForm;
-use App\Classes\FormInput;
-use App\Models\Product;
-use App\Services\CrudService;
-use App\Services\CrudEntry;
+use Ns\Classes\CrudForm;
+use Ns\Classes\FormInput;
+use Ns\Models\Product;
+use Ns\Services\CrudService;
+use Ns\Services\CrudEntry;
 
 class ProductCrud extends CrudService
 {
@@ -480,7 +480,7 @@ Route::get('/dashboard/products/edit/{product}', [ProductController::class, 'edi
 namespace App\Http\Controllers\Dashboard;
 
 use App\Crud\ProductCrud;
-use App\Http\Controllers\DashboardController;
+use Ns\Http\Controllers\DashboardController;
 
 class ProductController extends DashboardController
 {
@@ -529,7 +529,7 @@ Define row-level actions:
 
 ```php
 // ...
-use App\Classes\CrudEntry; // must import the class on the top.
+use Ns\Classes\CrudEntry; // must import the class on the top.
 // ...
 
 public function getActions( CrudEntry $entry ): CrudEntry

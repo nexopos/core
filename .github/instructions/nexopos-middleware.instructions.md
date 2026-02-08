@@ -8,7 +8,7 @@ This document describes the custom middleware used in NexoPOS for controlling ac
 
 ## NsRestrictMiddleware
 
-**Location**: `app/Http/Middleware/NsRestrictMiddleware.php`
+**Location**: `vendor/nexopos/core/src/Http/Middleware/NsRestrictMiddleware.php`
 
 The `NsRestrictMiddleware` is the primary middleware for restricting access to routes based on user permissions. It checks if the authenticated user has the required permission(s) to access a route.
 
@@ -17,10 +17,10 @@ The `NsRestrictMiddleware` is the primary middleware for restricting access to r
 ```php
 <?php
 
-namespace App\Http\Middleware;
+namespace Ns\Http\Middleware;
 
-use App\Exceptions\NotEnoughPermissionException;
-use App\Traits\NsMiddlewareArgument;
+use Ns\Exceptions\NotEnoughPermissionException;
+use Ns\Traits\NsMiddlewareArgument;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -51,7 +51,7 @@ class NsRestrictMiddleware
 
 ## NsMiddlewareArgument Trait
 
-**Location**: `app/Traits/NsMiddlewareArgument.php`
+**Location**: `vendor/nexopos/core/src/Traits/NsMiddlewareArgument.php`
 
 The `NsMiddlewareArgument` trait provides a helper method to format middleware arguments properly for Laravel's middleware system. This trait is used by `NsRestrictMiddleware` and can be used by other custom middleware.
 
@@ -60,7 +60,7 @@ The `NsMiddlewareArgument` trait provides a helper method to format middleware a
 ```php
 <?php
 
-namespace App\Traits;
+namespace Ns\Traits;
 
 trait NsMiddlewareArgument
 {
@@ -90,7 +90,7 @@ The `arguments()` method:
 Protect a route with a single permission requirement:
 
 ```php
-use App\Http\Middleware\NsRestrictMiddleware;
+use Ns\Http\Middleware\NsRestrictMiddleware;
 
 Route::get('/products', [ProductsController::class, 'index'])
     ->middleware(NsRestrictMiddleware::arguments('nexopos.read.products'));
@@ -140,7 +140,7 @@ Route::middleware(NsRestrictMiddleware::arguments('nexopos.read.customers'))->gr
 Combine different permissions for different HTTP methods or routes:
 
 ```php
-use App\Http\Middleware\NsRestrictMiddleware;
+use Ns\Http\Middleware\NsRestrictMiddleware;
 use Illuminate\Support\Facades\Route;
 
 // Delete routes
@@ -167,8 +167,8 @@ Route::put('customers/{customer}', [CustomersController::class, 'put'])
 ### Example 1: Products API Routes
 
 ```php
-use App\Http\Controllers\Dashboard\ProductsController;
-use App\Http\Middleware\NsRestrictMiddleware;
+use Ns\Http\Controllers\Dashboard\ProductsController;
+use Ns\Http\Middleware\NsRestrictMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::post('products', [ProductsController::class, 'saveProduct'])
@@ -190,8 +190,8 @@ Route::delete('products/{product}', [ProductsController::class, 'deleteProduct']
 ### Example 2: Orders API with Complex Permissions
 
 ```php
-use App\Http\Controllers\Dashboard\OrdersController;
-use App\Http\Middleware\NsRestrictMiddleware;
+use Ns\Http\Controllers\Dashboard\OrdersController;
+use Ns\Http\Middleware\NsRestrictMiddleware;
 
 Route::post('orders/{order}/void', [OrdersController::class, 'voidOrder'])
     ->middleware(NsRestrictMiddleware::arguments('nexopos.void.orders'));
@@ -209,8 +209,8 @@ Route::post('orders/{order}/refund', [OrdersController::class, 'refundOrder'])
 ### Example 3: Media Management
 
 ```php
-use App\Http\Controllers\Dashboard\MediasController;
-use App\Http\Middleware\NsRestrictMiddleware;
+use Ns\Http\Controllers\Dashboard\MediasController;
+use Ns\Http\Middleware\NsRestrictMiddleware;
 
 Route::get('medias', [MediasController::class, 'getMedias'])
     ->middleware(NsRestrictMiddleware::arguments('nexopos.see.medias'));
@@ -235,7 +235,7 @@ Modules can use the `NsRestrictMiddleware` in their own route files:
 ```php
 <?php
 
-use App\Http\Middleware\NsRestrictMiddleware;
+use Ns\Http\Middleware\NsRestrictMiddleware;
 use Modules\MyModule\Http\Controllers\MyController;
 use Illuminate\Support\Facades\Route;
 
@@ -284,8 +284,8 @@ This exception should be caught by your application's exception handler and conv
 For custom error handling, you can catch this exception in your exception handler:
 
 ```php
-// In app/Exceptions/Handler.php
-use App\Exceptions\NotEnoughPermissionException;
+// In vendor/nexopos/core/src/Exceptions/Handler.php
+use Ns\Exceptions\NotEnoughPermissionException;
 
 public function render($request, Throwable $exception)
 {
@@ -321,7 +321,7 @@ public function render($request, Throwable $exception)
 Always import the middleware at the top of your route files:
 
 ```php
-use App\Http\Middleware\NsRestrictMiddleware;
+use Ns\Http\Middleware\NsRestrictMiddleware;
 ```
 
 ### 3. Use Descriptive Permission Namespaces
@@ -421,9 +421,9 @@ You can create your own middleware that uses the `NsMiddlewareArgument` trait:
 ```php
 <?php
 
-namespace App\Http\Middleware;
+namespace Ns\Http\Middleware;
 
-use App\Traits\NsMiddlewareArgument;
+use Ns\Traits\NsMiddlewareArgument;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -451,7 +451,7 @@ class CustomAccessMiddleware
 **Usage:**
 
 ```php
-use App\Http\Middleware\CustomAccessMiddleware;
+use Ns\Http\Middleware\CustomAccessMiddleware;
 
 Route::get('/feature', [FeatureController::class, 'index'])
     ->middleware(CustomAccessMiddleware::arguments('advanced-reporting'));
@@ -468,7 +468,7 @@ Route::get('/feature', [FeatureController::class, 'index'])
 2. Verify the permission exists in the database
 3. Ensure the user's role has the required permission
 4. Clear route cache: `php artisan route:clear`
-5. Check middleware is imported: `use App\Http\Middleware\NsRestrictMiddleware;`
+5. Check middleware is imported: `use Ns\Http\Middleware\NsRestrictMiddleware;`
 
 ### Issue: Permission Always Denied
 

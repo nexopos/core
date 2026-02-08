@@ -8,12 +8,13 @@ Fields provide a simpler alternative to Forms when you need basic field definiti
 
 ## Creating a Field Class
 
-Field classes are stored in the `Fields/` directory and define an array of field configurations:
+Field classes are stored in the `Fields/` directory and define an array of field configurations using the `Form::fields()` helper:
 
 ```php
 <?php
 namespace Modules\ModuleName\Fields;
 
+use Ns\Classes\Form;
 use Ns\Classes\FormInput;
 use Ns\Services\FieldsService;
 
@@ -25,7 +26,7 @@ class UserProfileFields extends FieldsService
 
     public function get()
     {
-        return [
+        return Form::fields(
             FormInput::text(
                 name: 'first_name',
                 label: __m('First Name', 'ModuleName'),
@@ -59,13 +60,60 @@ class UserProfileFields extends FieldsService
                 value: true,
                 label: __m('Email Notifications', 'ModuleName'),
                 description: __m('Receive email notifications.', 'ModuleName'),
-            ),
-        ];
+            )
+        );
     }
 }
 ```
 
-A Field class must include the IDENTIFIER constant, which is a unique string used to identify the field collection. The AUTOLOAD constant can be set to true if you want the fields to be automatically loaded by the system. The `get()` method returns an array of field definitions using the `FormInput` class, which provides various input types like text, email, textarea, select, and switch.
+A Field class must include the IDENTIFIER constant, which is a unique string used to identify the field collection. The AUTOLOAD constant can be set to true if you want the fields to be automatically loaded by the system. The `get()` method returns an array of field definitions using the `Form::fields()` helper, which wraps multiple `FormInput` field definitions. The `FormInput` class provides various input types like text, email, textarea, select, and switch.
+
+## Understanding the Value Attribute
+
+The `value` attribute in field definitions serves two important purposes:
+
+1. **Setting Default Values**: When creating new records, the `value` attribute provides the initial/default value for the field.
+2. **Restoring Stored Values**: When editing existing records, the `value` attribute is used to populate the field with previously saved data.
+
+**Example - New Record (Default Values):**
+```php
+Form::fields(
+    FormInput::text(
+        name: 'status',
+        value: 'active', // Default value for new records
+        label: __m('Status', 'ModuleName')
+    ),
+    FormInput::number(
+        name: 'quantity',
+        value: 1, // Default quantity
+        label: __m('Quantity', 'ModuleName')
+    )
+)
+```
+
+**Example - Editing Existing Record (Restored Values):**
+```php
+public function get($user = null)
+{
+    return Form::fields(
+        FormInput::text(
+            name: 'first_name',
+            value: $user?->first_name ?? '', // Restore saved value or empty
+            label: __m('First Name', 'ModuleName')
+        ),
+        FormInput::email(
+            name: 'email',
+            value: $user?->email ?? '', // Restore saved email
+            label: __m('Email', 'ModuleName')
+        ),
+        FormInput::switch(
+            name: 'is_active',
+            value: $user?->is_active ?? true, // Restore or default to true
+            label: __m('Active', 'ModuleName')
+        )
+    );
+}
+```
 
 ## Simple Field Definition
 
@@ -75,6 +123,7 @@ For very basic field collections:
 <?php
 namespace Modules\ModuleName\Fields;
 
+use Ns\Classes\Form;
 use Ns\Classes\FormInput;
 use Ns\Services\FieldsService;
 
@@ -82,7 +131,7 @@ class QuickContactFields extends FieldsService
 {
     public static function get()
     {
-        return [
+        return Form::fields(
             FormInput::text(
                 name: 'name',
                 label: __m('Name', 'ModuleName'),
@@ -96,9 +145,9 @@ class QuickContactFields extends FieldsService
             FormInput::textarea(
                 name: 'message',
                 label: __m('Message', 'ModuleName'),
-                validation: 'required|string|min:10',
-            ),
-        ];
+                validation: 'required|string|min:10'
+            )
+        );
     }
 }
 ```
@@ -111,15 +160,16 @@ You can use filters to allow other modules to extend your fields:
 <?php
 namespace Modules\ModuleName\Fields;
 
+use Ns\Classes\Form;
 use Ns\Classes\FormInput;
 use Ns\Classes\Hook;
 use Ns\Services\FieldsService;
 
-class AuthRegisterFields extends FIeldsService
+class AuthRegisterFields extends FieldsService
 {
     public static function get()
     {
-        $fields = [
+        $fields = Form::fields(
             FormInput::text(
                 name: 'username',
                 label: __m('Username', 'ModuleName'),
@@ -145,8 +195,8 @@ class AuthRegisterFields extends FIeldsService
                 label: __m('Confirm Password', 'ModuleName'),
                 description: __m('Confirm your password.', 'ModuleName'),
                 validation: 'required|string|min:8'
-            ),
-        ];
+            )
+        );
 
         // Allow other modules to modify registration fields
         return Hook::filter('ns.register.fields', $fields);
@@ -162,6 +212,7 @@ Fields can be conditionally included based on certain criteria:
 <?php
 namespace Modules\ModuleName\Fields;
 
+use Ns\Classes\Form;
 use Ns\Classes\FormInput;
 use Ns\Services\FieldsService;
 
@@ -169,7 +220,7 @@ class PaymentFields extends FieldsService
 {
     public static function getFields($paymentMethod = 'credit_card')
     {
-        $baseFields = [
+        $baseFields = Form::fields(
             FormInput::select(
                 name: 'payment_method',
                 value: $paymentMethod,
@@ -180,8 +231,8 @@ class PaymentFields extends FieldsService
                     ['value' => 'bank_transfer', 'label' => 'Bank Transfer'],
                 ],
                 validation: 'required|in:credit_card,paypal,bank_transfer'
-            ),
-        ];
+            )
+        );
 
         // Add method-specific fields
         switch ($paymentMethod) {
@@ -201,7 +252,7 @@ class PaymentFields extends FieldsService
 
     private static function getCreditCardFields()
     {
-        return [
+        return Form::fields(
             FormInput::text(
                 name: 'card_number',
                 label: __m('Card Number', 'ModuleName'),
@@ -225,13 +276,13 @@ class PaymentFields extends FieldsService
                 label: __m('CVV', 'ModuleName'),
                 validation: 'required|string|size:3',
                 placeholder: '123'
-            ),
-        ];
+            )
+        );
     }
 
     private static function getBankTransferFields()
     {
-        return [
+        return Form::fields(
             FormInput::text(
                 name: 'bank_name',
                 label: __m('Bank Name', 'ModuleName'),
@@ -246,8 +297,8 @@ class PaymentFields extends FieldsService
                 name: 'routing_number',
                 label: __m('Routing Number', 'ModuleName'),
                 validation: 'required|string|max:20'
-            ),
-        ];
+            )
+        );
     }
 }
 ```
@@ -259,7 +310,7 @@ class PaymentFields extends FieldsService
 namespace Modules\ModuleName\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Ns\Http\Controllers\DashboardController;
 use Modules\ModuleName\Fields\UserProfileFields;
 
 class ProfileController extends Controller

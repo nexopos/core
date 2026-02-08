@@ -18,7 +18,7 @@ NexoPOS fires various `Render*Event` classes at different points in the applicat
 
 ## Available Render Events
 
-All render events are located in `app/Events/` and follow the naming pattern `Render*Event`.
+All render events are located in `vendor/nexopos/core/src/Events/` and follow the naming pattern `Render*Event`.
 
 ### Common Render Events
 
@@ -39,7 +39,7 @@ All render events are located in `app/Events/` and follow the naming pattern `Re
 
 ### Output Object
 
-All render events include an `Output` object (`App\Classes\Output`) with the following methods:
+All render events include an `Output` object (`Ns\Classes\Output`) with the following methods:
 
 ```php
 // Add a Blade view
@@ -64,9 +64,9 @@ Create a listener in your module's `Listeners/` directory:
 
 namespace Modules\YourModule\Listeners;
 
-use App\Crud\ProductCrud;
-use App\Crud\CustomerCrud;
-use App\Events\RenderCrudTableFooterEvent;
+use Modules\YourModule\Crud\ProductCrud;
+use Modules\YourModule\Crud\CustomerCrud;
+use Ns\Events\RenderCrudTableFooterEvent;
 
 class RenderCrudTableFooterEventListener
 {
@@ -114,8 +114,8 @@ Laravel automatically discovers event listeners based on the `handle()` method's
 
 namespace Modules\YourModule\Listeners;
 
-use App\Crud\ProductCrud;
-use App\Events\RenderCrudTableFooterEvent;
+use Modules\YourModule\Crud\ProductCrud;
+use Ns\Events\RenderCrudTableFooterEvent;
 
 class RenderCrudTableFooterEventListener
 {
@@ -155,7 +155,7 @@ class RenderCrudTableFooterEventListener
 
 namespace Modules\YourModule\Listeners;
 
-use App\Events\RenderFooterEvent;
+use Ns\Events\RenderFooterEvent;
 
 class RenderFooterEventListener
 {
@@ -181,10 +181,10 @@ class RenderFooterEventListener
 
 namespace Modules\YourModule\Listeners;
 
-use App\Crud\ProductCrud;
-use App\Crud\ProductCategoryCrud;
-use App\Crud\CustomerCrud;
-use App\Events\RenderCrudTableFooterEvent;
+use Modules\YourModule\Crud\ProductCrud;
+use Modules\YourModule\Crud\ProductCategoryCrud;
+use Modules\YourModule\Crud\CustomerCrud;
+use Ns\Events\RenderCrudTableFooterEvent;
 
 class RenderCrudTableFooterEventListener
 {
@@ -223,7 +223,7 @@ class RenderCrudTableFooterEventListener
 
 namespace Modules\YourModule\Listeners;
 
-use App\Events\RenderSettingsFooterEvent;
+use Ns\Events\RenderSettingsFooterEvent;
 
 class RenderSettingsFooterEventListener
 {
@@ -242,7 +242,7 @@ class RenderSettingsFooterEventListener
 
 ```php
 // ✅ Good - Specific to CRUD tables
-use App\Events\RenderCrudTableFooterEvent;
+use Ns\Events\RenderCrudTableFooterEvent;
 
 class RenderCrudTableFooterEventListener
 {
@@ -410,7 +410,7 @@ Hook::addAction('ns-crud-footer', function ($output, $identifier) {
 
 ```php
 // ✅ CORRECT - Use Laravel Events
-use App\Events\RenderCrudTableFooterEvent;
+use Ns\Events\RenderCrudTableFooterEvent;
 
 class RenderCrudTableFooterEventListener
 {
@@ -434,7 +434,7 @@ class RenderCrudTableFooterEventListener
 
 For a complete list of available events:
 ```bash
-ls app/Events/Render*Event.php
+ls vendor/nexopos/core/src/Events/Render*Event.php
 ```
 
 Each event follows the same pattern - create a listener, type-hint the event in `handle()`, and use `$event->output->addView()` to inject your content.

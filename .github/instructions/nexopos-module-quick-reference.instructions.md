@@ -195,10 +195,10 @@ export default defineConfig({
 <?php
 namespace Modules\YourModule\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+use Ns\Http\Controllers\DashboardController;
 use Illuminate\Http\Request;
 
-class YourController extends Controller
+class YourController extends DashboardController
 {
     public function index()
     {
@@ -229,7 +229,7 @@ Route::prefix('api/your-module')->middleware(['auth:sanctum'])->group(function (
 <?php
 namespace Modules\YourModule\Listeners;
 
-use App\Events\RenderFooterEvent;
+use Ns\Events\RenderFooterEvent;
 
 class RenderFooterListener
 {

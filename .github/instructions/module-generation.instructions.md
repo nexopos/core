@@ -8,12 +8,61 @@ NexoPOS Core provides a command to generate new modules with a complete Laravel-
 
 ## Command Usage
 
+### Interactive Mode
+
 ```bash
 php artisan make:module
 ```
 
+### Non-Interactive Mode (for AI Agents)
+
+```bash
+php artisan make:module \
+    --namespace=MyModule \
+    --name="My Module" \
+    --author="John Doe" \
+    --description="A sample module" \
+    --version=1.0 \
+    --no-interaction
+```
+
 ### Options
 - `--force`: Overwrite existing module if it exists
+- `--namespace=`: Module namespace (e.g., `MyModule`)
+- `--name=`: Human-readable module name
+- `--author=`: Module author name
+- `--description=`: Short description of the module
+- `--version=`: Module version (default: 1.0)
+- `--no-interaction`: Run without any prompts or confirmations (requires all options)
+
+### Examples
+
+**Interactive mode:**
+```bash
+php artisan make:module
+# You'll be prompted for namespace, name, author, description
+```
+
+**Non-interactive mode with all options:**
+```bash
+php artisan make:module \
+    --namespace=BlogModule \
+    --name="Blog Management Module" \
+    --author="Jane Smith" \
+    --description="Manage blog posts and comments" \
+    --no-interaction
+```
+
+**Force overwrite existing module:**
+```bash
+php artisan make:module \
+    --namespace=BlogModule \
+    --name="Blog Management Module" \
+    --author="Jane Smith" \
+    --description="Manage blog posts and comments" \
+    --force \
+    --no-interaction
+```
 
 ## Interactive Module Creation
 

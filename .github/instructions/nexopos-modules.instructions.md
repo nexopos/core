@@ -225,7 +225,7 @@ Each module must have a main entry class named `{Namespace}Module.php`. For a mo
 
 namespace Modules\FooBar;
 
-use App\Services\Module;
+use Ns\Services\Module;
 
 class FooBarModule extends Module
 {
@@ -272,7 +272,7 @@ Generated CRUD classes following NexoPOS CRUD patterns:
 
 namespace Modules\FooBar\Crud;
 
-use App\Services\CrudService;
+use Ns\Services\CrudService;
 use Modules\FooBar\Models\Product;
 
 class ProductCrud extends CrudService
@@ -324,7 +324,7 @@ Module controllers following Laravel conventions:
 
 namespace Modules\FooBar\Http\Controllers;
 
-use App\Http\Controllers\DashboardController;
+use Ns\Http\Controllers\DashboardController;
 use Modules\FooBar\Models\Product;
 
 class ProductController extends DashboardController
@@ -426,7 +426,8 @@ Event listener classes:
 namespace Modules\FooBar\Listeners;
 
 use Modules\FooBar\Events\ProductCreated;
-
+use Ns\Events\ProductCreated;
+ 
 class ProductCreatedListener
 {
     public function handle(ProductCreated $event)
@@ -467,9 +468,6 @@ return new class extends Migration
     }
 };
 ```
-
-However, migration file name aren't required to follow Laravel's timestamp pattern. For a migration that create tables, we'll use the prefix `Create` followed by the table name. For example: `CreateFooBarTable.php`.
-For a migration that alters an existing table, we'll use the prefix `Update` followed by the table name. For example: `UpdateFooBarTable.php`.
 
 ### Models/
 
@@ -1214,8 +1212,8 @@ Module setting classes:
 
 namespace Modules\FooBar\Settings;
 
-use App\Classes\SettingForm;
-use App\Services\SettingsPage;
+use Ns\Classes\SettingForm;
+use Ns\Services\SettingsPage;
 
 class FooBarSettings extends SettingsPage
 {
@@ -1444,7 +1442,7 @@ Create module-specific permissions:
 
 ```php
 // In module migration or provider
-use App\Models\Permission;
+use Ns\Models\Permission;
 
 $permission = Permission::firstOrNew(['namespace' => 'create.foobar.products']);
 $permission->name = __m( 'Create products', 'FooBar' );
@@ -1458,7 +1456,7 @@ $permission->save();
 Utilize NexoPOS hooks for integration:
 
 ```php
-use App\Classes\AsideMenu;
+use Ns\Classes\AsideMenu;
 // ...
 // In module service provider
 Hook::addFilter('ns-dashboard-menus', function($menus) {
@@ -1480,7 +1478,7 @@ Hook::addFilter('ns-dashboard-menus', function($menus) {
 Or we add define submenus
 
 ```php
-use App\Classes\AsideMenu;
+use Ns\Classes\AsideMenu;
 // ...
 Hook::addFilter('ns-dashboard-menus', function($menus) {
     $menus = array_insert_after($menu, 'inventory', AsideMenu::menu(
@@ -1501,9 +1499,9 @@ Hook::addFilter('ns-dashboard-menus', function($menus) {
 Extend NexoPOS CRUD system:
 
 ```php
-use App\Services\CrudService;
-use App\Classes\CrudForm;
-use App\Classes\FormInput;
+use Ns\Services\CrudService;
+use Ns\Classes\CrudForm;
+use Ns\Classes\FormInput;
 
 class ProductCrud extends CrudService
 {

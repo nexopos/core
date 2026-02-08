@@ -93,6 +93,50 @@ class ModuleSettings extends SettingsPage
 }
 ```
 
+## Understanding the Value Attribute
+
+The `value` parameter in `FormInput` methods is crucial for both default values and restoring previously saved settings:
+
+1. **Default Values**: When creating new settings, `value` provides the initial default
+2. **Restored Values**: When loading existing settings, `value` populates fields with saved data
+
+**Pattern for Settings:**
+```php
+FormInput::text(
+    name: 'setting_key',
+    value: ns()->option->get('setting_key', 'default_value'),
+    label: __m('Setting Label', 'ModuleName')
+)
+```
+
+The `ns()->option->get('setting_key', 'default_value')` pattern:
+- Returns the saved value if it exists in the database
+- Falls back to `'default_value'` if no saved value is found
+
+**Examples:**
+```php
+// Text with default
+FormInput::text(
+    name: 'api_key',
+    value: ns()->option->get('api_key', ''), // Empty default
+    label: __m('API Key', 'ModuleName')
+)
+
+// Number with default
+FormInput::number(
+    name: 'max_items',
+    value: ns()->option->get('max_items', 100), // Default to 100
+    label: __m('Max Items', 'ModuleName')
+)
+
+// Switch with default
+FormInput::switch(
+    name: 'feature_enabled',
+    value: ns()->option->get('feature_enabled', false), // Default to disabled
+    label: __m('Enable Feature', 'ModuleName')
+)
+```
+
 ## Available Form Input Types
 
 ### Text Input

@@ -27,38 +27,9 @@ class YourModuleServiceProvider extends ServiceProvider
         // Most services are auto-registered by NexoPOS Core
     }
 
-    public function boot(): void
-    {
-        // Only register what's truly needed
-        $this->registerTranslations();
-    }
-
-    protected function registerTranslations(): void
-    {
-        $langPath = __DIR__ . '/../Resources/lang';
-        
-        if (is_dir($langPath)) {
-            $this->loadJsonTranslationsFrom($langPath);
-        }
-    }
-
     public function provides(): array
     {
         return [];
-    }
-}
-```
-
-### 2. Register JSON Translations
-This is typically the **ONLY** thing your service provider needs to do:
-
-```php
-protected function registerTranslations(): void
-{
-    $langPath = __DIR__ . '/../Resources/lang';
-    
-    if (is_dir($langPath)) {
-        $this->loadJsonTranslationsFrom($langPath);
     }
 }
 ```
@@ -78,6 +49,50 @@ $defaultLanguage = config('nexopos.language');
 // Get language codes only
 $locales = array_keys(config('nexopos.languages'));
 // Returns: ['en', 'de', 'fr', 'es', 'it', 'ar', 'pt', 'tr', 'km', 'vi', 'sq']
+```
+
+### 4. Retrieve User Localization Preferences
+
+When retrieving localization settings, always check the authenticated user's preference first, then fall back to the application default:
+
+**Order of Priority:**
+1. User's language attribute (if authenticated)
+2. Application's default language setting
+
+**Example Implementation:**
+```php
+use Illuminate\Support\Facades\Auth;
+use Ns\Models\UserAttribute;
+
+// Get user's preferred language
+if (Auth::check()) {
+    $userLanguage = UserAttribute::where('user_id', Auth::id())
+        ->where('key', 'language') // Or your specific attribute key
+        ->value('value');
+}
+
+// Fall back to application default
+$language = $userLanguage ?? ns()->option->get('ns_store_language', 'en');
+```
+
+**Complete Localization Helper:**
+```php
+public function getUserLanguage(): string
+{
+    // Check authenticated user's preference
+    if (Auth::check()) {
+        $attribute = UserAttribute::where('user_id', Auth::id())
+            ->where('key', 'language')
+            ->first();
+        
+        if ($attribute && $attribute->value) {
+            return $attribute->value;
+        }
+    }
+    
+    // Fall back to store default
+    return ns()->option->get('ns_store_language', 'en');
+}
 ```
 
 ---

@@ -21,7 +21,7 @@ NexoPOS implements a robust Role-Based Access Control (RBAC) system that provide
 
 ### Permission Model
 
-**Location**: `app/Models/Permission.php`  
+**Location**: `vendor/nexopos/core/src/Models/Permission.php`  
 **Table**: `nexopos_permissions`
 
 #### Properties
@@ -85,7 +85,7 @@ $permission->removeFromRoles();
 
 ### Role Model
 
-**Location**: `app/Models/Role.php`  
+**Location**: `vendor/nexopos/core/src/Models/Role.php`  
 **Table**: `nexopos_roles`
 
 #### Constants
@@ -181,7 +181,7 @@ $permissions = $admin->permissions()->get();
 
 ### User Model
 
-**Location**: `app/Models/User.php`  
+**Location**: `vendor/nexopos/core/src/Models/User.php`  
 **Table**: `nexopos_users`
 
 #### Key Methods
@@ -222,7 +222,7 @@ $canCreate = $user->allowedTo('create.products');
 
 ### PermissionAccess Model
 
-**Location**: `app/Models/PermissionAccess.php`  
+**Location**: `vendor/nexopos/core/src/Models/PermissionAccess.php`  
 **Table**: `nexopos_permissions_access`
 
 Used for temporary permission access requests in POS systems.
@@ -259,7 +259,7 @@ $permissionAccess->perm(): BelongsTo
 
 ### CoreService
 
-**Location**: `app/Services/CoreService.php`
+**Location**: `vendor/nexopos/core/src/Services/CoreService.php`
 
 The CoreService provides the primary interface for permission checking throughout the application.
 
@@ -289,17 +289,13 @@ if (ns()->allowedTo(['create.products', 'update.products'])) {
     // User has at least one of these permissions
 }
 
-// Check role
-if (ns()->hasRoles(Role::ADMIN)) {
-    // User is admin
-}
 ```
 
 ## Middleware
 
 ### NsRestrictMiddleware
 
-**Location**: `app/Http/Middleware/NsRestrictMiddleware.php`  
+**Location**: `vendor/nexopos/core/src/Http/Middleware/NsRestrictMiddleware.php`  
 **Alias**: `ns.permission`
 
 Restricts access based on permissions.
@@ -319,7 +315,7 @@ public function __construct()
 
 ### AdminApprovalMiddleware
 
-**Location**: `app/Http/Middleware/AdminApprovalMiddleware.php`
+**Location**: `vendor/nexopos/core/src/Http/Middleware/AdminApprovalMiddleware.php`
 
 Handles temporary permission approval system for POS actions.
 
@@ -493,12 +489,12 @@ public function up()
 
 ### NotEnoughPermissionException
 
-**Location**: `app/Exceptions/NotEnoughPermissionException.php`
+**Location**: `vendor/nexopos/core/src/Exceptions/NotEnoughPermissionException.php`
 
 Thrown when a user lacks required permissions.
 
 ```php
-use App\Exceptions\NotEnoughPermissionException;
+use Ns\Exceptions\NotEnoughPermissionException;
 
 if (!ns()->allowedTo('create.products')) {
     throw new NotEnoughPermissionException('You cannot create products');

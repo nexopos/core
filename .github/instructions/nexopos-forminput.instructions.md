@@ -4,7 +4,7 @@ applyTo: '**'
 
 # NexoPOS FormInput Class Usage Guide
 
-The `FormInput` class is a utility class located at `app/Classes/FormInput.php` that provides static methods for creating standardized form input configurations. This class simplifies the creation of various form field types with consistent structure and validation.
+The `FormInput` class is a utility class located at `vendor/nexopos/core/src/Classes/FormInput.php` that provides static methods for creating standardized form input configurations. This class simplifies the creation of various form field types with consistent structure and validation.
 
 ## Class Overview
 

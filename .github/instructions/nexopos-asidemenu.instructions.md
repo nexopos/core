@@ -4,7 +4,7 @@ The `AsideMenu` class is a helper utility for building dashboard navigation menu
 
 ## Class Location
 ```
-app/Classes/AsideMenu.php
+vendor/nexopos/core/src/Classes/AsideMenu.php
 ```
 
 ## Overview
@@ -142,7 +142,7 @@ Here's a complete example of creating a menu structure:
 ```php
 <?php
 
-use App\Classes\AsideMenu;
+use Ns\Classes\AsideMenu;
 
 $menus = AsideMenu::wrapper(
     // Simple menu without children
@@ -205,8 +205,8 @@ When developing modules, you need to extend the dashboard menu using the **Hook 
 
 namespace Modules\YourModule\Providers;
 
-use App\Classes\AsideMenu;
-use App\Classes\Hook;
+use Ns\Classes\AsideMenu;
+use Ns\Classes\Hook;
 use Illuminate\Support\ServiceProvider;
 
 class YourModuleServiceProvider extends ServiceProvider
@@ -333,26 +333,17 @@ Hook::addFilter('ns-dashboard-menus', function ($menus) {
 
 ## Available Menu Identifiers
 
-Below is a complete list of menu and submenu identifiers available in NexoPOS core (defined in `app/Services/MenuService.php`). Use these identifiers with `array_insert_after()` or `array_insert_before()` functions.
+Below is a complete list of menu and submenu identifiers available in NexoPOS core (defined in `vendor/nexopos/core/src/Services/MenuService.php`). Use these identifiers with `array_insert_after()` or `array_insert_before()` functions.
 
 ### Main Menu Identifiers
 
 | Identifier | Label | Icon | Description |
 |------------|-------|------|-------------|
 | `dashboard` | Dashboard | `la-home` | Main dashboard menu |
-| `pos` | POS | `la-cash-register` | Point of Sale |
-| `orders` | Orders | `la-list-ol` | Orders management |
 | `medias` | Medias | `la-photo-video` | Media library |
-| `customers` | Customers | `la-user-friends` | Customer management |
-| `providers` | Providers | `la-user-tie` | Provider/Supplier management |
-| `accounting` | Accounting | `la-stream` | Accounting & expenses |
-| `inventory` | Inventory | `la-boxes` | Inventory management |
-| `taxes` | Taxes | `la-balance-scale-left` | Tax management |
 | `modules` | Modules | `la-plug` | Module management |
 | `users` | Users | `la-users` | User management |
 | `roles` | Roles | `la-shield-alt` | Role & permissions |
-| `procurements` | Procurements | `la-truck-loading` | Procurement management |
-| `reports` | Reports | `la-chart-pie` | Reports & analytics |
 | `settings` | Settings | `la-cogs` | System settings |
 
 ### Submenu Identifiers by Parent
@@ -362,63 +353,6 @@ Below is a complete list of menu and submenu identifiers available in NexoPOS co
 |------------|-------|
 | `index` | Home |
 
-#### Orders (`orders`)
-| Identifier | Label |
-|------------|-------|
-| `order-list` | Orders List |
-| `payment-type` | Payment Types |
-| `assignated-orders` | Assignated Orders |
-
-#### Customers (`customers`)
-| Identifier | Label |
-|------------|-------|
-| `customers` | List |
-| `create-customer` | Create Customer |
-| `customers-groups` | Customers Groups |
-| `create-customers-group` | Create Group |
-| `list-reward-system` | Reward Systems |
-| `create-reward-system` | Create Reward |
-| `list-coupons` | List Coupons |
-| `create-coupons` | Create Coupon |
-
-#### Providers (`providers`)
-| Identifier | Label |
-|------------|-------|
-| `providers` | List |
-| `create-provider` | Create A Provider |
-
-#### Accounting (`accounting`)
-| Identifier | Label |
-|------------|-------|
-| `transactions` | Expenses |
-| `create-transaction` | Create Expense |
-| `transactions-history` | Transaction History |
-| `transacations-rules` | Rules |
-| `transactions-account` | Accounts |
-| `create-transactions-account` | Create Account |
-
-#### Inventory (`inventory`)
-| Identifier | Label |
-|------------|-------|
-| `products` | Products |
-| `create-products` | Create Product |
-| `labels-printing` | Print Labels |
-| `categories` | Categories |
-| `create-categories` | Create Category |
-| `units` | Units |
-| `create-units` | Create Unit |
-| `unit-groups` | Unit Groups |
-| `create-unit-groups` | Create Unit Groups |
-| `stock-adjustment` | Stock Adjustment |
-| `product-history` | Stock Flow Records |
-
-#### Taxes (`taxes`)
-| Identifier | Label |
-|------------|-------|
-| `taxes-groups` | Taxes Groups |
-| `create-taxes-group` | Create Tax Groups |
-| `taxes` | Taxes |
-| `create-tax` | Create Tax |
 
 #### Modules (`modules`)
 | Identifier | Label |
@@ -440,37 +374,11 @@ Below is a complete list of menu and submenu identifiers available in NexoPOS co
 | `create-role` | Create Roles |
 | `permissions` | Permissions Manager |
 
-#### Procurements (`procurements`)
-| Identifier | Label |
-|------------|-------|
-| `procurements` | Procurements List |
-| `procurements-create` | New Procurement |
-| `procurements-products` | Products |
-
-#### Reports (`reports`)
-| Identifier | Label |
-|------------|-------|
-| `sales` | Sale Report |
-| `products-report` | Sales Progress |
-| `customers-statement` | Customers Statement |
-| `low-stock` | Stock Report |
-| `stock-history` | Stock History |
-| `sold-stock` | Sold Stock |
-| `profit` | Incomes & Loosses |
-| `transactions` | Transactions |
-| `annulal-sales` | Annual Report |
-| `payment-types` | Sales By Payments |
 
 #### Settings (`settings`)
 | Identifier | Label |
 |------------|-------|
 | `general` | General |
-| `pos` | POS |
-| `customers` | Customers |
-| `orders` | Orders |
-| `accounting` | Accounting |
-| `reports` | Reports |
-| `invoices` | Invoices |
 | `reset` | Reset |
 | `about` | About |
 
@@ -483,8 +391,8 @@ Below is a complete list of menu and submenu identifiers available in NexoPOS co
 
 namespace Modules\NsGastro\Providers;
 
-use App\Classes\AsideMenu;
-use App\Classes\Hook;
+use Ns\Classes\AsideMenu;
+use Ns\Classes\Hook;
 use Illuminate\Support\ServiceProvider;
 
 class ModuleServiceProvider extends ServiceProvider
@@ -531,8 +439,8 @@ class ModuleServiceProvider extends ServiceProvider
 
 namespace Modules\NsPageBuilder\Providers;
 
-use App\Classes\AsideMenu;
-use App\Classes\Hook;
+use Ns\Classes\AsideMenu;
+use Ns\Classes\Hook;
 use Illuminate\Support\ServiceProvider;
 
 class NsPageBuilderServiceProvider extends ServiceProvider
@@ -569,7 +477,7 @@ class NsPageBuilderServiceProvider extends ServiceProvider
 
 namespace Modules\NsOptionsExporter\Filters;
 
-use App\Classes\AsideMenu;
+use Ns\Classes\AsideMenu;
 
 class MenuFilter 
 {
@@ -599,8 +507,8 @@ class MenuFilter
 
 namespace Modules\YourModule\Providers;
 
-use App\Classes\AsideMenu;
-use App\Classes\Hook;
+use Ns\Classes\AsideMenu;
+use Ns\Classes\Hook;
 use Illuminate\Support\ServiceProvider;
 
 class YourModuleServiceProvider extends ServiceProvider
@@ -675,8 +583,8 @@ Here's how the PIN Login module should implement its menu:
 
 namespace Modules\NsPinLogin\Filters;
 
-use App\Classes\AsideMenu;
-use App\Classes\Output;
+use Ns\Classes\AsideMenu;
+use Ns\Classes\Output;
 
 class DashboardFilters
 {
@@ -929,7 +837,7 @@ Hook::addFilter('ns-dashboard-menus', function ($menus) {
 1. **Check Permission**: Verify user has the required permission
    ```php
    // Test if permission exists
-   $permission = \App\Models\Permission::namespace('your.permission');
+   $permission = \Ns\Models\Permission::namespace('your.permission');
    
    // Check if user has permission
    ns()->allowedTo('your.permission');

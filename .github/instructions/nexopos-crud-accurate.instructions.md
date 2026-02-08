@@ -10,12 +10,12 @@ The NexoPOS CRUD (Create, Read, Update, Delete) system provides a powerful frame
 
 The CRUD system consists of:
 
-- **CrudService**: Base service class (`app/Services/CrudService.php`)
-- **CrudEntry**: Wrapper class for individual data entries (`app/Services/CrudEntry.php`)
-- **CrudController**: HTTP controller (`app/Http/Controllers/Dashboard/CrudController.php`)
-- **CrudTable**: Helper for table configuration (`app/Classes/CrudTable.php`)
-- **CrudForm**: Helper for form configuration (`app/Classes/CrudForm.php`)
-- **FormInput**: Helper for field configuration (`app/Classes/FormInput.php`)
+- **CrudService**: Base service class (`vendor/nexopos/core/src/Services/CrudService.php`)
+- **CrudEntry**: Wrapper class for individual data entries (`vendor/nexopos/core/src/Services/CrudEntry.php`)
+- **CrudController**: HTTP controller (`vendor/nexopos/core/src/Http/Controllers/Dashboard/CrudController.php`)
+- **CrudTable**: Helper for table configuration (`vendor/nexopos/core/src/Classes/CrudTable.php`)
+- **CrudForm**: Helper for form configuration (`vendor/nexopos/core/src/Classes/CrudForm.php`)
+- **FormInput**: Helper for field configuration (`vendor/nexopos/core/src/Classes/FormInput.php`)
 
 ## Core CRUD Class Structure
 
@@ -26,8 +26,8 @@ The CRUD system consists of:
 
 namespace App\Crud;
 
-use App\Services\CrudService;
-use App\Services\CrudEntry;
+use Ns\Services\CrudService;
+use Ns\Services\CrudEntry;
 
 class ExampleCrud extends CrudService
 {
@@ -122,7 +122,7 @@ public $pick = [
 The `getColumns()` method defines table columns:
 
 ```php
-use App\Classes\CrudTable;
+use Ns\Classes\CrudTable;
 
 public function getColumns(): array
 {
@@ -185,7 +185,7 @@ public function setActions(CrudEntry $entry): CrudEntry
         identifier: 'edit',
         label: '<i class="mr-2 las la-edit"></i> ' . __('Edit'),
         type: 'GOTO',
-        url: ns()->url('/dashboard/' . $this->slug . '/edit/' . $entry->id)
+        url: nsUrl('/dashboard/' . $this->slug . '/edit/' . $entry->id)
     );
 
     // Preview in popup
@@ -193,7 +193,7 @@ public function setActions(CrudEntry $entry): CrudEntry
         identifier: 'preview',
         label: '<i class="mr-2 las la-eye"></i> ' . __('Preview'),
         type: 'POPUP',
-        url: ns()->url('/dashboard/' . $this->slug . '/preview/' . $entry->id)
+        url: nsUrl('/dashboard/' . $this->slug . '/preview/' . $entry->id)
     );
 
     // Delete with confirmation
@@ -201,7 +201,7 @@ public function setActions(CrudEntry $entry): CrudEntry
         identifier: 'delete',
         label: '<i class="mr-2 las la-trash"></i> ' . __('Delete'),
         type: 'DELETE',
-        url: ns()->url('/api/crud/' . self::IDENTIFIER . '/' . $entry->id),
+        url: nsUrl('/api/crud/' . self::IDENTIFIER . '/' . $entry->id),
         confirm: [
             'message' => __('Would you like to delete this entry?'),
         ]
@@ -212,7 +212,7 @@ public function setActions(CrudEntry $entry): CrudEntry
         identifier: 'approve',
         label: '<i class="mr-2 las la-check"></i> ' . __('Approve'),
         type: 'GET',
-        url: ns()->url('/api/examples/' . $entry->id . '/approve'),
+        url: nsUrl('/api/examples/' . $entry->id . '/approve'),
         confirm: [
             'message' => __('Approve this entry?'),
         ]
@@ -304,7 +304,7 @@ public function getBulkActions(): array
 
 ```php
 use Illuminate\Http\Request;
-use App\Exceptions\NotAllowedException;
+use Ns\Exceptions\NotAllowedException;
 
 public function bulkAction(Request $request): array
 {
@@ -370,7 +370,7 @@ public function hook($query): void
 Define dynamic filters for the UI:
 
 ```php
-use App\Services\Helper;
+use Ns\Services\Helper;
 
 public function __construct()
 {
@@ -491,12 +491,393 @@ public function beforeDelete($namespace, $id, $model): void
 }
 ```
 
+## CRUD API Endpoints and Request Structure
+
+The NexoPOS CRUD system exposes RESTful API endpoints for all CRUD operations. The API routes are defined in `routes/api/crud.php`.
+
+### API Routes
+
+All CRUD operations use the following route pattern:
+
+```
+/api/crud/{namespace}        - Base CRUD endpoint
+/api/crud/{namespace}/{id}   - Specific entry endpoint
+```
+
+**Available HTTP Methods:**
+
+- **POST** `/api/crud/{namespace}` - Create new entry
+- **GET** `/api/crud/{namespace}` - List entries (paginated)
+- **GET** `/api/crud/{namespace}/{id}` - Get single entry
+- **PUT** `/api/crud/{namespace}/{id}` - Update existing entry
+- **DELETE** `/api/crud/{namespace}/{id}` - Delete entry
+
+Where `{namespace}` is the CRUD's `IDENTIFIER` constant (e.g., `ns.products`, `ns.orders`).
+
+### JSON Request Structure
+
+The JSON structure sent to POST and PUT endpoints **directly correlates** with the form structure defined in your CRUD class's `getForm()` method.
+
+#### Form Structure to JSON Mapping
+
+The `getForm()` method defines two types of fields:
+
+1. **Main Field** - Single field from `CrudForm::form(main: ...)` parameter
+2. **Tab Fields** - Fields grouped under tabs from `CrudForm::tabs(...)` parameter
+
+**JSON Structure Pattern:**
+
+```json
+{
+  "main_field_name": "value",
+  "tab_identifier": {
+    "field_name_1": "value",
+    "field_name_2": "value"
+  }
+}
+```
+
+- The **main field** appears at the root level of the JSON
+- Each **tab's fields** are nested under an object with the tab's `identifier` as the key
+- Field names come from the `name` parameter in `FormInput::*()` methods
+- Field values must match the expected data type (string, number, boolean, array)
+
+### Complete Example: School CRUD
+
+#### Form Definition
+
+```php
+public function getForm(School | null $entry = null): array
+{
+    return CrudForm::form(
+        main: FormInput::text(
+            label: __m('Name', 'SGUniversity'),
+            name: 'name',  // ← Root-level field
+            validation: 'required',
+            value: $entry ? $entry->name : null,
+        ),
+        tabs: CrudForm::tabs(
+            CrudForm::tab(
+                identifier: 'general',  // ← Tab identifier becomes JSON key
+                label: __m('General', 'SGUniversity'),
+                fields: CrudForm::fields(
+                    FormInput::searchSelect(
+                        label: __m('Registration Role', 'SGUniversity'),
+                        name: 'registration_role',  // ← Nested under 'general'
+                        options: Helper::toJsOptions(Role::get(), ['id', 'name']),
+                        validation: 'required',
+                        value: $entry ? $entry->registration_role : null,
+                    ),
+                    FormInput::text(
+                        label: __m('Slug', 'SGUniversity'),
+                        name: 'slug',  // ← Nested under 'general'
+                        value: $entry ? $entry->slug : null,
+                    ),
+                    FormInput::switch(
+                        label: __m('School Active', 'SGUniversity'),
+                        name: 'is_active',  // ← Nested under 'general'
+                        options: Helper::kvToJsOptions([
+                            '1' => __m('Yes', 'SGUniversity'),
+                            '0' => __m('No', 'SGUniversity'),
+                        ]),
+                        value: $entry ? $entry->is_active : null,
+                    ),
+                    FormInput::switch(
+                        label: __m('Enable Registration', 'SGUniversity'),
+                        name: 'allow_registration',  // ← Nested under 'general'
+                        options: Helper::kvToJsOptions([
+                            '1' => __m('Yes', 'SGUniversity'),
+                            '0' => __m('No', 'SGUniversity'),
+                        ]),
+                        value: $entry ? $entry->allow_registration : null,
+                    ),
+                    FormInput::textarea(
+                        label: __m('Description', 'SGUniversity'),
+                        name: 'description',  // ← Nested under 'general'
+                        value: $entry ? $entry->description : null,
+                    ),
+                )
+            )
+        )
+    );
+}
+```
+
+#### Corresponding JSON Request
+
+**POST** `/api/crud/ns.schools` or **PUT** `/api/crud/ns.schools/123`
+
+```json
+{
+  "name": "Base School",
+  "general": {
+    "registration_role": 1,
+    "slug": "base-school",
+    "is_active": 1,
+    "allow_registration": 1,
+    "description": "Innovation Starts Here"
+  }
+}
+```
+
+**Request Structure Explanation:**
+
+- `"name"` - Root level because it's the **main** field in `CrudForm::form(main: ...)`
+- `"general"` - Object key matches the **tab identifier** `'general'`
+- All fields inside `"general"` object correspond to fields in the 'general' tab
+- Field names (`registration_role`, `slug`, etc.) match the `name` parameter in `FormInput` methods
+- Values must match the expected types:
+  - Text fields: strings
+  - Switch fields: integers (0 or 1) or booleans
+  - Select fields: values from the options
+  - Textarea fields: strings
+
+### Multiple Tabs Example
+
+If your form has multiple tabs:
+
+```php
+return CrudForm::form(
+    main: FormInput::text(name: 'title', label: 'Title'),
+    tabs: CrudForm::tabs(
+        CrudForm::tab(
+            identifier: 'general',
+            fields: CrudForm::fields(
+                FormInput::text(name: 'subtitle', label: 'Subtitle'),
+            )
+        ),
+        CrudForm::tab(
+            identifier: 'advanced',
+            fields: CrudForm::fields(
+                FormInput::number(name: 'priority', label: 'Priority'),
+            )
+        )
+    )
+);
+```
+
+**Corresponding JSON:**
+
+```json
+{
+  "title": "Main Title",
+  "general": {
+    "subtitle": "Page Subtitle"
+  },
+  "advanced": {
+    "priority": 5
+  }
+}
+```
+
+### POST vs PUT Behavior
+
+**POST** `/api/crud/{namespace}` - **Create New Entry**
+
+- Returns HTTP 201 Created on success
+- Returns newly created entry with `id`
+- Triggers `beforePost()` and `afterPost()` hooks
+- Example Response:
+  ```json
+  {
+    "status": "success",
+    "message": "Entry created successfully",
+    "data": {
+      "id": 123,
+      "name": "Base School",
+      "...": "..."
+    }
+  }
+  ```
+
+**PUT** `/api/crud/{namespace}/{id}` - **Update Existing Entry**
+
+- Returns HTTP 200 OK on success
+- Returns updated entry data
+- Triggers `beforePut()` and `afterPut()` hooks
+- Entry must exist or returns 404
+- Example Response:
+  ```json
+  {
+    "status": "success",
+    "message": "Entry updated successfully",
+    "data": {
+      "id": 123,
+      "name": "Updated School Name",
+      "...": "..."
+    }
+  }
+  ```
+
+### Field Type Handling
+
+Different `FormInput` types expect different JSON value formats:
+
+| FormInput Type | JSON Value Type | Example |
+|----------------|-----------------|---------|
+| `text()` | String | `"base-school"` |
+| `textarea()` | String | `"Long description..."` |
+| `number()` | Number | `100` |
+| `switch()` | Integer (0/1) or Boolean | `1` or `true` |
+| `select()` | String/Number | `"value"` or `5` |
+| `searchSelect()` | String/Number/Array | `1` or `[1, 2, 3]` |
+| `hidden()` | String/Number/Boolean | `false` or `0` |
+| `date()` | String (ISO format) | `"2024-01-15"` |
+| `datetime()` | String (ISO format) | `"2024-01-15T14:30:00Z"` |
+| `media()` | String (URL) or Number (ID) | `"https://..."` or `123` |
+
+### Validation and Error Responses
+
+If validation fails, the API returns HTTP 422 Unprocessable Entity:
+
+```json
+{
+  "message": "The given data was invalid.",
+  "errors": {
+    "name": [
+      "The name field is required."
+    ],
+    "general.slug": [
+      "The slug has already been taken."
+    ],
+    "general.is_active": [
+      "The is active field must be 0 or 1."
+    ]
+  }
+}
+```
+
+**Error Key Format:**
+- Root fields: `"fieldname"`
+- Tab fields: `"tab_identifier.fieldname"`
+
+### GET Requests
+
+**List Entries** - `GET /api/crud/{namespace}`
+
+Returns paginated list with metadata:
+
+```json
+{
+  "data": [
+    { "id": 1, "name": "School 1", "..." : "..." },
+    { "id": 2, "name": "School 2", "..." : "..." }
+  ],
+  "current_page": 1,
+  "last_page": 5,
+  "per_page": 10,
+  "total": 47
+}
+```
+
+**Get Single Entry** - `GET /api/crud/{namespace}/{id}`
+
+Returns single entry:
+
+```json
+{
+  "data": {
+    "id": 123,
+    "name": "Base School",
+    "general": {
+      "slug": "base-school",
+      "is_active": 1,
+      "description": "Innovation Starts Here"
+    }
+  }
+}
+```
+
+### DELETE Request
+
+**Delete Entry** - `DELETE /api/crud/{namespace}/{id}`
+
+Returns confirmation:
+
+```json
+{
+  "status": "success",
+  "message": "Entry deleted successfully"
+}
+```
+
+- Triggers `beforeDelete()` hook
+- HTTP 204 No Content on success
+- HTTP 403 if user lacks permission
+- HTTP 404 if entry not found
+
+### Using the API in Frontend
+
+**With nsHttpClient:**
+
+```typescript
+// Create entry
+nsHttpClient.post('/api/crud/ns.schools', {
+    name: 'New School',
+    general: {
+        slug: 'new-school',
+        is_active: 1
+    }
+}).subscribe({
+    next: (response) => {
+        nsSnackBar.success('School created successfully');
+        console.log('Created ID:', response.data.id);
+    },
+    error: (error) => {
+        nsSnackBar.error(error.message);
+        // Handle validation errors
+        if (error.errors) {
+            Object.keys(error.errors).forEach(field => {
+                console.error(`${field}: ${error.errors[field][0]}`);
+            });
+        }
+    }
+});
+
+// Update entry
+nsHttpClient.put('/api/crud/ns.schools/123', {
+    name: 'Updated School',
+    general: {
+        is_active: 0
+    }
+}).subscribe({
+    next: (response) => {
+        nsSnackBar.success('School updated successfully');
+    },
+    error: (error) => {
+        nsSnackBar.error('Update failed');
+    }
+});
+
+// Delete entry
+nsHttpClient.delete('/api/crud/ns.schools/123')
+    .subscribe({
+        next: () => {
+            nsSnackBar.success('School deleted');
+        },
+        error: (error) => {
+            nsSnackBar.error('Deletion failed');
+        }
+    });
+```
+
+### Best Practices
+
+1. **Match Form Structure**: Always ensure JSON structure matches your `getForm()` definition
+2. **Validate Before Sending**: Use client-side validation matching the `validation` rules
+3. **Handle Errors Properly**: Display validation errors to users in a clear format
+4. **Use Correct Types**: Send booleans as integers (0/1) for switch fields
+5. **Include All Required Fields**: Check `validation: 'required'` in form definition
+6. **Test with Postman**: Use Postman to test API endpoints during development
+7. **Check Permissions**: Ensure CRUD permissions are properly configured
+8. **Handle Tab Nesting**: Remember to nest tab fields under their identifier
+
 ## Labels Configuration
 
 Define UI labels:
 
 ```php
-use App\Classes\CrudTable;
+use Ns\Classes\CrudTable;
 
 public function getLabels(): array
 {
@@ -522,11 +903,11 @@ Define navigation URLs:
 public function getLinks(): array
 {
     return [
-        'list' => ns()->url('dashboard/' . $this->slug),
-        'create' => ns()->url('dashboard/' . $this->slug . '/create'),
-        'edit' => ns()->url('dashboard/' . $this->slug . '/edit/'),
-        'post' => ns()->url('api/crud/' . $this->namespace),
-        'put' => ns()->url('api/crud/' . $this->namespace . '/{id}'),
+        'list' => nsUrl('dashboard/' . $this->slug),
+        'create' => nsUrl('dashboard/' . $this->slug . '/create'),
+        'edit' => nsUrl('dashboard/' . $this->slug . '/edit/'),
+        'post' => nsUrl('api/crud/' . $this->namespace),
+        'put' => nsUrl('api/crud/' . $this->namespace . '/{id}'),
     ];
 }
 ```
@@ -536,8 +917,8 @@ public function getLinks(): array
 Use casts to format data for display:
 
 ```php
-use App\Casts\CurrencyCast;
-use App\Casts\DateCast;
+use Ns\Casts\CurrencyCast;
+use Ns\Casts\DateCast;
 
 protected $casts = [
     'price' => CurrencyCast::class,
@@ -555,16 +936,16 @@ Based on the actual `OrderCrud` implementation:
 
 namespace App\Crud;
 
-use App\Casts\CurrencyCast;
-use App\Casts\DateCast;
-use App\Casts\OrderDeliveryCast;
-use App\Casts\OrderPaymentCast;
-use App\Classes\CrudTable;
-use App\Exceptions\NotAllowedException;
-use App\Models\Order;
-use App\Services\CrudEntry;
-use App\Services\CrudService;
-use App\Services\Helper;
+use Ns\Casts\CurrencyCast;
+use Ns\Casts\DateCast;
+use Ns\Casts\OrderDeliveryCast;
+use Ns\Casts\OrderPaymentCast;
+use Ns\Classes\CrudTable;
+use Ns\Exceptions\NotAllowedException;
+use Ns\Models\Order;
+use Ns\Services\CrudEntry;
+use Ns\Services\CrudService;
+use Ns\Services\Helper;
 use Illuminate\Http\Request;
 use TorMorten\Eventy\Facades\Events as Hook;
 
@@ -653,20 +1034,20 @@ class OrderCrud extends CrudService
         $entry->action(
             identifier: 'invoice',
             label: '<i class="mr-2 las la-file-invoice-dollar"></i> ' . __('Invoice'),
-            url: ns()->url('/dashboard/orders/invoice/' . $entry->id),
+            url: nsUrl('/dashboard/orders/invoice/' . $entry->id),
         );
 
         $entry->action(
             identifier: 'receipt',
             label: '<i class="mr-2 las la-receipt"></i> ' . __('Receipt'),
-            url: ns()->url('/dashboard/orders/receipt/' . $entry->id),
+            url: nsUrl('/dashboard/orders/receipt/' . $entry->id),
         );
 
         $entry->action(
             identifier: 'delete',
             label: '<i class="mr-2 las la-trash"></i> ' . __('Delete'),
             type: 'DELETE',
-            url: ns()->url('/api/crud/ns.orders/' . $entry->id),
+            url: nsUrl('/api/crud/ns.orders/' . $entry->id),
             confirm: [
                 'message' => __('Would you like to delete this order?'),
             ],
@@ -776,7 +1157,7 @@ return Hook::filter($this->namespace . '-catch-action', false, $request);
     @include('common.dashboard-header')
     <div class="px-4 flex-auto flex flex-col" id="crud-table-container">
         <ns-crud
-            src="{{ ns()->url('api/crud/' . $namespace) }}"
+            src="{{ nsUrl('api/crud/' . $namespace) }}"
             create-url="{{ $createUrl }}"
             namespace="{{ $namespace }}">
         </ns-crud>

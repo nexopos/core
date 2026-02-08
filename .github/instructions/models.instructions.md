@@ -92,7 +92,7 @@ use Ns\Models\NsModel;
 use Modules\ModuleName\Models\Category;
 use Modules\ModuleName\Models\Enrollment;
 use Modules\ModuleName\Models\Lesson;
-use App\Models\User;
+use Ns\Models\User;
 
 class Course extends NsModel
 {

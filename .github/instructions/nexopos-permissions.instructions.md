@@ -23,7 +23,7 @@ Examples:
 
 ### Permission Model
 
-Permissions are stored in the `nexopos_permissions` table and represented by the `App\Models\Permission` model with these key properties:
+Permissions are stored in the `nexopos_permissions` table and represented by the `Ns\Models\Permission` model with these key properties:
 
 - `name`: Human-readable name
 - `namespace`: Unique identifier (e.g., "create.products")
@@ -40,7 +40,7 @@ Permissions are defined in PHP files located in `database/permissions/`. Each fi
 ```php
 <?php
 
-use App\Models\Permission;
+use Ns\Models\Permission;
 
 if ( defined( 'NEXO_CREATE_PERMISSIONS' ) ) {
     foreach ( [ 'create', 'read', 'update', 'delete' ] as $crud ) {
@@ -80,7 +80,7 @@ For specific permissions that don't follow the CRUD pattern:
 ```php
 <?php
 
-use App\Models\Permission;
+use Ns\Models\Permission;
 
 if ( defined( 'NEXO_CREATE_PERMISSIONS' ) ) {
     $permission = Permission::firstOrNew( [ 'namespace' => 'nexopos.pos.edit-purchase-price' ] );
@@ -100,8 +100,8 @@ Roles and their permission assignments are defined in files like `database/permi
 ```php
 <?php
 
-use App\Models\Permission;
-use App\Models\Role;
+use Ns\Models\Permission;
+use Ns\Models\Role;
 
 $admin = Role::firstOrNew( [ 'namespace' => 'admin' ] );
 $admin->name = __( 'Administrator' );

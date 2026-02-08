@@ -1,10 +1,10 @@
 # Creating a Widgets
 
-The creation of a widget depends on wether we want to do it for a module or for the core. When a module is created for the core, it's stored on the diretory `app/Widgets`. 
+The creation of a widget depends on wether we want to do it for a module or for the core. When a module is created for the core, it's stored on the diretory `vendor/nexopos/core/src/Widgets`. 
 When a module is created, it's stored on the directory `modules/<module_name>/Widgets`.
 
 ## Declaring a Widgets
-The first step is to create a class that extends the `App\Services\Widgets` class. 
+The first step is to create a class that extends the `Ns\Services\Widgets` class. 
 This class is mostly declarative as it's there the following properties are defined:
 
 - `name`: The human readable name of the widget.
@@ -12,30 +12,11 @@ This class is mostly declarative as it's there the following properties are defi
 - `permission`: which is a string that represents the permission required to access the widget.
 - `vueComponent`: The name of the Vue component that will be used to render the widget.
 
-**Example:**
-This is an example of a widget created on NexoPOS
-```php
-namespace App\Widgets;
-use App\Services\Widgets;
-
-class MyWidget extends Widgets
-{
-    
-    protected string $permission = 'view_my_widget';
-    protected string $vueComponent = 'CustomWidgetComponent';
-
-    public function __construct()
-    {
-        $this->name = __( 'Widget name' );
-        $this->description = __( 'Widget Description' );
-    }
-}
-```
 
 This is an example of a widget created on a module
 ```php
 namespace Modules\MyModule\Widgets;
-use App\Services\WidgetService;
+use Ns\Services\WidgetService;
 
 class MyModuleWidget extends WidgetService
 {
@@ -55,9 +36,9 @@ class MyModuleWidget extends WidgetService
 For NexoPOS to be aware of the widget, we need to register it. This is done using the WidgetService class like so:
 
 ```php
-namespace App\Providers;
-use App\Services\WidgetService;
-use App\Widgets\MyWidget;
+namespace Modules\MyModule\Providers;
+use Ns\Services\WidgetService;
+use Ns\Widgets\MyWidget;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -76,15 +57,15 @@ class AppServiceProvider extends ServiceProvider
 
 ## Injecting Vue Component For Module
 In order for the widget to be rendered, we need to inject the Vue component on the dashboard. There is one place
-the widgets needs to be injected: the dashboard. We'll make use of the event `App\Events\RenderFooterEvent`. Typically, we'll create a Listeners that listen
-that listen to that event which has as properties output (`App\Classes\Output`) and routeName which is a string of the current route name.
+the widgets needs to be injected: the dashboard. We'll make use of the event `Ns\Events\RenderFooterEvent`. Typically, we'll create a Listeners that listen
+that listen to that event which has as properties output (`Ns\Classes\Output`) and routeName which is a string of the current route name.
 
 We'll then need to make sure the route name is "ns.dashboard.home", then we'll use the method addView of the output class like so:
 
 ```php
 namespace Modules\MyModule\Listeners;
-use App\Classes\Output;
-use App\Events\RenderFooterEvent;
+use Ns\Classes\Output;
+use Ns\Events\RenderFooterEvent;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 

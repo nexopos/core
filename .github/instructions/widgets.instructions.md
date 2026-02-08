@@ -344,7 +344,7 @@ Create API endpoints to provide data for widgets:
 namespace Modules\ModuleName\Controllers\Api;
 
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Ns\Http\Controllers\DashboardController;
 use Modules\ModuleName\Models\Course;
 use Modules\ModuleName\Models\Enrollment;
 
