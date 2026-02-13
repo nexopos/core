@@ -63,13 +63,13 @@ class {{ ucwords( $Str::camel( $resource_name ) ) }}Crud extends CrudService
 
     /**
      * Adding relation
-     * Example : [ 'nexopos_users as user', 'user.id', '=', 'nexopos_orders.author' ]
+     * Example : [ 'users as user', 'user.id', '=', 'nexopos_orders.author' ]
      * Other possible combinatsion includes "leftJoin", "rightJoin", "innerJoin"
      *
      * Left Join Example
      * public $relations = [
      *  'leftJoin' => [
-     *      [ 'nexopos_users as user', 'user.id', '=', 'nexopos_orders.author' ]
+     *      [ 'users as user', 'user.id', '=', 'nexopos_orders.author' ]
      *  ]
      * ];
      *
@@ -100,7 +100,7 @@ class {{ ucwords( $Str::camel( $resource_name ) ) }}Crud extends CrudService
      * Should be an array of associative keys, where
      * keys are either the related table or alias name.
      * Example : [
-     *      'user'  =>  [ 'username' ], // here the relation on the table nexopos_users is using "user" as an alias
+     *      'user'  =>  [ 'username' ], // here the relation on the table users is using "user" as an alias
      * ]
      */
     public $pick = [];

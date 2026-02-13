@@ -28,6 +28,9 @@ export default {
             return false;
         },
     },
+    mounted() {
+        console.log( this.field );    
+    },
     methods: {
         toggleIt() {
             if ( this.field !== undefined ) {

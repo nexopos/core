@@ -18,7 +18,7 @@ export default {
     name: 'ns-switch',
     emits: [ 'change', 'blur' ],
     mounted() {
-        console.log( this.field );
+        // ...
     },
     computed: {
         _options() {

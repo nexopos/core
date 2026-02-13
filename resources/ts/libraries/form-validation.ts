@@ -463,11 +463,12 @@ export default class FormValidation {
                 },
     
                 min: (field, rule) => {
-                    return field.value && field.value.length < parseInt(rule.value);
+                    return ! [ undefined, null ].includes( field.value ) && field.value.length < parseInt(rule.value);
                 },
     
-                max: (field, rule) =>
-                    field.value && field.value.length > parseInt(rule.value),
+                max: (field, rule) => {
+                    return ! [ undefined, null ].includes( field.value ) && field.value.length > parseInt(rule.value)
+                },
     
                 regex: (field, rule) => {
                     const pattern = new RegExp(rule.value);

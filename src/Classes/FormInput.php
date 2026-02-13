@@ -208,6 +208,34 @@ class FormInput
     }
 
     /**
+     * Creates a color input field by reusing the text method with type set to 'color'.
+     *
+     * @param  string        $label       The label for the color field.
+     * @param  string        $name        The name attribute for the color field.
+     * @param  string        $value       The default value of the color field.
+     * @param  string        $validation  Validation rules for the color field.
+     * @param  string        $description A description or help text for the color field.
+     * @param  bool          $disabled    Whether the color field is disabled.
+     * @param  array         $data        Additional data attributes for the color field.
+     * @param  callable|null $show        A callable that determines whether the color field should be displayed.
+     * @return array         An associative array representing the color field configuration.
+     */
+    public static function color( $label, $name, $value = '', $validation = '', $description = '', $disabled = false, $data = [], $show = null )
+    {
+        return self::text(
+            label: $label,
+            name: $name,
+            validation: $validation,
+            description: $description,
+            disabled: $disabled,
+            type: 'color',
+            value: $value,
+            data: $data,
+            show: $show
+        );
+    }
+
+    /**
      * Creates a select dropdown field with customizable options and parameters.
      *
      * @param  string        $label       The label for the select field.
