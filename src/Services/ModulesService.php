@@ -1193,6 +1193,13 @@ class ModulesService
         }
 
         /**
+         * Reverse the migration files order to execute down() methods
+         * from newest to oldest, ensuring child tables are dropped
+         * before parent tables (respecting foreign key constraints).
+         */
+        $migrationFiles = array_reverse( $migrationFiles );
+
+        /**
          * Checks if migration files exists
          * so that we can "down" all migrations
          */
