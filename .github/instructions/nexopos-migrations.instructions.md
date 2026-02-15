@@ -197,7 +197,7 @@ public function up(): void
 ```php
 $table->foreign('user_id')
     ->references('id')
-    ->on('nexopos_users')
+    ->on('users')
     ->onDelete('cascade'); // AVOID THIS
 ```
 
@@ -205,7 +205,7 @@ $table->foreign('user_id')
 ```php
 $table->foreign('user_id')
     ->references('id')
-    ->on('nexopos_users');
+    ->on('users');
 
 // Handle deletion in model observer or service layer
 ```
@@ -314,7 +314,7 @@ return new class extends Migration
                 // Foreign key without cascade
                 $table->foreign('author_id')
                     ->references('id')
-                    ->on('nexopos_users');
+                    ->on('users');
 
                 // Indexes
                 $table->index('slug');
@@ -632,7 +632,7 @@ Schema::create('mymodule_settings', function (Blueprint $table) {
 });
 
 // ❌ Bad: Modifying core tables directly
-Schema::table('nexopos_users', function (Blueprint $table) {
+Schema::table('users', function (Blueprint $table) {
     // Avoid modifying core tables when possible
 });
 ```

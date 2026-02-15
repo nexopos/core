@@ -182,7 +182,7 @@ $permissions = $admin->permissions()->get();
 ### User Model
 
 **Location**: `vendor/nexopos/core/src/Models/User.php`  
-**Table**: `nexopos_users`
+**Table**: `users`
 
 #### Key Methods
 

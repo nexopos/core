@@ -92,7 +92,7 @@ Relations are defined in the `$relations` property:
 ```php
 public $relations = [
     // Simple join
-    ['nexopos_users as author', 'nexopos_examples.author_id', '=', 'author.id'],
+    ['users as author', 'nexopos_examples.author_id', '=', 'author.id'],
     
     // Left join
     'leftJoin' => [
@@ -961,8 +961,8 @@ class OrderCrud extends CrudService
     protected $prependOptions = true;
 
     public $relations = [
-        ['nexopos_users as author', 'nexopos_orders.author', '=', 'author.id'],
-        ['nexopos_users as customer', 'nexopos_orders.customer_id', '=', 'customer.id'],
+        ['users as author', 'nexopos_orders.author', '=', 'author.id'],
+        ['users as customer', 'nexopos_orders.customer_id', '=', 'customer.id'],
     ];
 
     public $pick = [

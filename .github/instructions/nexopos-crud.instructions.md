@@ -240,7 +240,7 @@ class ProductCrud extends CrudService
      * Adding relations
      */
     public $relations = [
-        ['nexopos_users as author', 'nexopos_products.author', '=', 'author.id'],
+        ['users as author', 'nexopos_products.author', '=', 'author.id'],
         ['nexopos_categories as category', 'nexopos_products.category_id', '=', 'category.id'],
     ];
 
