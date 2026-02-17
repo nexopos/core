@@ -618,6 +618,179 @@ public function getForm($entry = null): array
 }
 ```
 
+### JSON Format for API Submissions
+
+When submitting forms to CRUD API endpoints for creating or updating records, the JSON payload follows a specific structure based on the form configuration:
+
+#### Structure Rules
+
+1. **Main field**: Submitted directly at the root level with its field name as the key
+2. **Tab fields**: Submitted as an object where the tab identifier is the key, containing all fields from that tab
+
+#### Example Form Configuration
+
+Given the following `getForm()` configuration:
+
+```php
+public function getForm($entry = null): array
+{
+    return CrudForm::form(
+        main: FormInput::text(
+            label: __('Name'),
+            name: 'name',
+            validation: 'required',
+            value: $entry ? $entry->name : null,
+        ),
+        tabs: CrudForm::tabs(
+            CrudForm::tab(
+                identifier: 'general',
+                label: __('General'),
+                fields: CrudForm::fields(
+                    FormInput::searchSelect(
+                        label: __('Registration Role'),
+                        name: 'registration_role',
+                        options: Helper::toJsOptions(Role::get(), ['id', 'name']),
+                        validation: 'required',
+                        value: $entry ? $entry->registration_role : null,
+                    ),
+                    FormInput::media(
+                        label: __('Thumb'),
+                        name: 'thumb',
+                        value: $entry ? $entry->thumb : null,
+                    ),
+                    FormInput::text(
+                        label: __('Slug'),
+                        name: 'slug',
+                        value: $entry ? $entry->slug : null,
+                    ),
+                    FormInput::switch(
+                        label: __('Active'),
+                        name: 'is_active',
+                        options: Helper::kvToJsOptions([
+                            '1' => __('Yes'),
+                            '0' => __('No'),
+                        ]),
+                        value: $entry ? $entry->is_active : null,
+                    ),
+                    FormInput::textarea(
+                        label: __('Description'),
+                        name: 'description',
+                        value: $entry ? $entry->description : null,
+                    ),
+                )
+            ),
+            CrudForm::tab(
+                identifier: 'advanced',
+                label: __('Advanced Options'),
+                fields: CrudForm::fields(
+                    FormInput::number(
+                        label: __('Priority'),
+                        name: 'priority',
+                        value: $entry ? $entry->priority : 0,
+                    ),
+                    FormInput::switch(
+                        label: __('Featured'),
+                        name: 'is_featured',
+                        options: Helper::kvToJsOptions([
+                            '1' => __('Yes'),
+                            '0' => __('No'),
+                        ]),
+                        value: $entry ? $entry->is_featured : null,
+                    ),
+                )
+            )
+        )
+    );
+}
+```
+
+#### Corresponding JSON Payload
+
+**POST to `/api/crud/{namespace}` (Create) or PUT to `/api/crud/{namespace}/{id}` (Update):**
+
+```json
+{
+  "name": "Springfield University",
+  "general": {
+    "registration_role": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "thumb": "12345",
+    "slug": "springfield-university",
+    "is_active": "1",
+    "description": "A premier educational institution dedicated to excellence in teaching and research."
+  },
+  "advanced": {
+    "priority": 10,
+    "is_featured": "0"
+  }
+}
+```
+
+#### Field Value Types by Input Type
+
+| Input Type | Value Type | Example |
+|------------|-----------|---------|
+| `text`, `email`, `url` | String | `"John Doe"` |
+| `number`, `integer` | Number | `42`, `3.14` |
+| `textarea` | String | `"Long text content..."` |
+| `switch` | String "1" or "0" | `"1"` for Yes, `"0"` for No |
+| `select` | String (option value) | `"active"` |
+| `searchSelect` | String (ID/UUID) | `"3fa85f64-5717-4562-b3fc-2c963f66afa6"` |
+| `media` | String (media ID) | `"12345"` |
+| `checkbox` | Boolean | `true` or `false` |
+| `hidden` | Any (depends on type) | `false`, `"value"`, `123` |
+| `date`, `datetime` | String (ISO 8601) | `"2026-02-16"`, `"2026-02-16T18:30:00Z"` |
+| `multiselect` | Array of values | `["option1", "option2"]` |
+
+#### Important Notes
+
+1. **Switch fields**: Always use string values `"1"` or `"0"`, not boolean `true`/`false`
+2. **Tab identifiers**: Must exactly match the identifier used in `CrudForm::tab()`
+3. **Field names**: Must exactly match the `name` attribute in FormInput definitions
+4. **Null values**: Can be omitted from the JSON (handled by `filterPostInputs()` or `filterPutInputs()`)
+5. **Validation**: Applies server-side based on the `validation` parameter in form fields
+
+#### Processing the Submission
+
+The submitted JSON is processed through these methods in your CRUD class:
+
+```php
+// For POST (Create)
+public function filterPostInputs($inputs): array
+{
+    // Flatten tab data and process
+    // $inputs will contain both main field and tab objects
+    
+    // Example: Extract and process nested tab data
+    if (isset($inputs['general'])) {
+        $inputs = array_merge($inputs, $inputs['general']);
+        unset($inputs['general']);
+    }
+    
+    if (isset($inputs['advanced'])) {
+        $inputs = array_merge($inputs, $inputs['advanced']);
+        unset($inputs['advanced']);
+    }
+    
+    // Process specific fields
+    if (empty($inputs['slug'])) {
+        $inputs['slug'] = Str::slug($inputs['name']);
+    }
+    
+    return $inputs;
+}
+
+// For PUT (Update)
+public function filterPutInputs(array $inputs, $entry)
+{
+    // Same processing as filterPostInputs
+    // $entry contains the existing model instance
+    
+    return $inputs;
+}
+```
+
+**Note**: The CRUD system automatically flattens tab objects before passing to `filterPostInputs()` or `filterPutInputs()`, so you receive a single-level array with all field names as keys.
+
 ## Advanced Features
 
 ### Custom Field Casting
