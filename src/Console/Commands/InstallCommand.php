@@ -16,6 +16,7 @@ class InstallCommand extends Command
         $this->handleFileSystem();
         $this->handleApiRoutes();
         $this->handleScheduling();
+        $this->handleLanguage();
     }
 
     private function handleScheduling()
@@ -258,5 +259,48 @@ class InstallCommand extends Command
         file_put_contents( $apiFile, $apiContent );
 
         $this->info( 'Registering NexoPOS API routes' );
+    }
+
+    private function handleLanguage()
+    {
+        if ( ! $this->option( 'language' ) ) {
+            return;
+        }
+
+        $sourceLangDir = dirname( __DIR__, 3 ) . DIRECTORY_SEPARATOR . 'lang';
+        $targetLangDir = base_path( 'lang' );
+
+        if ( ! is_dir( $sourceLangDir ) ) {
+            return $this->error( sprintf( 'The source language directory does not exist at %s', $sourceLangDir ) );
+        }
+
+        // Ensure the target lang directory exists
+        if ( ! is_dir( $targetLangDir ) ) {
+            mkdir( $targetLangDir, 0755, true );
+        }
+
+        // Get all files from source lang directory
+        $files = scandir( $sourceLangDir );
+        $copiedCount = 0;
+
+        foreach ( $files as $file ) {
+            if ( $file === '.' || $file === '..' ) {
+                continue;
+            }
+
+            $sourceFile = $sourceLangDir . DIRECTORY_SEPARATOR . $file;
+            $targetFile = $targetLangDir . DIRECTORY_SEPARATOR . $file;
+
+            if ( is_file( $sourceFile ) ) {
+                // Copy file, overwriting if exists
+                if ( copy( $sourceFile, $targetFile ) ) {
+                    $copiedCount++;
+                } else {
+                    $this->warn( sprintf( 'Failed to copy %s', $file ) );
+                }
+            }
+        }
+
+        $this->info( sprintf( 'Language files copied: %d files from nexopos/core to lang/', $copiedCount ) );
     }
 }
