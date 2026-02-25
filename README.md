@@ -91,6 +91,11 @@ to give access to laravel scheduling to the module, we need to enable it by runn
 php artisan ns:install --scheduling
 ```
 
+#### Installing Lang
+```
+php artisan ns:install --language
+```
+
 ## Authentication
 
 ### Sanctum Configuration

@@ -2,6 +2,7 @@
 
 return [
     'label' => __( 'Security' ),
+    'identifier' => 'security',
     'fields' => [
         [
             'label' => __( 'Old Password' ),

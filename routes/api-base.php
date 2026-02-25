@@ -5,10 +5,12 @@ use Illuminate\Support\Facades\Route;
 use Ns\Http\Controllers\SetupController;
 use Ns\Http\Middleware\ClearRequestCacheMiddleware;
 use Ns\Http\Middleware\InstalledStateMiddleware;
+use Ns\Http\Middleware\LoadLangMiddleware;
 
 Route::middleware( [
     InstalledStateMiddleware::class,
     SubstituteBindings::class,
+    LoadLangMiddleware::class,
     ClearRequestCacheMiddleware::class,
 ] )->group( function () {
     include dirname( __FILE__ ) . '/api/fields.php';

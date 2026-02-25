@@ -5,6 +5,7 @@ use Ns\Services\Helper;
 
 return [
     'label' => __( 'General' ),
+    'identifier' => 'attribute',
     'fields' => [
         [
             'label' => __( 'Theme' ),

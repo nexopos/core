@@ -7,7 +7,7 @@ use Ns\Services\SetupService;
 
 class InstallCommand extends Command
 {
-    protected $signature = 'ns:install {--force} {--routes} {--filesystem} {--views} {--scheduling}';
+    protected $signature = 'ns:install {--force} {--routes} {--filesystem} {--views} {--scheduling} {--language}';
 
     protected $description = 'Install NexoPOS required files and configurations.';
 

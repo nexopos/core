@@ -54,20 +54,94 @@ class ExtractTranslation extends Command
     }
 
     /**
-     * Create symbolic link
+     * Create symbolic link for language directory
      */
     private function createSymLink()
     {
-        if ( ! \windows_os() ) {
-            $link = @\symlink( base_path( 'lang' ), public_path( '/lang' ) );
-        } else {
-            $mode = 'J';
-            $link = public_path( 'lang' );
-            $target = base_path( 'lang' );
-            $link = exec( "mklink /{$mode} \"{$link}\" \"{$target}\"" );
+        if ( $this->argument( 'module' ) ) {
+            return $this->createModuleSymlink();
         }
 
-        return $this->info( 'Language Symbolic Link has been created !' );
+        return $this->createCoreSymlink();
+    }
+
+    /**
+     * Create symbolic link for nexopos/core language directory
+     * Creates: public/lang -> lang
+     */
+    private function createCoreSymlink()
+    {
+        $langPath = base_path( 'lang' );
+        $publicLangPath = public_path( 'lang' );
+
+        // Check if the lang directory exists
+        if ( ! is_dir( $langPath ) ) {
+            return $this->error( sprintf( 'The lang directory does not exist at %s', $langPath ) );
+        }
+
+        // Remove existing symlink if it exists
+        if ( is_link( $publicLangPath ) ) {
+            unlink( $publicLangPath );
+        }
+
+        if ( ! \windows_os() ) {
+            $result = @\symlink( $langPath, $publicLangPath );
+        } else {
+            $mode = 'J';
+            $result = exec( "mklink /{$mode} \"{$publicLangPath}\" \"{$langPath}\"" );
+        }
+
+        if ( $result ) {
+            return $this->info( sprintf( 'Language Symbolic Link created: %s -> %s', $publicLangPath, $langPath ) );
+        } else {
+            return $this->error( 'Failed to create the symbolic link.' );
+        }
+    }
+
+    /**
+     * Create symbolic link for module language directory
+     * Creates: public/modules-lang/[module_namespace_lowercase] -> modules/[ModuleNamespace]/Lang
+     */
+    private function createModuleSymlink()
+    {
+        $module = $this->modulesService->get( $this->argument( 'module' ) );
+
+        if ( empty( $module ) ) {
+            return $this->error( 'Unable to find the requested module.' );
+        }
+
+        $moduleNamespace = $module[ 'namespace' ];
+        $moduleLangPath = base_path( 'modules' . DIRECTORY_SEPARATOR . $moduleNamespace . DIRECTORY_SEPARATOR . 'Lang' );
+        $publicModulesLangDir = public_path( 'modules-lang' );
+        $publicLangPath = $publicModulesLangDir . DIRECTORY_SEPARATOR . strtolower( $moduleNamespace );
+
+        // Ensure the public/modules-lang directory exists as a real directory
+        if ( ! is_dir( $publicModulesLangDir ) ) {
+            mkdir( $publicModulesLangDir, 0755, true );
+        }
+
+        // Check if the module Lang directory exists
+        if ( ! is_dir( $moduleLangPath ) ) {
+            return $this->error( sprintf( 'The Lang directory does not exist for module %s at %s', $moduleNamespace, $moduleLangPath ) );
+        }
+
+        // Remove existing symlink if it exists
+        if ( is_link( $publicLangPath ) ) {
+            unlink( $publicLangPath );
+        }
+
+        if ( ! \windows_os() ) {
+            $result = @\symlink( $moduleLangPath, $publicLangPath );
+        } else {
+            $mode = 'J';
+            $result = exec( "mklink /{$mode} \"{$publicLangPath}\" \"{$moduleLangPath}\"" );
+        }
+
+        if ( $result ) {
+            return $this->info( sprintf( 'Language Symbolic Link created: %s -> %s', $publicLangPath, $moduleLangPath ) );
+        } else {
+            return $this->error( 'Failed to create the symbolic link.' );
+        }
     }
 
     /**

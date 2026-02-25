@@ -160,12 +160,12 @@ class UserProfileForm extends SettingsPage
                 $currentShipping->$field = $shipping[ $field ];
             }
 
-            $currentBilling->customer_id = Auth::id();
+            $currentBilling->user_id = Auth::id();
             $currentBilling->type = 'billing';
             $currentBilling->author = Auth::id();
             $currentBilling->save();
 
-            $currentShipping->customer_id = Auth::id();
+            $currentShipping->user_id = Auth::id();
             $currentShipping->type = 'shipping';
             $currentShipping->author = Auth::id();
             $currentShipping->save();

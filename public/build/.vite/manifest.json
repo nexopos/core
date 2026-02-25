@@ -198,7 +198,7 @@
     "src": "resources/svg/nexopos-variant-1.svg"
   },
   "resources/ts/app.ts": {
-    "file": "assets/app-DFfq5yxN.js",
+    "file": "assets/app-DoIyCfbR.js",
     "name": "app",
     "src": "resources/ts/app.ts",
     "isEntry": true,
@@ -406,7 +406,7 @@
     ]
   },
   "resources/ts/pages/dashboard/ns-settings.vue": {
-    "file": "assets/ns-settings-DooPPSLb.js",
+    "file": "assets/ns-settings-k_J9BCD8.js",
     "name": "ns-settings",
     "src": "resources/ts/pages/dashboard/ns-settings.vue",
     "isDynamicEntry": true,

@@ -12,6 +12,7 @@ use Ns\Http\Middleware\CheckMigrationStatus;
 use Ns\Http\Middleware\ClearRequestCacheMiddleware;
 use Ns\Http\Middleware\HandleCommonRoutesMiddleware;
 use Ns\Http\Middleware\InstalledStateMiddleware;
+use Ns\Http\Middleware\LoadLangMiddleware;
 use Ns\Http\Middleware\NotInstalledStateMiddleware;
 
 Route::middleware( [ 'web' ] )->group( function () {
@@ -24,6 +25,7 @@ Route::middleware( [
     InstalledStateMiddleware::class,
     CheckMigrationStatus::class,
     SubstituteBindings::class,
+    LoadLangMiddleware::class,
 ] )->group( function () {
     /**
      * We would like to isolate certain routes as it's registered
