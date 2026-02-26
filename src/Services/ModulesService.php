@@ -1100,7 +1100,7 @@ class ModulesService
      */
     public function clearTemporaryFiles(): void
     {
-        Artisan::call( 'ns:doctor', [ '--clear-modules-temp' => true ] );
+        // Artisan::call( 'ns:doctor', [ '--clear-modules-temp' => true ] );
     }
 
     /**
