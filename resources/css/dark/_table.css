@@ -63,19 +63,31 @@
         }
 
         tr.info {
-            @apply bg-info-primary text-white;
+            @apply bg-info-primary;
+            th, td {
+                @apply text-white;
+            }
         }
     
         tr.error {
-            @apply bg-error-primary text-white;
+            @apply bg-error-primary;
+            th, td {
+                @apply text-white;
+            }
         }
     
         tr.success {
-            @apply bg-success-secondary text-white;
+            @apply bg-success-tertiary;
+            th, td {
+                @apply text-white;
+            }
         }
     
         tr.warning {
-            @apply bg-warning-primary text-white;
+            @apply bg-warning-tertiary;
+            th, td {
+                @apply text-white;
+            }
         }
         
         .ns-inset-button {
