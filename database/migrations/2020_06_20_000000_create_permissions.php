@@ -91,8 +91,8 @@ return new class extends Migration
         $this->permission->description = __( 'Can access the dashboard and see metrics' );
         $this->permission->save();
 
-        include_once dirname( __FILE__ ) . '/../permissions/medias.php';
-        include_once dirname( __FILE__ ) . '/../permissions/widgets.php';
+        include dirname( __FILE__ ) . '/../permissions/medias.php';
+        include dirname( __FILE__ ) . '/../permissions/widgets.php';
     }
 
     /**

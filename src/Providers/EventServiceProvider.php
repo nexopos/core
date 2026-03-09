@@ -3,6 +3,9 @@
 namespace Ns\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Ns\Events\ModulesBootedEvent;
+use Ns\Events\ModulesLoadedEvent;
+use Ns\Listeners\ModulesBootedEventListener;
 use Ns\Services\ModulesService;
 
 class EventServiceProvider extends ServiceProvider

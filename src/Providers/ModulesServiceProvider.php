@@ -60,13 +60,9 @@ class ModulesServiceProvider extends ServiceProvider
                  */
                 $this->modules->loadModulesMigrations();
 
-                $this->modules->getEnabledAndAutoloadedModules()->each( fn( $module ) => $this->modules->boot( $module ) );
-
-                /**
-                 * trigger register method only for enabled modules
-                 * service providers that extends ModulesServiceProvider.
-                 */
-                $this->modules->getEnabledAndAutoloadedModules()->each( function ( $module ) {
+                $this->modules->getEnabledAndAutoloadedModules()->each( function( $module ) {
+                    $this->modules->boot( $module );
+                    
                     /**
                      * register module commands
                      */
@@ -76,8 +72,9 @@ class ModulesServiceProvider extends ServiceProvider
                     );
 
                     $this->modules->triggerServiceProviders( $module, 'register', ServiceProvider::class );
-                } );
 
+                    $this->modules->loadLocales( $module );
+                } );
             }
             
             ModulesLoadedEvent::dispatch( $this->modules->get() );

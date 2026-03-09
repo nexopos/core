@@ -1821,4 +1821,20 @@ class ModulesService
                 throw new \InvalidArgumentException( 'Unsupported stream content type: ' . $content );
         }
     }
+
+    public function loadLocales( $module )
+    {
+        if ( ! empty( $module[ 'langFiles' ] ) ) {
+            foreach ( $module[ 'langFiles' ] as $locale => $path ) {
+                $locales = json_decode( file_get_contents( base_path( 'modules' . DIRECTORY_SEPARATOR . $path ) ), true );
+                $newLocales = collect( $locales )->mapWithKeys( function ( $value, $key ) use ( $module ) {
+                    $key = $module[ 'namespace' ] . '.' . $key;
+
+                    return [ $key => $value ];
+                } )->toArray();
+
+                app( 'translator' )->addLines( $newLocales, $locale );
+            }
+        }
+    }
 }

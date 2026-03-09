@@ -158,6 +158,8 @@ export default {
                         }
                     }
                 });
+            } else if ( action.component ) {
+                this.triggerPopup( action, this.row );
             } else {
                 /**
                  * why using nsEvent instead of nsHooks ?
@@ -179,19 +181,21 @@ export default {
         triggerPopup( action, row ) {
             const component     =   (window).nsExtraComponents[ action.component ];
 
-            /**
-             * it might be relaying on manual popups.
-             */
-            if ( action.component ) {
-                if ( component ) {
-                    return new Promise( ( resolve, reject ) => {
-                        Popup.show( component, { resolve, reject, row, action });
-                    });
-                } else {
-                    return nsSnackBar.error( __( `Unable to load the component "${action.component}". Make sure the component is registered to "nsExtraComponents".` ) );
+            if ( component ) {
+                let data = { row, action };
+
+                /**
+                 * if the action has props, we will merge it with the default data that we send to the component.
+                 */
+                if ( action.props ) {
+                    data = { ...data, ...action.props };
                 }
+
+                return new Promise( ( resolve, reject ) => {
+                    Popup.show( component, data );
+                });
             } else {
-                this.triggerAsync( action );
+                return nsSnackBar.error( __( `Unable to load the component "${action.component}". Make sure the component is registered to "nsExtraComponents".` ) );
             }
         }
     },

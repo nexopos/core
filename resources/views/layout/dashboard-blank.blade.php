@@ -27,7 +27,7 @@ if ( Auth::check() ) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{!! Helper::pageTitle( $title ?? __( 'Unamed Page' ) ) !!}</title>
     @include( 'ns::layout._header-injection' )
-    @nsvte([
+    @nsvite([
         'resources/scss/line-awesome/1.3.0/scss/line-awesome.scss',
         'resources/css/animations.css',
         'resources/css/fonts.css',
@@ -36,7 +36,7 @@ if ( Auth::check() ) {
     ])
     @yield( 'layout.dashboard.header' )
     @include( 'ns::layout._header-script' )
-    @nsvte([ 'resources/ts/lang-loader.ts' ])
+    @nsvite([ 'resources/ts/lang-loader.ts' ])
 </head>
 <body <?php echo in_array( app()->getLocale(), config( 'nexopos.rtl-languages' ) ) ? 'dir="rtl"' : "";?>>
     <div class="h-full w-full flex flex-col">

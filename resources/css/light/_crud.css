@@ -27,6 +27,33 @@
             @apply border-r-transparent;
         }
     }
+
+    tr {
+        &.info {
+            @apply bg-info-primary;
+            th, td {
+                @apply text-fontcolor;
+            }
+        }
+        &.error {
+            @apply bg-error-primary;
+            th, td {
+                @apply text-fontcolor;
+            }
+        }
+        &.success {
+            @apply bg-success-primary;
+            th, td {
+                @apply text-fontcolor;
+            }
+        }
+        &.warning {
+            @apply bg-warning-primary/70;
+            th, td {
+                @apply text-fontcolor;
+            }
+        }
+    }
     
     .ns-table-row {
         @apply border-table-th-edge border-l-transparent border-r-transparent;

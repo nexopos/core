@@ -49,7 +49,7 @@ export class Popup {
         return text.toLocaleLowerCase();
     }
 
-    open( component, params = {}, config = {} ) {
+    async open( component, params = {}, config = {} ) {
         this.popupBody       =   document.createElement( 'div' );
 
         if ( typeof component === 'function' ) {
@@ -62,7 +62,7 @@ export class Popup {
                  */
             }
         } else if ( typeof component.__asyncLoader === 'function' ) {
-            throw new Error( 'Async components are not supported.' );
+            component = await component.__asyncLoader();
         } 
 
         const body                          =   document.querySelector( 'body' ).querySelectorAll( 'div' )[0];

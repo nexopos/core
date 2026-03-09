@@ -67,9 +67,9 @@ class CrudEntry implements JsonSerializable
         return $this->values;
     }
 
-    public function action( $label, $identifier, $url = 'javascript:void(0)', $confirm = null, $type = 'GOTO', $permissions = [] )
+    public function action( $label, $identifier, $url = 'javascript:void(0)', $confirm = null, $type = 'GOTO', $permissions = [], $component = null, $props = [] )
     {
-        $this->values[ '$actions' ][ $identifier ] = compact( 'label', 'identifier', 'url', 'confirm', 'type', 'permissions' );
+        $this->values[ '$actions' ][ $identifier ] = compact( 'label', 'identifier', 'url', 'confirm', 'type', 'permissions', 'component', 'props' );
     }
 
     public function removeAction( $identifier )
