@@ -30,6 +30,13 @@
                         <span class="ml-1" v-if="withFilters">{{ __( 'Has Filters' ) }}</span>
                     </button>
                 </div>
+                <div class="px-2 flex items-center" v-if="supportTrash">
+                    <button @click="toggleTrashed()" :class="trashed ? 'table-filters-enabled' : 'table-filters-disabled'" class="ns-crud-button border rounded-full text-sm h-10 px-3 outline-hidden">
+                        <i class="las la-trash"></i>
+                        <span class="ml-1" v-if="!trashed">{{ trashedCount !== null ? trashedCount + ' ' + __( 'Trashed' ) : __( 'Trash' ) }}</span>
+                        <span class="ml-1" v-if="trashed">{{ __( 'Exit Trash' ) }}</span>
+                    </button>
+                </div>
                 <div id="custom-buttons" v-if="headerButtonsComponents.length > 0">
                     <component @update="handleHeaderButtonUpdate( $event )" :config="crudConfig" @refresh="refresh()" :selectedSubject="selectedEntriesSubject" :result="result" :is="component" :key="index" v-for="(component, index) of headerButtonsComponents"/>
                 </div>
@@ -149,6 +156,9 @@ export default {
             queryFilters:[],
             headerButtons: [],
             withFilters: false,
+            supportTrash: false,
+            trashed: false,
+            trashedCount: null,
             selectedEntriesSubject: new RxJS.BehaviorSubject([]),
             columns: [],
             selectedEntries:[],
@@ -209,7 +219,11 @@ export default {
          * pagination, total items per pages
          */
         getParsedSrc() {
-            return `${this.src}?${this.sortColumn}${this.searchQuery}${this.queryFiltersString}${this.queryPage}${this.getQueryParams() ? '&' + this.getQueryParams() : ''}`
+            return `${this.src}?${this.sortColumn}${this.searchQuery}${this.queryFiltersString}${this.trashedQuery}${this.queryPage}${this.getQueryParams() ? '&' + this.getQueryParams() : ''}`
+        },
+
+        trashedQuery() {
+            return this.trashed ? '&trashed=1' : '';
         },
 
         showQueryFilters() {
@@ -380,11 +394,31 @@ export default {
                 this.showCheckboxes         =   f.showCheckboxes;
                 this.headerButtons          =   f.headerButtons || [];
                 this.showSelectedEntries    =   f.showSelectedEntries;
+                this.supportTrash           =   f.supportTrash || false;
                 this.refresh();
+
+                if ( f.supportTrash ) {
+                    this.loadTrashedCount();
+                }
             }, ( error ) => {
                 nsSnackBar.error( error.message, 'OK', { duration: false });
             });
         },
+        toggleTrashed() {
+            this.trashed    =   ! this.trashed;
+            this.page       =   1;
+            this.refresh();
+        },
+
+        loadTrashedCount() {
+            nsHttpClient.get( `${this.src}/trashed-count` )
+                .subscribe( (result: any) => {
+                    this.trashedCount   =   result.count;
+                }, () => {
+                    this.trashedCount   =   null;
+                });
+        },
+
         cancelSearch() {
             this.searchInput    =   '';
             this.search();

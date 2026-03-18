@@ -148,6 +148,10 @@ class UsersService
          * the details regarding his new created account.
          */
         try {
+            $welcomeMail = Hook::filter( 'ns.email.welcome', WelcomeMail::class );
+            $activateAccountMail = Hook::filter( 'ns.email.active-account', ActivateYourAccountMail::class );
+            $userRegisteredMail = Hook::filter( 'ns.email.user-registered', UserRegisteredMail::class );
+
             /**
              * if the account validation is required, we'll
              * send an email to ask the user to validate his account.
@@ -155,19 +159,19 @@ class UsersService
              */
             if ( ! $validation_required ) {
                 Mail::to( $user->email )
-                    ->queue( new WelcomeMail( $user ) );
+                    ->queue( new $welcomeMail( $user ) );
             } else {
                 Mail::to( $user->email )
-                    ->queue( new ActivateYourAccountMail( $user ) );
+                    ->queue( new $activateAccountMail( $user ) );
             }
 
             /**
              * The administrator might be aware
              * of the user having created their account.
              */
-            Role::namespace( 'admin' )->users->each( function ( $admin ) use ( $user ) {
+            Role::namespace( 'admin' )->users->each( function ( $admin ) use ( $user, $userRegisteredMail ) {
                 Mail::to( $admin->email )
-                    ->queue( new UserRegisteredMail( $admin, $user ) );
+                    ->queue( new $userRegisteredMail( $admin, $user ) );
             } );
         } catch ( Exception $exception ) {
             Log::error( $exception->getMessage() );

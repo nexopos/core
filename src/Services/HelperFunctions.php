@@ -85,13 +85,30 @@ function ns(): CoreService
  * @param  string $namespace
  * @return string $result
  */
-function __m( $key, $namespace = 'default' )
+function __m( $key, $namespace = 'default', $replace = [] )
 {
-    if ( app( 'translator' )->has( $namespace . '.' . $key ) ) {
-        return app( 'translator' )->get( $namespace . '.' . $key );
+    $locale = app()->getLocale();
+    $translations = \Ns\Services\ModulesService::$locales;
+    $translated = $key;
+
+    if ( isset( $translations[ $locale ][ $namespace ][ $key ] ) ) {
+        $translated = $translations[ $locale ][ $namespace ][ $key ];
+    } else {
+        $fallback = config('app.fallback_locale', 'en');
+        if ( isset( $translations[ $fallback ][ $namespace ][ $key ] ) ) {
+            $translated = $translations[ $fallback ][ $namespace ][ $key ];
+        }
     }
 
-    return $key;
+    if ( empty( $replace ) ) {
+        return $translated;
+    }
+
+    foreach ( $replace as $placeholder => $value ) {
+        $translated = str_replace( ':' . $placeholder, $value, $translated );
+    }
+
+    return $translated;
 }
 
 /**

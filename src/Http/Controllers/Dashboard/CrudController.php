@@ -134,6 +134,25 @@ class CrudController extends DashboardController
     }
 
     /**
+     * Returns the count of soft-deleted (trashed) entries for a CRUD resource.
+     */
+    public function crudTrashedCount( string $identifier )
+    {
+        $crudClass = Hook::filter( 'ns-crud-resource', $identifier );
+
+        if ( ! class_exists( $crudClass ) ) {
+            throw new Exception( sprintf( __( 'Unable to load the CRUD resource : %s.' ), $crudClass ) );
+        }
+
+        $resource = new $crudClass;
+        $resource->allowedTo( 'read' );
+
+        return response()->json([
+            'count' => $resource->getTrashedCount(),
+        ]);
+    }
+
+    /**
      * CRUD Bulk Action
      *
      * @param string identifier

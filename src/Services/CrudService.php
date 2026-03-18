@@ -5,6 +5,7 @@ namespace Ns\Services;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\View\View as ContractView;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -457,6 +458,7 @@ class CrudService
             'headerButtons' => Hook::filter( get_class( $this ) . '@getHeaderButtons', $this->getHeaderButtons() ),
             'identifier' => $this->getIdentifier(),
             'showSelectedEntries' => true,
+            'supportTrash' => $this->modelSupportsSoftDeletes(),
         ], $this );
     }
 
@@ -1021,8 +1023,50 @@ class CrudService
      * We'll decouple apply scope to allow future extensibility and to make sure that
      * CrudScope can be applied even if the Crud instance doesn't have a "getEntries" method.
      */
+    /**
+     * Returns true when the CRUD's linked model uses the SoftDeletes trait.
+     * This drives both automatic row filtering and the trash-toggle UI button.
+     */
+    protected function modelSupportsSoftDeletes(): bool
+    {
+        return $this->model && in_array( SoftDeletes::class, class_uses_recursive( $this->model ) );
+    }
+
+    /**
+     * Returns the number of soft-deleted rows for the main table.
+     * Only meaningful when the linked model uses the SoftDeletes trait.
+     */
+    public function getTrashedCount(): int
+    {
+        if ( ! $this->modelSupportsSoftDeletes() ) {
+            return 0;
+        }
+
+        $table = $this->hookTableName( $this->table );
+
+        return DB::table( $table )
+            ->whereNotNull( 'deleted_at' )
+            ->count();
+    }
+
     protected function applyScopes( $query ): void
     {
+        /**
+         * Automatically filter soft-deleted rows (or show only trashed rows)
+         * whenever the linked model uses the SoftDeletes trait.
+         * No #[CrudScope] attribute required on the CRUD class.
+         */
+        if ( $this->modelSupportsSoftDeletes() ) {
+            $modelInstance = new $this->model;
+            $table         = $modelInstance->getTable();
+
+            if ( request()->boolean( 'trashed' ) ) {
+                $query->whereNotNull( "{$table}.deleted_at" );
+            } else {
+                $query->whereNull( "{$table}.deleted_at" );
+            }
+        }
+
         /**
          * This section will explicitely add support to CrudScope.
          */

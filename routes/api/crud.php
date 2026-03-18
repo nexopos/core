@@ -7,6 +7,7 @@ use Ns\Http\Controllers\Dashboard\CrudController;
 Route::get( 'crud/{namespace}', [ CrudController::class, 'crudList' ] );
 Route::get( 'crud/{namespace}/columns', [ CrudController::class, 'getColumns' ] );
 Route::get( 'crud/{namespace}/config', [ CrudController::class, 'getConfig' ] );
+Route::get( 'crud/{namespace}/trashed-count', [ CrudController::class, 'crudTrashedCount' ] );
 // Route::get( 'crud/{namespace}/form-config/{id?}', [ CrudController::class, 'getFormConfig' ] );
 Route::get( 'crud/{namespace}/form/{id?}', [ CrudController::class, 'getFormStructure' ] );
 Route::put( 'crud/{namespace}/{id}', [ CrudController::class, 'crudPut' ] );
