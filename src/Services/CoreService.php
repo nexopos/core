@@ -491,8 +491,41 @@ class CoreService
                  */
                 $assetURL = asset( 'modules/' . strtolower( $moduleId ) . '/' . $buildFolderName . '/' . $manifestArray[ $fileName ][ 'file' ] ) ?? null;
 
-                if ( ! empty( $manifestArray[ $fileName ][ 'css' ] ) ) {
-                    $assets = collect( $manifestArray[ $fileName ][ 'css' ] )->map( function ( $url ) use ( $moduleId, $buildFolderName ) {
+                /**
+                 * Recursively collect CSS from the entry chunk and all its imported chunks.
+                 * Vite places scoped/component CSS on the chunk that owns it, not the entry
+                 * point, so we must walk the full imports tree to find every stylesheet.
+                 */
+                $collectedCss = [];
+                $visitedChunks = [];
+
+                $collectChunkCss = function ( string $chunkKey ) use ( &$collectChunkCss, &$manifestArray, &$collectedCss, &$visitedChunks ): void {
+                    if ( in_array( $chunkKey, $visitedChunks, true ) ) {
+                        return;
+                    }
+
+                    $visitedChunks[] = $chunkKey;
+                    $chunk           = $manifestArray[ $chunkKey ] ?? null;
+
+                    if ( empty( $chunk ) ) {
+                        return;
+                    }
+
+                    foreach ( $chunk[ 'css' ] ?? [] as $cssFile ) {
+                        if ( ! in_array( $cssFile, $collectedCss, true ) ) {
+                            $collectedCss[] = $cssFile;
+                        }
+                    }
+
+                    foreach ( $chunk[ 'imports' ] ?? [] as $importKey ) {
+                        $collectChunkCss( $importKey );
+                    }
+                };
+
+                $collectChunkCss( $fileName );
+
+                if ( ! empty( $collectedCss ) ) {
+                    $assets = collect( $collectedCss )->map( function ( $url ) use ( $moduleId, $buildFolderName ) {
                         return '<link rel="stylesheet" href="' . asset( 'modules/' . strtolower( $moduleId ) . '/' . $buildFolderName . '/' . $url ) . '"/>';
                     } );
                 }
