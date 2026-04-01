@@ -43,7 +43,7 @@ This directory contains comprehensive instructions for working with NexoPOS Core
 
 2. **Create Database Structure**:
    ```bash
-   php artisan module:migrate ModuleName
+   php artisan module:migration ModuleName
    ```
 
 3. **Generate CRUD Operations**:

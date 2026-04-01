@@ -76,9 +76,6 @@ return view('MyModule::index'); // loads modules/MyModule/Views/index.blade.php
 # Generate a new module
 php artisan make:module
 
-# Run module migrations
-php artisan module:migrate {module}
-
 # Generate CRUD for a module
 php artisan make:crud {module}
 ```

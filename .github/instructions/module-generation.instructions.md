@@ -155,7 +155,7 @@ class ModuleNameServiceProvider extends ServiceProvider
 
 1. Generate module: `php artisan make:module`
 2. Create migrations: Add files to `Migrations/` directory
-3. Run migrations: `php artisan module:migrate ModuleName`
+3. There is no need to run a migration as NexoPOS will automatically run them for the user.
 4. Build assets: Configure `vite.config.js` and run build process
 5. Develop features: Add controllers, models, views as needed
 

@@ -1398,12 +1398,6 @@ Added bulk product import functionality allowing users to import products from C
 - Added import history tracking
 - Created new API endpoints for import operations
 
-## Migration Required
-
-Run the following migration:
-```bash
-php artisan module:migrate FooBar
-```
 
 ## Breaking Changes
 
@@ -1563,13 +1557,6 @@ Use Artisan commands for module management:
 ```bash
 # Install module dependencies
 php artisan module:install FooBar
-
-# Run module migrations
-php artisan module:migrate FooBar
-
-# Publish module assets
-php artisan module:publish FooBar
-```
 
 ## Troubleshooting
 

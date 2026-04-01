@@ -4,17 +4,6 @@ applyTo: '**'
 
 # Module Migrations in NexoPOS Core
 
-NexoPOS Core provides a dedicated command to run migrations for specific modules.
-
-## Command Usage
-
-```bash
-php artisan module:migrate {module}
-```
-
-### Parameters
-- `{module}`: The module namespace (e.g., `MyModule`)
-
 ## Migration Location
 
 Module migrations are stored in the `Migrations/` directory within each module:
