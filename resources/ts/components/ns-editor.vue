@@ -85,7 +85,6 @@ class Media {
     }
 
     render() { 
-        console.log( 'render' );       
         this.wrapper = document.createElement('div');
         this.imageWrapper = document.createElement('div');
         this.buttonWrapper = document.createElement('div');
@@ -185,8 +184,12 @@ const emit = defineEmits(['change']);
 onMounted(() => {
     editor = new EditorJS({
         holder: editorElement.value as HTMLElement,
-        data: props.field.value ? (
-            typeof props.field.value === 'string' ? JSON.parse(props.field.value) : props.field.value
+        data: props.field.value ? JSON.parse(
+            // Always deserialise through JSON to strip Vue reactive Proxy wrappers.
+            // @editorjs/list ≤2.0.8 returns the input object unchanged when it is
+            // already in v2 format, so a Proxy would flow into EditorJS's internal
+            // structuredClone() call and throw a DataCloneError.
+            typeof props.field.value === 'string' ? props.field.value : JSON.stringify(props.field.value)
         ) : {},
         onReady: () => {
             // Initialize drag and drop
