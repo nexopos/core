@@ -187,14 +187,19 @@ class Media {
         // Width input
         const widthContainer = document.createElement('div');
         widthContainer.style.display = 'flex';
-        widthContainer.style.alignItems = 'center';
+        widthContainer.style.flexDirection = 'column';
         widthContainer.style.padding = '8px';
-        widthContainer.style.gap = '8px';
+        widthContainer.style.gap = '4px';
 
         const widthLabel = document.createElement('label');
         widthLabel.style.fontSize = '12px';
-        widthLabel.style.minWidth = '50px';
+        widthLabel.style.fontWeight = '500';
         widthLabel.innerHTML = __('Width') + ':';
+
+        const widthInputWrapper = document.createElement('div');
+        widthInputWrapper.style.display = 'flex';
+        widthInputWrapper.style.alignItems = 'center';
+        widthInputWrapper.style.gap = '4px';
 
         const widthInput = document.createElement('input');
         widthInput.type = 'number';
@@ -218,21 +223,27 @@ class Media {
         });
 
         widthContainer.appendChild(widthLabel);
-        widthContainer.appendChild(widthInput);
-        widthContainer.appendChild(widthUnit);
+        widthInputWrapper.appendChild(widthInput);
+        widthInputWrapper.appendChild(widthUnit);
+        widthContainer.appendChild(widthInputWrapper);
         wrapper.appendChild(widthContainer);
 
         // Height input
         const heightContainer = document.createElement('div');
         heightContainer.style.display = 'flex';
-        heightContainer.style.alignItems = 'center';
+        heightContainer.style.flexDirection = 'column';
         heightContainer.style.padding = '8px';
-        heightContainer.style.gap = '8px';
+        heightContainer.style.gap = '4px';
 
         const heightLabel = document.createElement('label');
         heightLabel.style.fontSize = '12px';
-        heightLabel.style.minWidth = '50px';
+        heightLabel.style.fontWeight = '500';
         heightLabel.innerHTML = __('Height') + ':';
+
+        const heightInputWrapper = document.createElement('div');
+        heightInputWrapper.style.display = 'flex';
+        heightInputWrapper.style.alignItems = 'center';
+        heightInputWrapper.style.gap = '4px';
 
         const heightInput = document.createElement('input');
         heightInput.type = 'number';
@@ -256,8 +267,9 @@ class Media {
         });
 
         heightContainer.appendChild(heightLabel);
-        heightContainer.appendChild(heightInput);
-        heightContainer.appendChild(heightUnit);
+        heightInputWrapper.appendChild(heightInput);
+        heightInputWrapper.appendChild(heightUnit);
+        heightContainer.appendChild(heightInputWrapper);
         wrapper.appendChild(heightContainer);
 
         // Reset dimensions button
