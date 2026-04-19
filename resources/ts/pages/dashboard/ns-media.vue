@@ -297,6 +297,11 @@ export default {
                 return Object.values( window.ns.medias.mimes ).includes( file.type );
             });
 
+            if ( valid.length === 0 ) {
+                nsSnackBar.error( __( 'No valid file found. Please make sure to only upload supported types.' ), __( 'Ok' ) );
+                return;
+            }
+
             valid.forEach( file => {
                 this.files.unshift({
                     file,
