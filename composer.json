@@ -27,7 +27,8 @@
     "scripts": {
         "post-install-cmd": [
             "php artisan ns:install --filesystem",
-            "php artisan ns:translate --symlink"
+            "php artisan ns:translate --symlink",
+            "php artisan vendor:publish --tag nexopos-assets --force"
         ]
     }
 }
