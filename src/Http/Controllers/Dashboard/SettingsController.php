@@ -19,7 +19,7 @@ class SettingsController extends DashboardController
 {
     public function getSettings( $identifier )
     {
-        Gate::allows( 'manages.options' );
+        ns()->restrict( [ 'manage.options' ] );
 
         return $this->handleDefaultSettings( $identifier );
     }
@@ -43,8 +43,8 @@ class SettingsController extends DashboardController
      */
     public function getSettingsForm( $identifier )
     {
-        Gate::allows( 'manages.options' );
-        
+        ns()->restrict( [ 'manage.options' ] );
+
         $settings = Hook::filter( 'ns.settings', false, $identifier );
 
         if ( $settings instanceof SettingsPage ) {
