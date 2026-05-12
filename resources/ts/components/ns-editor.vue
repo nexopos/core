@@ -14,6 +14,134 @@ import { default as nsMedia } from '~/pages/dashboard/ns-media.vue';
 
 declare const Popup;
 
+class Code {
+    private wrapper: HTMLElement;
+    private codeInput: HTMLTextAreaElement;
+    private codeDisplay: HTMLElement;
+    private selectedLanguage: string = 'javascript';
+
+    private data = {
+        code: '',
+        language: 'javascript',
+    };
+
+    private languages = [
+        { label: 'JavaScript', value: 'javascript' },
+        { label: 'Python', value: 'python' },
+        { label: 'PHP', value: 'php' },
+        { label: 'HTML', value: 'html' },
+        { label: 'CSS', value: 'css' },
+        { label: 'TypeScript', value: 'typescript' },
+        { label: 'Java', value: 'java' },
+        { label: 'C++', value: 'cpp' },
+        { label: 'C#', value: 'csharp' },
+        { label: 'Ruby', value: 'ruby' },
+        { label: 'Go', value: 'go' },
+        { label: 'Rust', value: 'rust' },
+        { label: 'SQL', value: 'sql' },
+        { label: 'JSON', value: 'json' },
+        { label: 'XML', value: 'xml' },
+        { label: 'Bash', value: 'bash' },
+        { label: 'Shell', value: 'shell' },
+        { label: 'Plain Text', value: 'plaintext' },
+    ];
+
+    constructor({ data }) {
+        this.data = data || this.data;
+        this.selectedLanguage = this.data.language || 'javascript';
+    }
+
+    static get toolbox() {
+        return {
+            title: __('Code'),
+        };
+    }
+
+    renderSettings() {
+        const wrapper = document.createElement('div');
+
+        const languageLabel = document.createElement('div');
+        languageLabel.style.fontSize = '12px';
+        languageLabel.style.fontWeight = 'bold';
+        languageLabel.style.padding = '8px';
+        languageLabel.style.color = '#666';
+        languageLabel.innerHTML = __('Language');
+        wrapper.appendChild(languageLabel);
+
+        const select = document.createElement('select');
+        select.style.width = '100%';
+        select.style.padding = '6px';
+        select.style.marginBottom = '8px';
+        select.style.border = '1px solid #ddd';
+        select.style.borderRadius = '3px';
+        select.style.fontSize = '12px';
+
+        this.languages.forEach(lang => {
+            const option = document.createElement('option');
+            option.value = lang.value;
+            option.textContent = lang.label;
+            option.selected = this.selectedLanguage === lang.value;
+            select.appendChild(option);
+        });
+
+        select.addEventListener('change', (e) => {
+            this.selectedLanguage = (e.target as HTMLSelectElement).value;
+            this.data.language = this.selectedLanguage;
+        });
+
+        wrapper.appendChild(select);
+        return wrapper;
+    }
+
+    render() {
+        this.wrapper = document.createElement('div');
+        this.wrapper.classList.add('ns-editor-code');
+
+        // Language badge
+        const languageBadge = document.createElement('div');
+        languageBadge.classList.add('ns-editor-code-language');
+        languageBadge.style.backgroundColor = '#f0f0f0';
+        languageBadge.style.padding = '4px 8px';
+        languageBadge.style.fontSize = '11px';
+        languageBadge.style.color = '#666';
+        languageBadge.style.marginBottom = '8px';
+        languageBadge.style.borderRadius = '3px';
+        languageBadge.style.display = 'inline-block';
+        languageBadge.innerHTML = this.languages.find(l => l.value === this.selectedLanguage)?.label || 'Code';
+
+        // Code input
+        this.codeInput = document.createElement('textarea');
+        this.codeInput.classList.add('ns-editor-code-input');
+        this.codeInput.style.width = '100%';
+        this.codeInput.style.minHeight = '200px';
+        this.codeInput.style.padding = '12px';
+        this.codeInput.style.fontFamily = 'monospace';
+        this.codeInput.style.fontSize = '13px';
+        this.codeInput.style.border = '1px solid #ddd';
+        this.codeInput.style.borderRadius = '3px';
+        this.codeInput.style.backgroundColor = '#fafafa';
+        this.codeInput.value = this.data.code || '';
+        this.codeInput.placeholder = __('Enter your code here...');
+
+        this.codeInput.addEventListener('input', (e) => {
+            this.data.code = (e.target as HTMLTextAreaElement).value;
+            languageBadge.innerHTML = this.languages.find(l => l.value === this.selectedLanguage)?.label || 'Code';
+        });
+
+        this.wrapper.appendChild(languageBadge);
+        this.wrapper.appendChild(this.codeInput);
+
+        return this.wrapper;
+    }
+
+    save(blockContent) {
+        return {
+            code: this.data.code,
+            language: this.data.language,
+        };
+    }
+}
+
 class Media {
     private wrapper: HTMLElement;
     private mediaWrapper: HTMLElement;
@@ -601,6 +729,7 @@ onMounted(() => {
                 }
             },
             media: Media,
+            code: Code,
             paragraph: {
                 class: Paragraph,
                 inlineToolbar: true,

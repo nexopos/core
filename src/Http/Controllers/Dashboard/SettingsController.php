@@ -43,6 +43,8 @@ class SettingsController extends DashboardController
      */
     public function getSettingsForm( $identifier )
     {
+        Gate::allows( 'manages.options' );
+        
         $settings = Hook::filter( 'ns.settings', false, $identifier );
 
         if ( $settings instanceof SettingsPage ) {
