@@ -27,8 +27,7 @@ class GenerateModuleCommand extends Command
                             {--name= : Module name}
                             {--author= : Author name}
                             {--description= : Module description}
-                            {--version=1.0 : Module version}
-                            {--no-interaction : Run without any interaction}';
+                            {--vers=1.0 : Module version}';
 
     /**
      * The console command description.
