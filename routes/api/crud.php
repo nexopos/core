@@ -11,6 +11,7 @@ Route::get( 'crud/{namespace}/trashed-count', [ CrudController::class, 'crudTras
 // Route::get( 'crud/{namespace}/form-config/{id?}', [ CrudController::class, 'getFormConfig' ] );
 Route::get( 'crud/{namespace}/form/{id?}', [ CrudController::class, 'getFormStructure' ] );
 Route::put( 'crud/{namespace}/{id}', [ CrudController::class, 'crudPut' ] );
+Route::get( 'crud/{namespace}/{id}', [ CrudController::class, 'getResource' ] );
 Route::post( 'crud/{namespace}', [ CrudController::class, 'crudPost' ] );
 Route::post( 'crud/{namespace}/export', [ CrudController::class, 'exportCrud' ] );
 Route::post( 'crud/{namespace}/bulk-actions', [ CrudController::class, 'crudBulkActions' ] )->name( Hook::filter( 'ns-route-name', 'ns.api.crud-bulk-actions' ) );
