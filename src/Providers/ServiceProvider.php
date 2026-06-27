@@ -89,10 +89,10 @@ class ServiceProvider extends CoreServiceProvider
                 InstallCommand::class,
                 ExtractTranslation::class,
                 GenerateModuleCommand::class,
-                // CrudGeneratorCommand::class,
-                // ModuleMigrations::class,
-                // ModuleSymlinkCommand::class,
-                // RefreshAssetsCommand::class,
+                CrudGeneratorCommand::class,
+                ModuleMigrations::class,
+                ModuleSymlinkCommand::class,
+                RefreshAssetsCommand::class,
             ] );
         }
 
