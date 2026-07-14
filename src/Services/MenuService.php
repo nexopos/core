@@ -121,6 +121,11 @@ class MenuService
                         href: nsUrl( '/dashboard/settings/general' )
                     ),
                     AsideMenu::subMenu(
+                        label: __( 'Medias' ),
+                        identifier: 'media',
+                        href: nsUrl( '/dashboard/settings/media' )
+                    ),
+                    AsideMenu::subMenu(
                         label: __( 'Reset' ),
                         identifier: 'reset',
                         href: nsUrl( '/dashboard/settings/reset' )

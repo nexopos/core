@@ -20,6 +20,7 @@ const nsModules                     =   defineAsyncComponent( () => import( './p
 const nsPermissions                 =   defineAsyncComponent( () => import( './pages/dashboard/ns-permissions.vue' ) );
 const nsNotifications               =   defineAsyncComponent( () => import( './pages/dashboard/ns-notifications.vue' ) );
 const nsMedia                       =   defineAsyncComponent( () => import( './pages/dashboard/ns-media.vue' ) );
+const nsMediaLibrary                =   defineAsyncComponent( () => import( './pages/dashboard/ns-media-library.vue' ) );
 const nsDashboard                   =   defineAsyncComponent( () => import( './pages/dashboard/home/ns-dashboard.vue' ) );
 
 declare const window;
@@ -40,6 +41,7 @@ const allComponents    =   Object.assign({
     nsReset,
     nsPermissions,
     nsMedia,
+    nsMediaLibrary,
     nsDashboard,
 
     nsNotifications,
