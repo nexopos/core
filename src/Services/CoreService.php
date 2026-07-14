@@ -4,6 +4,7 @@ namespace Ns\Services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -434,8 +435,9 @@ class CoreService
          * If the hot file is not a file. When we'll load the assets directly from the
          * manifest.json file.
          */
-        if ( file_exists( $module[ 'path' ] . $hotFilePath ) ) {
-            $url = file_get_contents( $module[ 'path' ] . $hotFilePath );
+        $modulePath = Str::finish( $module[ 'path' ], DIRECTORY_SEPARATOR );
+        if ( file_exists( $modulePath . $hotFilePath ) ) {
+            $url = file_get_contents( $modulePath . $hotFilePath );
             $pathinfo = pathinfo( $fileName );
 
             if ( in_array( $pathinfo[ 'extension' ], [ 'js', 'ts', 'tsx', 'jsx' ] ) ) {
