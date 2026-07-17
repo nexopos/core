@@ -65,6 +65,60 @@
 			}
 		}
 	}
+
+	.ns-editor-youtube {
+		@apply my-2;
+	}
+
+	.ns-editor-youtube-form {
+		@apply border border-box-edge rounded bg-box-edge p-3;
+        &.hide {
+            @apply hidden;
+        }
+	}
+
+	.ns-editor-youtube-input-row {
+		@apply flex gap-2 items-stretch;
+	}
+
+	.ns-editor-youtube-url {
+		@apply flex-1 min-w-0 px-3 py-2 text-sm border border-box-edge rounded bg-white text-gray-700 outline-hidden;
+	}
+
+	.ns-editor-youtube-embed-btn {
+		@apply px-4 py-2 text-sm cursor-pointer rounded bg-primary text-white hover:opacity-90 whitespace-nowrap;
+	}
+
+	.ns-editor-youtube-hint {
+		@apply text-xs text-gray-500 mt-2;
+	}
+
+	.ns-editor-youtube-embed {
+		@apply p-2 border border-box-edge rounded flex flex-col;
+        &.hide {
+            @apply hidden;
+        }
+        &.align-left {
+            @apply items-start;
+        }
+        &.align-center {
+            @apply items-center;
+        }
+        &.align-right {
+            @apply items-end;
+        }
+	}
+
+	.ns-editor-youtube-frame {
+		@apply w-full max-w-full overflow-hidden rounded bg-black;
+	}
+
+	.ns-editor-youtube-caption {
+		@apply text-sm text-gray-600 italic mt-2 text-center;
+        &.hide {
+            @apply hidden;
+        }
+	}
 }
 
 .input-group {
